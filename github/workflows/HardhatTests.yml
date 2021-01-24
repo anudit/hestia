@@ -1,0 +1,38 @@
+name: Run Hardhat Tests
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Codebase
+      uses: actions/checkout@v2.3.4
+
+    - name: Cache Compiler Installations
+      uses: actions/cache@v2.1.3
+      with:
+        path: |
+          ~/.solcx
+          ~/.vvm
+        key: compiler-cache
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: '14'
+
+    - name: Install Dependencies
+      run: npm i
+
+    - name: Run Hardhat Tests
+      env:
+        GITHUB_WORKFLOW: contracts
+        CMC_APIKEY: ${{ secrets.CMC_APIKEY }}
+      run: npm run test
+
+    - name: Check Test Coverage
+      run: npm run coverage

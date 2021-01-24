@@ -1,0 +1,36 @@
+{
+  "name": "saarthi-contracts",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "compile": "npx hardhat compile",
+    "deploy:local": "npx hardhat run scripts/deploy.js --network hardhat",
+    "deploy:mumbai": "npx hardhat run scripts/deploy.js --network mumbai",
+    "deploy:kovan": "npx hardhat run scripts/deploy.js --network kovan",
+    "coverage": "npx hardhat coverage --testfiles 'test/*.js'",
+    "test": "npx hardhat test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aapkasaarthi/contracts.git"
+  },
+  "author": "Anudit Nagar",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/aapkasaarthi/contracts/issues"
+  },
+  "homepage": "https://github.com/aapkasaarthi/contracts#readme",
+  "dependencies": {
+    "@chainlink/contracts": "0.0.12",
+    "@nomiclabs/hardhat-ethers": "^2.0.1",
+    "@nomiclabs/hardhat-etherscan": "^2.1.0",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.2.0",
+    "dotenv": "^8.2.0",
+    "ethereum-waffle": "^3.2.1",
+    "ethers": "^5.0.24",
+    "hardhat": "^2.0.6",
+    "hardhat-gas-reporter": "^1.0.4",
+    "solidity-coverage": "^0.7.13"
+  }
+}
