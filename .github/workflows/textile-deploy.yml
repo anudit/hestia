@@ -1,0 +1,34 @@
+name: "Deploy to IPFS"
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  schedule:
+    - cron: "0 0 * * *" # Every Day
+
+jobs:
+  bucket_push:
+    runs-on: ubuntu-latest
+    name: Push Textile Bucket
+    steps:
+    - name: checkout
+      uses: actions/checkout@v2.3.2
+    - name: push action
+      id: push
+      uses: textileio/github-action-buckets@v22
+      with:
+        key: ${{ secrets.TEXTILE_ACCOUNT_KEY }}
+        secret: ${{ secrets.TEXTILE_ACCOUNT_SECRET }}
+        bucket: "hestia"
+        thread: "bafk77frjktjk66mivntex2h4pyhq64lno6ronunpa37a2ucg465b7gi"
+        path: "./client"
+    - run: echo "bucket - ${{ steps.push.outputs.key  }}"
+    - run: echo "ipfs - ${{ steps.push.outputs.ipfs }}"
+    - run: echo "ipfs link - ${{ steps.push.outputs.ipfsUrl }}"
+    - run: echo "ipns - ${{ steps.push.outputs.ipns }}"
+    - run: echo "ipns link - ${{ steps.push.outputs.ipnsUrl }}"
+    - run: echo "hub - ${{ steps.push.outputs.hub }}"
+    - run: echo "www - ${{ steps.push.outputs.www }}"
