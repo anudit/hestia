@@ -1,80 +1,58 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Hestia</title>
+		<meta name="description" content="Twisted spheres with Three.js">
+		<meta name="keywords" content="three.js, webgl, sphere, twisted, animation">
+		<meta name="author" content="Codrops">
+		<link rel="stylesheet" type="text/css" href="./css/landing.css">
+		<script>document.documentElement.className="js";var e=function(){var e,t=document.createElement("style");return t.innerHTML="root: { --tmp-var: bold; }",document.head.appendChild(t),e=!!(window.CSS&&window.CSS.supports&&window.CSS.supports("font-weight","var(--tmp-var)")),t.parentNode.removeChild(t),e};e()||alert("Please view this demo in a modern browser that supports CSS Variables.");</script>
+	</head>
+	<body class="demo-1 loading">
+		<main>
+			<a class="dib logo" aria-label="logo">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hestia</title>
-    <meta name="author" content="Anudit Nagar">
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-</head>
-
-<body class="home">
-    <div class="wrapper">
-
-        <!-- menu -->
-        <nav class="menu">
-            <div class="menu__logo">
-                <a href="index.html">Hestia</a>
-            </div>
-            <div class="menu__items">
-                <div class="menu__items-link active"><a href="index.html">Projects</a></div>
-                <div class="menu__items-link"><a href="about.html">About</a></div>
-            </div>
-        </nav>
-
-        <!-- horizontal scroll items -->
-        <div class="container">
-            <div class="container__item container__item-header">
-                <h1>Discover Artists</h1>
-                <span>Scroll
-                    <svg style="padding-left:10px;margin-top:10px;position: absolute;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="#fff" d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"/>
-                    </svg>
+            </a>
+            <h2 class="page-title line line--vertical">
+                <div class="dib" style="--clip:100%;">
+                </div>
+            </h2>
+            <nav class="links line line--vertical">
+				<center>
+					<div class="dib oh"><a href="./discover.html" class="dib">Discover</a></div>
+					<div class="dib oh"><a href="./about.html" class="dib">About</a></div>
+				</center>
+            </nav>
+			<h1 class="line line--horizontal oh title">
+				<div>Hestia</div>
+			</h1>
+			<div class="oh subtitle">
+				<div></div>
+			</div>
+            <p class="content line line--horizontal">
+				<span class="db" style="--clip:0%;">
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </span>
-            </div>
-
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Asterisks</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Unlocked</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Offbeat</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Brutal</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Mouthwash</a>
-                </h1>
-            </div>
-        </div>
-
-    </div>
-
-    <script src="js/horizontal-scroll.js"></script>
-    <script>
-        var blocks = document.getElementsByClassName("container__item");
-        var container = document.getElementsByClassName("container");
-        var hs = new HorizontalScroll.default({
-            blocks: blocks,
-            container: container,
-            isAnimated: true,
-            springEffect: 0.8,
-        });
-    </script>
-</body>
-
+                <br/>
+                <a href="./discover.html">Get started →</a>
+            </p>
+			<span class="play dib" aria-label="Play" style="transform: translate(0px, 0px);cursor: pointer;" onclick="window.location.href='./discover.html';">→</span>
+            <span class="credits credits--author line line--horizontal">
+                <div class="dib" style="--clip:100%;">
+                    Powered by
+                    <a href="#">Biconomy</a>,
+                    <a href="#">Binance</a>,
+                    <a href="#">Chainlink</a>,
+                    <a href="#">Matic</a>,
+                    <a href="#">Portis</a>
+                </div>
+            </span>
+			<div class="oh year">
+				<div></div>
+			</div>
+		</main>
+		<script src="./js/landing.js"></script>
+	</body>
 </html>
