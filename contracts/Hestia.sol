@@ -8,13 +8,39 @@
 ===============================*/
 
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.7.5 <0.8.0;
+pragma solidity >=0.7.6 <0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/payment/PullPayment.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract Hestia is ERC721, PullPayment, ReentrancyGuard {
+contract HestiaMeta {
+    struct EIP712Domain {
+        string name;
+        string version;
+        uint256 chainId;
+        address verifyingContract;
+    }
+
+    struct MetaTransaction {
+    		uint256 nonce;
+    		address from;
+    }
+
+    mapping(address => uint256) public nonces;
+    bytes32 internal constant EIP712_DOMAIN_TYPEHASH = keccak256(bytes("EIP712Domain(string name,string version,uint256 chainId,address verifyingContract)"));
+    bytes32 internal constant META_TRANSACTION_TYPEHASH = keccak256(bytes("MetaTransaction(uint256 nonce,address from)"));
+    bytes32 internal DOMAIN_SEPARATOR = keccak256(abi.encode(
+        EIP712_DOMAIN_TYPEHASH,
+    		keccak256(bytes("Hestia")),
+    		keccak256(bytes("1")),
+    		80001,
+    		address(this)
+    ));
+
+}
+
+contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
 
     uint256 public _tokenIds;
     uint256 public _postIds;
@@ -50,6 +76,11 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard {
         uint256 _newPrice
     );
 
+    event PostLike(
+        uint256 indexed _postId,
+        address indexed _user
+    );
+
     constructor() ERC721("Hestia", "HESTIA") {}
 
     modifier postExist(uint256 id) {
@@ -64,11 +95,48 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard {
 
     function addPost(uint256 price, string memory postData, bytes32 metaData) public nonReentrant() {
         require(price > 0, "Price cannot be 0");
+        handleAddPost(price, postData, metaData, msg.sender);
+    }
 
+    function addPostMeta(
+        uint256 price, string memory postData, bytes32 metaData,
+        address buyer, bytes32 r, bytes32 s, uint8 v
+    )
+        public
+        nonReentrant()
+    {
+        require(price > 0, "Price cannot be 0");
+
+        MetaTransaction memory metaTx = MetaTransaction({
+            nonce: nonces[buyer],
+            from: buyer
+        });
+
+        bytes32 digest = keccak256(
+            abi.encodePacked(
+                "\x19\x01",
+                DOMAIN_SEPARATOR,
+                keccak256(abi.encode(META_TRANSACTION_TYPEHASH, metaTx.nonce, metaTx.from))
+            )
+        );
+
+        require(buyer != address(0), "invalid-address-0");
+        require(buyer == ecrecover(digest, v, r, s), "invalid-signatures");
+
+        handleAddPost(price, postData, metaData, buyer);
+    }
+
+    function handleAddPost(uint256 price,
+        string memory postData,
+        bytes32 metaData,
+        address buyer
+    )
+        internal
+    {
         _postIds++;
-        _posts[_postIds] = Post(msg.sender, price, postData, true);
+        _posts[_postIds] = Post(buyer, price, postData, true);
 
-        emit NewPost(_postIds, msg.sender, price, postData, metaData);
+        emit NewPost(_postIds, buyer, price, postData, metaData);
     }
 
     function purchasePost(uint256 postId)
@@ -106,5 +174,30 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard {
 
     function getPayments() external {
         withdrawPayments(msg.sender);
+    }
+
+    function likePost (
+        uint256 postId, address liker,
+        bytes32 r, bytes32 s, uint8 v
+    )
+        public
+    {
+        MetaTransaction memory metaTx = MetaTransaction({
+            nonce: nonces[liker],
+            from: liker
+        });
+
+        bytes32 digest = keccak256(
+            abi.encodePacked(
+                "\x19\x01",
+                DOMAIN_SEPARATOR,
+                keccak256(abi.encode(META_TRANSACTION_TYPEHASH, metaTx.nonce, metaTx.from))
+            )
+        );
+
+        require(liker != address(0), "invalid-address-0");
+        require(liker == ecrecover(digest, v, r, s), "invalid-signatures");
+
+        emit PostLike(postId, liker);
     }
 }
