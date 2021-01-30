@@ -10,25 +10,42 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.6 <0.8.0;
 
-interface IAPIConsumer {
-    function getPrice() external view returns(uint256);
-}
-
 contract HestiaCreator {
-    IAPIConsumer api;
 
     struct Creator {
-        uint256 creatorId;
+        uint256 creatorID;
         address creatorAddress;
-        uint256[] postIds;
+        string creatorName;
+        bytes32 metaData;
     }
 
-    // 0x94f0f5F1303BAFb4FdA90301D8CEf3320D7b52a8 on matic mumbai
-    constructor(address _apiAddress) {
-        api = IAPIConsumer(_apiAddress);
+    event NewCreator(
+        uint256 indexed creatorID,
+        address indexed creatorAddress,
+        string indexed creatorName,
+        bytes32 metaData
+    );
+
+    event UpdateMetadata(
+        uint256 indexed creatorID,
+        bytes32 metaData
+    );
+
+    uint256 public creatorIDs;
+    mapping(uint256 => Creator) public creators;
+
+    constructor() {}
+
+    function registerCreator(string memory _creatorName, bytes32 _metaData) public {
+        creatorIDs+=1;
+        creators[creatorIDs] = Creator(creatorIDs, msg.sender, _creatorName, _metaData);
+
+        emit NewCreator(creatorIDs, msg.sender, _creatorName, _metaData);
     }
 
-    function consumePrice() public view returns(uint256){
-        return api.getPrice();
+    function updateMetaData(uint256 _creatorID, bytes32 metaData) public {
+        require(msg.sender == creators[_creatorID].creatorAddress);
+        creators[_creatorID].metaData = metaData;
+        emit UpdateMetadata(_creatorID, metaData);
     }
 }

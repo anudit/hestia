@@ -25,20 +25,18 @@ module.exports = {
     }
   },
   networks: {
-    hardhat: mnemonic ? { accounts: { mnemonic } } : {},
-    local: {
-      url: "http://localhost:8545",
+    hardhat: {
       accounts: mnemonic ? { mnemonic } : undefined
     },
     rinkeby: infuraNetwork("rinkeby", 4, 6283185),
     kovan: infuraNetwork("kovan", 42, 6283185),
     goerli: infuraNetwork("goerli", 5, 6283185),
-    mumbai: {
+    matic: {
       url: "https://rpc-mumbai.matic.today",
       chainId: 80001,
       accounts: mnemonic ? { mnemonic } : undefined
     },
-    bsc_testnet: {
+    bsc: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
       accounts: mnemonic ? { mnemonic } : undefined

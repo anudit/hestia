@@ -10,6 +10,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.6 <0.8.0;
 
+import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/payment/PullPayment.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -40,15 +41,17 @@ contract HestiaMeta {
 
 }
 
-contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
+contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, RedirectAll {
 
     uint256 public _tokenIds;
     uint256 public _postIds;
     mapping(uint256 => Post) public _posts;
 
     struct Post {
-        address seller;
+        address creator;
+        address owner;
         uint256 price;
+        uint256 taxrate;
         string postData;
         bool exists;
     }
@@ -64,8 +67,8 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
     event PostSold(
         uint256 indexed _postId,
         uint256 _tokenId,
-        address indexed _seller,
-        address indexed _buyer,
+        address indexed _previousOwner,
+        address indexed _newOwner,
         uint256 _amount
     );
 
@@ -81,7 +84,12 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
         address indexed _user
     );
 
-    constructor() ERC721("Hestia", "HESTIA") {}
+    constructor(ISuperfluid host,IConstantFlowAgreementV1 cfa,ISuperToken acceptedToken)
+      ERC721("Hestia", "HESTIA")
+      RedirectAll (host,cfa,acceptedToken,msg.sender)
+    {
+
+    }
 
     modifier postExist(uint256 id) {
         require(_posts[id].exists, "Not Found");
@@ -89,18 +97,25 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
     }
 
     modifier onlyPostOwner(uint256 id, address _address) {
-        require(_posts[id].seller == _address, "Not your post.");
+        require(_posts[id].creator == _address, "Not your post.");
         _;
     }
 
-    function addPost(uint256 price, string memory postData, bytes32 metaData) public nonReentrant() {
+    function createPost(
+        uint256 price,
+        uint256 taxrate,
+        string memory postData,
+        bytes32 metaData
+    )
+        public nonReentrant()
+    {
         require(price > 0, "Price cannot be 0");
-        handleAddPost(price, postData, metaData, msg.sender);
+        handleCreatePost(price, taxrate, postData, metaData, msg.sender);
     }
 
-    function addPostMeta(
-        uint256 price, string memory postData, bytes32 metaData,
-        address buyer, bytes32 r, bytes32 s, uint8 v
+    function createPostMeta(
+        uint256 price, uint256 taxrate, string memory postData, bytes32 metaData,
+        address creator, bytes32 r, bytes32 s, uint8 v
     )
         public
         nonReentrant()
@@ -108,8 +123,8 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
         require(price > 0, "Price cannot be 0");
 
         MetaTransaction memory metaTx = MetaTransaction({
-            nonce: nonces[buyer],
-            from: buyer
+            nonce: nonces[creator],
+            from: creator
         });
 
         bytes32 digest = keccak256(
@@ -120,23 +135,29 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
             )
         );
 
-        require(buyer != address(0), "invalid-address-0");
-        require(buyer == ecrecover(digest, v, r, s), "invalid-signatures");
+        require(creator != address(0), "invalid-address-0");
+        require(creator == ecrecover(digest, v, r, s), "invalid-signatures");
 
-        handleAddPost(price, postData, metaData, buyer);
+        handleCreatePost(price, taxrate, postData, metaData, creator);
     }
 
-    function handleAddPost(uint256 price,
+    function handleCreatePost(uint256 price, uint256 taxrate,
         string memory postData,
         bytes32 metaData,
-        address buyer
+        address creator
     )
         internal
     {
         _postIds++;
-        _posts[_postIds] = Post(buyer, price, postData, true);
+        _posts[_postIds] = Post(creator, creator, price, taxrate, postData, true);
 
-        emit NewPost(_postIds, buyer, price, postData, metaData);
+        _tokenIds++;
+
+        _safeMint(creator, _tokenIds);
+        approve(address(this), _tokenIds);
+        _setTokenURI(_tokenIds, postData);
+
+        emit NewPost(_postIds, creator, price, postData, metaData);
     }
 
     function purchasePost(uint256 postId)
@@ -151,11 +172,21 @@ contract Hestia is ERC721, PullPayment, ReentrancyGuard, HestiaMeta {
 
         _tokenIds++;
 
-        _safeMint(msg.sender, _tokenIds);
-        _setTokenURI(_tokenIds, post.postData);
-        _asyncTransfer(post.seller, msg.value);
+        safeTransferFrom(post.owner, msg.sender, _tokenIds);
+        approve(address(this), _tokenIds);
+        _asyncTransfer(post.owner, msg.value);
+        address oldOwner = post.owner;
+        _posts[postId].owner = msg.sender;
 
-        emit PostSold(postId, _tokenIds, msg.sender, post.seller, msg.value);
+        emit PostSold(postId, _tokenIds, oldOwner, msg.sender, msg.value);
+    }
+
+    function _beforeTokenTransfer(
+      address /*from*/,
+      address to,
+      uint256 /*tokenId*/
+    ) internal override {
+        _changeReceiver(to);
     }
 
     function updatePostPrice(uint256 postId, uint256 newPrice)
