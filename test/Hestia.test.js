@@ -30,7 +30,7 @@ describe("Hestia", accounts => {
 
     describe("NFT Tests", accounts => {
 
-        it("Should deploy contract", async function () {
+        it("Should deploy contracts", async function () {
             expect(true).to.equal(true);
         });
 
@@ -52,14 +52,24 @@ describe("Hestia", accounts => {
         });
 
         it("Should purchase Post", async () => {
+
+            let price = ethers.utils.parseEther('1');
+            let taxRate = 500; //5%
+
             await hestia.createPost(
-                ethers.utils.parseEther('1'),
-                ethers.utils.parseEther('0.05'),
+                price,
+                (taxRate).toString(),
                 "This is the Post Title",
                 getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
             );
 
-            await hestia.connect(alice).purchasePost('1',{value:ethers.utils.parseEther('1')});
+            let taxAmount = price.mul(taxRate).div(10000);
+            let totalCost = price.add(taxAmount);
+
+            await hestia.connect(alice).purchasePost(
+                '1',"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+                {value:totalCost}
+            );
 
             expect(await hestia._postIds()).to.equal('1');
             expect(await hestia._tokenIds()).to.equal('1');
@@ -69,6 +79,48 @@ describe("Hestia", accounts => {
             expect(pData['owner']).to.equal(alice.address);
         });
 
+        it("Should update Post price", async () => {
+            await hestia.createPost(
+                ethers.utils.parseEther('1'),
+                ethers.utils.parseEther('0.05'),
+                "This is the Post Title",
+                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+            );
+
+            let pData = await hestia._posts('1');
+            expect(pData['price']).to.equal(ethers.utils.parseEther('1'));
+
+            await hestia.updatePostPrice('1', ethers.utils.parseEther('1.5'));
+
+            pData = await hestia._posts('1');
+            expect(pData['price']).to.equal(ethers.utils.parseEther('1.5'));
+
+        });
+
+
+        it("Should pay Taxes on Post", async () => {
+
+            let price = ethers.utils.parseEther('1');
+            let taxRate = 500; //5%
+
+            await hestia.createPost(
+                price,
+                (taxRate).toString(),
+                "This is the Post Title",
+                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+            );
+
+            let taxAmount = price.mul(taxRate).div(10000);
+
+            await hestia.payTaxes(
+                '1',"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+                {value:taxAmount}
+            );
+
+            let pData = await hestia._posts('1');
+            expect(pData['lastTaxCollected']).lt(Date.now()*1000);
+
+        });
     });
 
     describe("Creator Tests", accounts => {

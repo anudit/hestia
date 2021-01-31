@@ -54,11 +54,14 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
 
     IAPIConsumer api;
 
+    uint256 taxDuration = 0 seconds;
+
     struct Post {
         address creator;
         address owner;
         uint256 price;
-        uint256 taxrate;
+        uint256 taxrate; // 5% = 0.05 * 10000 = 500
+        uint256 lastTaxCollected;
         string postData;
         bool exists;
     }
@@ -66,9 +69,9 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
     event NewPost(
         uint256 indexed _postId,
         address indexed _seller,
-        uint256 _price,
+        uint256 indexed _price,
         string _postData,
-        bytes32 indexed _metaData
+        bytes32 _metaData
     );
 
     event PostSold(
@@ -76,6 +79,12 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         uint256 _tokenId,
         address indexed _previousOwner,
         address indexed _newOwner,
+        uint256 _amount
+    );
+
+    event TaxPayed(
+        uint256 indexed _postId,
+        address indexed _taxPayer,
         uint256 _amount
     );
 
@@ -100,12 +109,12 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
     }
 
     modifier postExist(uint256 id) {
-        require(_posts[id].exists, "Post id Not Found");
+        require(_posts[id].exists, "Hestia:Post id Not Found");
         _;
     }
 
     modifier onlyPostOwner(uint256 id, address _address) {
-        require(_posts[id].creator == _address, "Not your post.");
+        require(_posts[id].creator == _address, "Hestia:Not your post.");
         _;
     }
 
@@ -121,7 +130,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
     )
         public nonReentrant()
     {
-        require(price > 0, "Price cannot be 0");
+        require(price > 0, "Hestia:Price cannot be 0");
         handleCreatePost(price, taxrate, postData, metaData, msg.sender);
     }
 
@@ -132,7 +141,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         public
         nonReentrant()
     {
-        require(price > 0, "Price cannot be 0");
+        require(price > 0, "Hestia:Price cannot be 0");
 
         MetaTransaction memory metaTx = MetaTransaction({
             nonce: nonces[creator],
@@ -161,7 +170,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         internal
     {
         _postIds++;
-        _posts[_postIds] = Post(creator, creator, price, taxrate, postData, true);
+        _posts[_postIds] = Post(creator, creator, price, taxrate, block.timestamp,  postData, true);
 
         _tokenIds++;
 
@@ -172,23 +181,32 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         emit NewPost(_postIds, creator, price, postData, metaData);
     }
 
-    function purchasePost(uint256 postId)
+    function purchasePost(uint256 postId, address _tokenAddress)
         external
         payable
         postExist(postId)
         nonReentrant()
     {
-        Post storage post = _posts[postId];
+        if (_tokenAddress == 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE) { // Ether Address
+            Post storage post = _posts[postId];
 
-        require(msg.value >= post.price, "Bid lower than cost price.");
+            uint256 taxAmount = ((post.price*post.taxrate)/10000);
+            uint256 totalCost = post.price + taxAmount;
+            require(msg.value >= totalCost, "Hestia:Bid lower than total price");
 
-        _safeTransfer(post.owner, msg.sender, _tokenIds, "");
-        approve(address(this), _tokenIds);
-        _asyncTransfer(post.owner, msg.value);
-        address oldOwner = post.owner;
-        _posts[postId].owner = msg.sender;
+            _safeTransfer(post.owner, msg.sender, _tokenIds, "");
+            payable(post.creator).transfer(taxAmount);
+            approve(address(this), _tokenIds);
+            _asyncTransfer(post.owner, post.price);
+            address oldOwner = post.owner;
+            _posts[postId].owner = msg.sender;
 
-        emit PostSold(postId, _tokenIds, oldOwner, msg.sender, msg.value);
+            emit PostSold(postId, _tokenIds, oldOwner, msg.sender, post.price);
+            emit TaxPayed(postId,  msg.sender, taxAmount);
+        }
+        else {
+            // TODO: Chainlink fullfiller
+        }
     }
 
     function updatePostPrice(uint256 postId, uint256 newPrice)
@@ -198,17 +216,42 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         onlyPostOwner(postId, msg.sender)
         nonReentrant()
     {
-        require(msg.value > 0,  "Price cannot be 0.");
+        require(newPrice > 0,  "Hestia:Price cannot be 0.");
         uint256 oldprice = _posts[postId].price;
         _posts[postId].price = newPrice;
 
         emit PostPriceUpdate(postId, msg.sender, oldprice, newPrice);
     }
 
+    // Important so that funds do not get locked
+    // for addresses that cannot receive ETH.
     function getPayments() external {
         withdrawPayments(msg.sender);
     }
 
+    function payTaxes(uint256 postId, address _tokenAddress)
+        external
+        payable
+        postExist(postId)
+        onlyPostOwner(postId, msg.sender)
+        nonReentrant()
+    {
+        require(block.timestamp - _posts[postId].lastTaxCollected >= taxDuration);
+        if (_tokenAddress == 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE) { // Ether Address
+
+            Post storage post = _posts[postId];
+
+            uint256 taxAmount = ((post.price*post.taxrate)/10000);
+            require(msg.value >= taxAmount, "Hestia:Insufficient taxAmount.");
+            payable(post.creator).transfer(taxAmount);
+
+            _posts[postId].lastTaxCollected = block.timestamp;
+            emit TaxPayed(postId, msg.sender, taxAmount);
+        }
+        else {
+
+        }
+    }
 
     // function _beforeTokenTransfer(
     //   address /*from*/,
@@ -238,8 +281,8 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
             )
         );
 
-        require(liker != address(0), "invalid-address-0");
-        require(liker == ecrecover(digest, v, r, s), "invalid-signatures");
+        require(liker != address(0), "Hestia:invalid-address-0");
+        require(liker == ecrecover(digest, v, r, s), "Hestia:invalid-signatures");
 
         emit PostLike(postId, liker);
     }
