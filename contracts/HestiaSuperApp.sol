@@ -15,11 +15,6 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/payment/PullPayment.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-
-interface IAPIConsumer {
-    function getPrice() external view returns(uint256);
-}
-
 contract HestiaMeta {
     struct EIP712Domain {
         string name;
@@ -43,7 +38,6 @@ contract HestiaMeta {
     		80001,
     		address(this)
     ));
-
 }
 
 contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, RedirectAll*/ {
@@ -51,9 +45,9 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
     uint256 public _tokenIds;
     uint256 public _postIds;
     mapping(uint256 => Post) public _posts;
+    mapping(uint256 => mapping(address => bool) ) public _postLikedByAddress;
 
-    IAPIConsumer api;
-
+    address ETH_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
     uint256 taxDuration = 0 seconds;
 
     struct Post {
@@ -95,7 +89,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         uint256 _newPrice
     );
 
-    event PostLike(
+    event PostLiked(
         uint256 indexed _postId,
         address indexed _user
     );
@@ -105,7 +99,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
       ERC721("Hestia", "HESTIA")
     //   RedirectAll(host,cfa,acceptedToken,msg.sender)
     {
-        api = IAPIConsumer(0x94f0f5F1303BAFb4FdA90301D8CEf3320D7b52a8);
+
     }
 
     modifier postExist(uint256 id) {
@@ -116,10 +110,6 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
     modifier onlyPostOwner(uint256 id, address _address) {
         require(_posts[id].creator == _address, "Hestia:Not your post.");
         _;
-    }
-
-    function consumePrice() public view returns(uint256){
-        return api.getPrice();
     }
 
     function createPost(
@@ -187,7 +177,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         postExist(postId)
         nonReentrant()
     {
-        if (_tokenAddress == 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE) { // Ether Address
+        if (_tokenAddress == ETH_ADDRESS) {
             Post storage post = _posts[postId];
 
             uint256 taxAmount = ((post.price*post.taxrate)/10000);
@@ -237,7 +227,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         nonReentrant()
     {
         require(block.timestamp - _posts[postId].lastTaxCollected >= taxDuration);
-        if (_tokenAddress == 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE) { // Ether Address
+        if (_tokenAddress == ETH_ADDRESS) {
 
             Post storage post = _posts[postId];
 
@@ -262,10 +252,11 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
     // }
 
 
-    function likePost (
+    function likePostMeta(
         uint256 postId, address liker,
         bytes32 r, bytes32 s, uint8 v
     )
+        postExist(postId)
         public
     {
         MetaTransaction memory metaTx = MetaTransaction({
@@ -284,6 +275,17 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         require(liker != address(0), "Hestia:invalid-address-0");
         require(liker == ecrecover(digest, v, r, s), "Hestia:invalid-signatures");
 
-        emit PostLike(postId, liker);
+        require(_postLikedByAddress[postId][liker] == false, "Hestia:Post already liked by address.");
+        _postLikedByAddress[postId][liker] = true;
+        emit PostLiked(postId, liker);
+    }
+
+    function likePost(uint256 postId)
+        postExist(postId)
+        public
+    {
+        require(_postLikedByAddress[postId][msg.sender] == false, "Hestia:Post already liked by address.");
+        _postLikedByAddress[postId][msg.sender] = true;
+        emit PostLiked(postId, msg.sender);
     }
 }

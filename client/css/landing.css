@@ -226,7 +226,7 @@ main:before {
 .content {
 	margin: 0;
 	font-size: 1.15rem;
-	font-size: clamp(1rem, 2vh, 3rem);
+	font-size: clamp(2rem, 2vh, 3rem);
 	grid-area: content;
 	padding: 2rem 0
 }

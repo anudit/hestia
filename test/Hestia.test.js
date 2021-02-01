@@ -1,5 +1,6 @@
 const bs58 = require('bs58')
 const { expect } = require("chai");
+const hre = require("hardhat");
 
 function getBytes32FromIpfsHash(ipfsListing) {
   return "0x" + bs58.decode(ipfsListing).slice(2).toString('hex')
@@ -14,7 +15,7 @@ function getIpfsHashFromBytes32(bytes32Hex) {
 
 describe("Hestia", accounts => {
 
-    let hestia;
+    let hestia, hestiaCreator, dai;
     let owner, alice, bob, addrs;
 
     beforeEach(async function () {
@@ -25,6 +26,9 @@ describe("Hestia", accounts => {
 
         const HestiaCreator = await ethers.getContractFactory("HestiaCreator");
         hestiaCreator = await HestiaCreator.deploy();
+
+        const Dai = await ethers.getContractFactory("Dai");
+        dai = await Dai.deploy(hre.network.config.chainId);
     });
 
 
@@ -119,6 +123,24 @@ describe("Hestia", accounts => {
 
             let pData = await hestia._posts('1');
             expect(pData['lastTaxCollected']).lt(Date.now()*1000);
+
+        });
+
+        it("Should like a post", async () => {
+
+            let price = ethers.utils.parseEther('1');
+            let taxRate = 500; //5%
+
+            await hestia.createPost(
+                price,
+                (taxRate).toString(),
+                "This is the Post Title",
+                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+            );
+
+            await hestia.likePost('1');
+
+            expect(await hestia._postLikedByAddress('1', owner.address)).to.eq(true);
 
         });
     });
