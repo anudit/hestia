@@ -14,6 +14,15 @@ import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from ".
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/payment/PullPayment.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@chainlink/contracts/v0.7/ChainlinkClient.sol";
+import "./StringUtils.sol";
+
+interface IERC20 {
+    function balanceOf(address account) external view returns (uint256);
+    function transfer(address recipient, uint256 amount) external returns (bool);
+    function allowance(address owner, address spender) external view returns (uint256);
+    function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
+}
 
 contract HestiaMeta {
     struct EIP712Domain {
@@ -40,7 +49,37 @@ contract HestiaMeta {
     ));
 }
 
-contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, RedirectAll*/ {
+contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, ChainlinkClient, StringUtils/*, RedirectAll*/ {
+
+    address owner;
+
+    //===================================
+    // Chainlink Stuff
+    //===================================
+
+    using Chainlink for Chainlink.Request;
+
+    struct TransferFulfill {
+        uint256 postId;
+        address from;
+        address tokenAddress;
+        bool isComplete;
+    }
+
+    bytes32[] public requestIdList; // Debugging, can be removed.
+    string[] public requestApiList; // Debugging, can be removed.
+
+    bytes32 private jobId;
+    uint256 private fee;
+
+    mapping(bytes32 => address) public tokensAllowed;
+    mapping(bytes32 => TransferFulfill) public TokenTransferRecords;
+
+    event RequestFulfilled(bytes32 indexed requestId, uint256 indexed price);
+
+    //===================================
+    // Hestia Stuff
+    //===================================
 
     uint256 public _tokenIds;
     uint256 public _postIds;
@@ -94,12 +133,17 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         address indexed _user
     );
 
-    // 0x94f0f5F1303BAFb4FdA90301D8CEf3320D7b52a8 on matic mumbai
     constructor(/*ISuperfluid host,IConstantFlowAgreementV1 cfa,ISuperToken acceptedToken*/)
       ERC721("Hestia", "HESTIA")
     //   RedirectAll(host,cfa,acceptedToken,msg.sender)
     {
+        owner = msg.sender;
+        setChainlinkOracle(0xBf87377162512f8098f78f055DFD2aDAc34cbB47);
+        setChainlinkToken(0x70d1F773A9f81C852087B77F6Ae6d3032B02D2AB);
+        jobId = "6b57e3fe0d904ba48d137b39350c7892";
+        fee = 0.01 * (10 ** 18); // 0.01 LINK
 
+        addNewToken(0x4554480000000000000000000000000000000000000000000000000000000000, ETH_ADDRESS);
     }
 
     modifier postExist(uint256 id) {
@@ -110,6 +154,17 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
     modifier onlyPostOwner(uint256 id, address _address) {
         require(_posts[id].creator == _address, "Hestia:Not your post.");
         _;
+    }
+
+    function addNewToken(bytes32 _tokenSymbol, address _tokenAddress) public {
+        require(msg.sender == owner);
+        tokensAllowed[_tokenSymbol] = _tokenAddress;
+    }
+
+    function withdrawLink() public {
+        require(msg.sender == owner);
+        LinkTokenInterface _link = LinkTokenInterface(chainlinkTokenAddress());
+        require(_link.transfer(msg.sender, _link.balanceOf(address(this))), "Unable to transfer");
     }
 
     function createPost(
@@ -171,17 +226,20 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
         emit NewPost(_postIds, creator, price, postData, metaData);
     }
 
-    function purchasePost(uint256 postId, address _tokenAddress)
+    function purchasePost(uint256 postId, bytes32 _tokenSymbol)
         external
         payable
         postExist(postId)
         nonReentrant()
     {
-        if (_tokenAddress == ETH_ADDRESS) {
-            Post storage post = _posts[postId];
+        require(tokensAllowed[_tokenSymbol] != 0x0000000000000000000000000000000000000000); //Token must be allowed.
 
-            uint256 taxAmount = ((post.price*post.taxrate)/10000);
-            uint256 totalCost = post.price + taxAmount;
+        Post storage post = _posts[postId];
+        uint256 taxAmount = ((post.price*post.taxrate)/10000);
+        uint256 totalCost = post.price + taxAmount;
+
+        if (_tokenSymbol == 0x4554480000000000000000000000000000000000000000000000000000000000) { //formatBytes32String("ETH")
+
             require(msg.value >= totalCost, "Hestia:Bid lower than total price");
 
             _safeTransfer(post.owner, msg.sender, _tokenIds, "");
@@ -195,8 +253,51 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta /*, 
             emit TaxPayed(postId,  msg.sender, taxAmount);
         }
         else {
-            // TODO: Chainlink fullfiller
+
+            Chainlink.Request memory request = buildChainlinkRequest(jobId, address(this), this.fulfill.selector);
+
+            string memory reqApiAddress =string(abi.encodePacked(
+                "https://api.1inch.exchange/v2.0/quote?fromTokenAddress=0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee&toTokenAddress=",
+                address2str(tokensAllowed[_tokenSymbol]),
+                "&amount=",
+                uint2str(totalCost))
+            );
+
+            requestApiList.push(reqApiAddress);
+            request.add("get", reqApiAddress);
+
+            string[] memory path = new string[](1);
+            path[0] = "toTokenAmount";
+            request.addStringArray("path", path);
+
+            // request.addInt("times", 1000000000000000000); // Price already in wei
+
+            bytes32 requestId = sendChainlinkRequest(request, fee);
+            requestIdList.push(requestId);
+            TokenTransferRecords[requestId] = TransferFulfill(postId, msg.sender, tokensAllowed[_tokenSymbol], false);
         }
+    }
+
+    function fulfill(bytes32 _requestId, uint256 _price) public recordChainlinkFulfillment(_requestId) {
+        emit RequestFulfilled(_requestId, _price);
+
+        require(TokenTransferRecords[_requestId].isComplete == false);
+
+        TransferFulfill memory record = TokenTransferRecords[_requestId];
+        IERC20 token = IERC20(record.tokenAddress);
+
+        require(token.allowance(record.from, address(this)) >= _price, "Hestia:Insufficient allowance to pay owner");
+        require(token.transferFrom(record.from, _posts[record.postId].owner, _price), "Hestia:Unable to transfer amount to owner");
+        TokenTransferRecords[_requestId].isComplete = true;
+
+        Post storage post = _posts[record.postId];
+        uint256 taxAmount = ((post.price*post.taxrate)/10000);
+
+        address oldOwner = post.owner;
+        _posts[record.postId].owner = record.from;
+
+        emit PostSold(record.postId, _tokenIds, oldOwner, record.from, post.price);
+        emit TaxPayed(record.postId, record.from, taxAmount);
     }
 
     function updatePostPrice(uint256 postId, uint256 newPrice)

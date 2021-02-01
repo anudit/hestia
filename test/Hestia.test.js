@@ -55,7 +55,7 @@ describe("Hestia", accounts => {
 
         });
 
-        it("Should purchase Post", async () => {
+        it("Should purchase Post in ETH", async () => {
 
             let price = ethers.utils.parseEther('1');
             let taxRate = 500; //5%
@@ -71,7 +71,7 @@ describe("Hestia", accounts => {
             let totalCost = price.add(taxAmount);
 
             await hestia.connect(alice).purchasePost(
-                '1',"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
+                '1',ethers.utils.formatBytes32String('ETH'),
                 {value:totalCost}
             );
 
@@ -81,6 +81,27 @@ describe("Hestia", accounts => {
             expect(await hestia.balanceOf(alice.address)).to.equal('1');
             let pData = await hestia._posts('1');
             expect(pData['owner']).to.equal(alice.address);
+        });
+
+        it("Should purchase Post in DAI", async () => {
+
+            let price = ethers.utils.parseEther('1');
+            let taxRate = 500; //5%
+
+            await hestia.createPost(
+                price,
+                (taxRate).toString(),
+                "This is the Post Title",
+                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+            );
+
+            let taxAmount = price.mul(taxRate).div(10000);
+            let totalCost = price.add(taxAmount);
+
+            await hestia.addNewToken(
+                ethers.utils.formatBytes32String('DAI'), dai.address
+            );
+
         });
 
         it("Should update Post price", async () => {
