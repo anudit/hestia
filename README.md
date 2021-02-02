@@ -11,6 +11,7 @@ NFT owners are incentivized to set a low price to minimize the amount taxes they
 
 Because of these opposing pressures, NFT owners can’t set impossibly high prices nor refuse reasonably priced offers. This creates a more efficient and equitable market. Additionaly, it provides Creators on Hestia with a continous revenue stream with the taxes payed by the owners.
 
+
 **In conjuction with the economical model Hestia offers,**
 
 ⚡ Lightning fast transactions powered Matic Network.
@@ -19,15 +20,27 @@ Because of these opposing pressures, NFT owners can’t set impossibly high pric
 
 🌊 Seamless streaming of annual taxes powered by Superfluid SuperApp contracts and streams.
 
-🔗 Receive payments in any token with external API calls powered by Chainlink Oracles.
+🔗 Send and Receive payments in any token with external API calls powered by Chainlink Oracles and,
 
 💱 Realtime cryptocurrency spot exchange rates for our Smart Contracts and Frontend powered by 1Inch Exchange API.
 
 🌐 Seamless logins without any additional requirements powered by Portis.
 
-📊 Realtime data of contract state powered by The Graph Protocol.
+📊 Realtime data of contract state powered by Covalent.
 
+🔀 Intercompatible with Binance Chain, fetching data from Bitquery.
 
+### Contract Releases
+
+Matic Mumbai Testnet:
+- HestiaSuperApp:  [0x7BD9Bfb724F3Ffdf07051Ac98745A65f2195A996](https://explorer-mumbai.maticvigil.com/address/0x7BD9Bfb724F3Ffdf07051Ac98745A65f2195A996)
+- HestiaCreator:  [0xD5c97af404a3e1f3f37CD02F9ca4FF1668d42C79](https://explorer-mumbai.maticvigil.com/address/0xD5c97af404a3e1f3f37CD02F9ca4FF1668d42C79)
+- Dai:  [0x17D86BB9c545f7ccf515F516E45516B325709954](https://explorer-mumbai.maticvigil.com/address/0x17D86BB9c545f7ccf515F516E45516B325709954)
+
+Binance Smart Chain Testnet:
+- HestiaSuperApp:  [0xdA3E7659E0856bA742BDB908F7A34E4C257e6963](https://testnet.bscscan.com/address/0xdA3E7659E0856bA742BDB908F7A34E4C257e6963)
+- HestiaCreator:  [0xeBA07153Eb1Bd9aC977E4Ac7aCebe6a11b59C835](https://testnet.bscscan.com/address/0xeBA07153Eb1Bd9aC977E4Ac7aCebe6a11b59C835)
+- Dai:  [0xc558fBe93A378aF861aF81490cc99334c6c75e86](https://testnet.bscscan.com/address/0xc558fBe93A378aF861aF81490cc99334c6c75e86)
 
 ### Active Deployemnts
 - [hestia.anudit.dev](https://hestia.anudit.dev)

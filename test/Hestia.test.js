@@ -122,7 +122,6 @@ describe("Hestia", accounts => {
 
         });
 
-
         it("Should pay Taxes on Post", async () => {
 
             let price = ethers.utils.parseEther('1');
@@ -137,10 +136,7 @@ describe("Hestia", accounts => {
 
             let taxAmount = price.mul(taxRate).div(10000);
 
-            await hestia.payTaxes(
-                '1',"0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-                {value:taxAmount}
-            );
+            await hestia.payTaxes('1', {value:taxAmount});
 
             let pData = await hestia._posts('1');
             expect(pData['lastTaxCollected']).lt(Date.now()*1000);

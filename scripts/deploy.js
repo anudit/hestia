@@ -35,9 +35,13 @@ async function main() {
    const hestia = await HestiaSuperApp.deploy();
    const HestiaCreator = await ethers.getContractFactory("HestiaCreator");
    const hestiaCreator = await HestiaCreator.deploy();
+   const Dai = await ethers.getContractFactory("Dai");
+   const dai = await Dai.deploy(hre.network.config.chainId);
+hestia.addNewToken(ethers.utils.formatBytes32String('DAI'), dai.address);
 
    console.log("HestiaSuperApp: ", hestia.address);
-   console.log("HestiaCreator: ", hestiaCreator.address)
+   console.log("HestiaCreator: ", hestiaCreator.address);
+   console.log("Dai: ", dai.address);
 }
 
 main()

@@ -1,5 +1,5 @@
 {
-  "name": "saarthi-contracts",
+  "name": "hestia",
   "version": "1.0.0",
   "description": "",
   "scripts": {
@@ -9,18 +9,19 @@
     "deploy:goerli": "npx hardhat run scripts/deploy.js --network goerli",
     "deploy:bsc": "npx hardhat run scripts/deploy.js --network bsc",
     "test": "npx hardhat test",
+    "flatten": "npx hardhat flatten ./contracts/HestiaSuperApp.sol > flat.sol",
     "test:prod": "npx hardhat test --network matic"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/aapkasaarthi/contracts.git"
+    "url": "git+https://github.com/hestia/contracts.git"
   },
   "author": "Anudit Nagar",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/aapkasaarthi/contracts/issues"
+    "url": "https://github.com/hestia/contracts/issues"
   },
-  "homepage": "https://github.com/aapkasaarthi/contracts#readme",
+  "homepage": "https://github.com/hestia/contracts#readme",
   "dependencies": {
     "@chainlink/contracts": "^0.1.4",
     "@nomiclabs/hardhat-ethers": "^2.0.1",
@@ -35,6 +36,8 @@
     "ethereum-waffle": "^3.2.2",
     "ethers": "^5.0.26",
     "hardhat": "^2.0.8",
+    "hardhat-abi-exporter": "^2.0.8",
+    "hardhat-contract-sizer": "^2.0.2",
     "hardhat-gas-reporter": "^1.0.4"
   },
   "devDependencies": {

@@ -10,16 +10,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.6 <0.8.0;
 
-import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
+// import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/payment/PullPayment.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@chainlink/contracts/v0.7/ChainlinkClient.sol";
 import "./StringUtils.sol";
 
 interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
-    function transfer(address recipient, uint256 amount) external returns (bool);
     function allowance(address owner, address spender) external view returns (uint256);
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
 }
@@ -49,7 +46,7 @@ contract HestiaMeta {
     ));
 }
 
-contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, ChainlinkClient, StringUtils/*, RedirectAll*/ {
+contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, RedirectAll*/ {
 
     address owner;
 
@@ -66,8 +63,8 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
         bool isComplete;
     }
 
-    bytes32[] public requestIdList; // Debugging, can be removed.
-    string[] public requestApiList; // Debugging, can be removed.
+    // bytes32[] public requestIdList; // Debugging, can be removed.
+    // string[] public requestApiList; // Debugging, can be removed.
 
     bytes32 private jobId;
     uint256 private fee;
@@ -87,7 +84,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
     mapping(uint256 => mapping(address => bool) ) public _postLikedByAddress;
 
     address ETH_ADDRESS = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE;
-    uint256 taxDuration = 0 seconds;
+    uint256 taxDuration = 0 seconds; // Debugging should be increased to 365 years.
 
     struct Post {
         address creator;
@@ -168,12 +165,9 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
     }
 
     function createPost(
-        uint256 price,
-        uint256 taxrate,
-        string memory postData,
-        bytes32 metaData
+        uint256 price, uint256 taxrate, string memory postData, bytes32 metaData
     )
-        public nonReentrant()
+        public
     {
         require(price > 0, "Hestia:Price cannot be 0");
         handleCreatePost(price, taxrate, postData, metaData, msg.sender);
@@ -184,7 +178,6 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
         address creator, bytes32 r, bytes32 s, uint8 v
     )
         public
-        nonReentrant()
     {
         require(price > 0, "Hestia:Price cannot be 0");
 
@@ -208,9 +201,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
     }
 
     function handleCreatePost(uint256 price, uint256 taxrate,
-        string memory postData,
-        bytes32 metaData,
-        address creator
+        string memory postData, bytes32 metaData, address creator
     )
         internal
     {
@@ -230,7 +221,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
         external
         payable
         postExist(postId)
-        nonReentrant()
+
     {
         require(tokensAllowed[_tokenSymbol] != 0x0000000000000000000000000000000000000000); //Token must be allowed.
 
@@ -245,7 +236,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
             _safeTransfer(post.owner, msg.sender, _tokenIds, "");
             payable(post.creator).transfer(taxAmount);
             approve(address(this), _tokenIds);
-            _asyncTransfer(post.owner, post.price);
+            payable(post.owner).transfer(post.price);
             address oldOwner = post.owner;
             _posts[postId].owner = msg.sender;
 
@@ -263,7 +254,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
                 uint2str(totalCost))
             );
 
-            requestApiList.push(reqApiAddress);
+            // requestApiList.push(reqApiAddress);
             request.add("get", reqApiAddress);
 
             string[] memory path = new string[](1);
@@ -273,7 +264,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
             // request.addInt("times", 1000000000000000000); // Price already in wei
 
             bytes32 requestId = sendChainlinkRequest(request, fee);
-            requestIdList.push(requestId);
+            // requestIdList.push(requestId);
             TokenTransferRecords[requestId] = TransferFulfill(postId, msg.sender, tokensAllowed[_tokenSymbol], false);
         }
     }
@@ -305,7 +296,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
         payable
         postExist(postId)
         onlyPostOwner(postId, msg.sender)
-        nonReentrant()
+
     {
         require(newPrice > 0,  "Hestia:Price cannot be 0.");
         uint256 oldprice = _posts[postId].price;
@@ -314,34 +305,22 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
         emit PostPriceUpdate(postId, msg.sender, oldprice, newPrice);
     }
 
-    // Important so that funds do not get locked
-    // for addresses that cannot receive ETH.
-    function getPayments() external {
-        withdrawPayments(msg.sender);
-    }
-
-    function payTaxes(uint256 postId, address _tokenAddress)
+    function payTaxes(uint256 postId)
         external
         payable
         postExist(postId)
         onlyPostOwner(postId, msg.sender)
-        nonReentrant()
+
     {
         require(block.timestamp - _posts[postId].lastTaxCollected >= taxDuration);
-        if (_tokenAddress == ETH_ADDRESS) {
+        Post storage post = _posts[postId];
 
-            Post storage post = _posts[postId];
+        uint256 taxAmount = ((post.price*post.taxrate)/10000);
+        require(msg.value >= taxAmount, "Hestia:Insufficient taxAmount.");
+        payable(post.creator).transfer(taxAmount);
 
-            uint256 taxAmount = ((post.price*post.taxrate)/10000);
-            require(msg.value >= taxAmount, "Hestia:Insufficient taxAmount.");
-            payable(post.creator).transfer(taxAmount);
-
-            _posts[postId].lastTaxCollected = block.timestamp;
-            emit TaxPayed(postId, msg.sender, taxAmount);
-        }
-        else {
-
-        }
+        _posts[postId].lastTaxCollected = block.timestamp;
+        emit TaxPayed(postId, msg.sender, taxAmount);
     }
 
     // function _beforeTokenTransfer(
@@ -351,7 +330,6 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
     // ) internal override {
     //     _changeReceiver(to);
     // }
-
 
     function likePostMeta(
         uint256 postId, address liker,
@@ -375,10 +353,7 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
 
         require(liker != address(0), "Hestia:invalid-address-0");
         require(liker == ecrecover(digest, v, r, s), "Hestia:invalid-signatures");
-
-        require(_postLikedByAddress[postId][liker] == false, "Hestia:Post already liked by address.");
-        _postLikedByAddress[postId][liker] = true;
-        emit PostLiked(postId, liker);
+        _handleLikePost(postId, liker);
     }
 
     function likePost(uint256 postId)
@@ -386,7 +361,11 @@ contract HestiaSuperApp is ERC721, PullPayment, ReentrancyGuard, HestiaMeta, Cha
         public
     {
         require(_postLikedByAddress[postId][msg.sender] == false, "Hestia:Post already liked by address.");
-        _postLikedByAddress[postId][msg.sender] = true;
-        emit PostLiked(postId, msg.sender);
+        _handleLikePost(postId, msg.sender);
+    }
+
+    function _handleLikePost(uint256 postId, address liker) internal {
+        _postLikedByAddress[postId][liker] = true;
+        emit PostLiked(postId, liker);
     }
 }

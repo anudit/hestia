@@ -1,5 +1,7 @@
 require("@nomiclabs/hardhat-waffle");
 require("@nomiclabs/hardhat-etherscan");
+require('hardhat-abi-exporter');
+// require('hardhat-contract-sizer');
 // require("hardhat-gas-reporter");
 require('dotenv').config()
 
@@ -16,16 +18,21 @@ const infuraNetwork = (network, chainId, gas) => {
 
 module.exports = {
   solidity: {
-    version: "0.7.6",
-    settings: {
-      optimizer: {
-        runs: 999999,
-        enabled: true
+    compilers: [
+      {
+        version: "0.7.6",
+        settings: {
+          optimizer: {
+            runs: 999999,
+            enabled: true
+          }
+        }
       }
-    }
+    ]
   },
   networks: {
     hardhat: {
+      saveDeployments: true,
       accounts: mnemonic ? { mnemonic } : undefined
     },
     rinkeby: infuraNetwork("rinkeby", 4, 6283185),
@@ -49,6 +56,17 @@ module.exports = {
     currency: 'USD',
     gasPrice: 1,
     coinmarketcap: process.env.CMC_APIKEY
+  },
+  abiExporter: {
+    path: './abi',
+    clear: true,
+    flat: true,
+    only: ['HestiaSuperApp', 'HestiaCreator', 'Dai'],
+  },
+  contractSizer: {
+    alphaSort: true,
+    runOnCompile: true,
+    disambiguatePaths: false,
   }
 };
 
