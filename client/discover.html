@@ -1,80 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Hestia</title>
+		<meta name="description" content="Hestia" />
+		<meta name="keywords" content="A one-stop shop to Create, Sell and Showcase your Artwork aiming to democratize the control and pricing of assets by Harberger Taxes." />
+		<meta name="author" content="Anudit Nagar" />
+		<link rel="stylesheet" type="text/css" href="css/base.css" />
+		<script>
+		document.documentElement.className = "js";
+		var supportsCssVars = function() { var e, t = document.createElement("style"); return t.innerHTML = "root: { --tmp-var: bold; }", document.head.appendChild(t), e = !!(window.CSS && window.CSS.supports && window.CSS.supports("font-weight", "var(--tmp-var)")), t.parentNode.removeChild(t), e };
+		supportsCssVars() || alert("Please view this demo in a modern browser that supports CSS Variables.");
+		</script>
+	</head>
+	<body class="loading">
+		<svg class="hidden">
+			<symbol id="icon-arrow" viewBox="0 0 24 24">
+				<title>arrow</title>
+				<polygon points="6.3,12.8 20.9,12.8 20.9,11.2 6.3,11.2 10.2,7.2 9,6 3.1,12 9,18 10.2,16.8 " />
+			</symbol>
+			<symbol id="icon-drop" viewBox="0 0 24 24">
+				<title>drop</title>
+				<path d="M12,21c-3.6,0-6.6-3-6.6-6.6C5.4,11,10.8,4,11.4,3.2C11.6,3.1,11.8,3,12,3s0.4,0.1,0.6,0.3c0.6,0.8,6.1,7.8,6.1,11.2C18.6,18.1,15.6,21,12,21zM12,4.8c-1.8,2.4-5.2,7.4-5.2,9.6c0,2.9,2.3,5.2,5.2,5.2s5.2-2.3,5.2-5.2C17.2,12.2,13.8,7.3,12,4.8z" />
+				<path d="M12,18.2c-0.4,0-0.7-0.3-0.7-0.7s0.3-0.7,0.7-0.7c1.3,0,2.4-1.1,2.4-2.4c0-0.4,0.3-0.7,0.7-0.7c0.4,0,0.7,0.3,0.7,0.7C15.8,16.5,14.1,18.2,12,18.2z" />
+			</symbol>
+			<symbol id="icon-longarrow" viewBox="0 0 54 24">
+				<title>longarrow</title>
+				<path d="M.42 11.158L12.38.256c.333-.27.696-.322 1.09-.155.395.166.593.467.593.903v6.977h38.87c.29 0 .53.093.716.28.187.187.28.426.28.716v5.98c0 .29-.093.53-.28.716a.971.971 0 0 1-.716.28h-38.87v6.977c0 .416-.199.717-.592.903-.395.167-.759.104-1.09-.186L.42 12.62a1.018 1.018 0 0 1 0-1.462z" />
+			</symbol>
+			<symbol id="icon-navarrow" viewBox="0 0 408 408">
+				<title>navarrow</title>
+				<polygon fill="#fff" fill-rule="nonzero" points="204 0 168.3 35.7 311.1 178.5 0 178.5 0 229.5 311.1 229.5 168.3 372.3 204 408 408 204"></polygon>
+			</symbol>
+		</svg>
+		<main id ="setup">
+			<div class="frame">
+				<header class="hestia-header">
+					<h1 class="hestia-header__title">Hestia</h1>
+					<div class="hestia-links">
+						<a class="github" href="https://github.com/anudit/hestia">Create</a>
+						<a class="hestia-icon hestia-icon--prev" href="#" title="">
+							<svg class="icon icon--arrow">
+								<use xlink:href="#icon-arrow"></use>
+							</svg>
+						</a>
+						<!-- <a class="hestia-icon hestia-icon--drop" href="#" title="">
+							<svg class="icon icon--drop">
+								<use xlink:href="#icon-drop"></use>
+							</svg>
+						</a> -->
+					</div>
+				</header>
+			</div>
+			<div class="slideshow">
+				<div class="slideshow__deco"></div>
+				<button class="nav nav--prev">
+					<svg class="icon icon--navarrow-prev">
+						<use xlink:href="#icon-navarrow"></use>
+					</svg>
+				</button>
+				<button class="nav nav--next">
+					<svg class="icon icon--navarrow-next">
+						<use xlink:href="#icon-navarrow"></use>
+					</svg>
+				</button>
+			</div>
+			<div class="content">
 
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hestia</title>
-    <meta name="author" content="Anudit Nagar">
-    <link rel="stylesheet" href="css/styles.css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
-</head>
+			</div>
+		</main>
+		<script src="./js/lib/imagesloaded.pkgd.min.js"></script>
+		<script src="./js/lib/charming.min.js"></script>
+		<script src="./js/lib/TweenMax.min.js"></script>
 
-<body class="home">
-    <div class="wrapper">
+		<script src="./js/lib/mexa@1.5.15.js"></script>
+		<script src="./js/lib/ethers@5.0.28.min.js"></script>
 
-        <!-- menu -->
-        <nav class="menu">
-            <div class="menu__logo">
-                <a href="./index.html">Hestia</a>
-            </div>
-            <div class="menu__items">
-                <div class="menu__items-link active"><a href="./discover.html">Discover</a></div>
-                <div class="menu__items-link"><a href="./about.html">About</a></div>
-            </div>
-        </nav>
+		<script src="./js/lib/buffer@5.2.1.js"></script>
+		<script src="./js/lib/bs58.bundle.js"></script>
 
-        <!-- horizontal scroll items -->
-        <div class="container">
-            <div class="container__item container__item-header">
-                <h1>Discover Artists</h1>
-                <span>Scroll
-                    <svg style="padding-left:10px;margin-top:10px;position: absolute;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                        <path fill="#fff" d="M21.883 12l-7.527 6.235.644.765 9-7.521-9-7.479-.645.764 7.529 6.236h-21.884v1h21.883z"/>
-                    </svg>
-                </span>
-            </div>
-
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Asterisks</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Unlocked</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Offbeat</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Brutal</a>
-                </h1>
-            </div>
-            <div class="container__item" style="background: url(../images/img-three.jpeg) no-repeat 50% 50%;background-size: cover;">
-                <h1 class="container__item-title">
-                    <a href="project.html">Mouthwash</a>
-                </h1>
-            </div>
-        </div>
-
-    </div>
-
-    <script src="js/horizontal-scroll.js"></script>
-    <script>
-        var blocks = document.getElementsByClassName("container__item");
-        var container = document.getElementsByClassName("container");
-        var hs = new HorizontalScroll.default({
-            blocks: blocks,
-            container: container,
-            isAnimated: true,
-            springEffect: 0.8,
-        });
-    </script>
-</body>
-
+		<script src="./js/globals.js"></script>
+		<script src="./js/discover-ui.js"></script>
+		<script src="./js/discover.js"></script>
+		<script src="./js/index.js"></script>
+	</body>
 </html>

@@ -8,6 +8,7 @@
     "deploy:matic": "npx hardhat run scripts/deploy.js --network matic",
     "deploy:goerli": "npx hardhat run scripts/deploy.js --network goerli",
     "deploy:bsc": "npx hardhat run scripts/deploy.js --network bsc",
+    "client": "static-server ./client -p 80",
     "test": "npx hardhat test",
     "flatten": "npx hardhat flatten ./contracts/HestiaSuperApp.sol > flat.sol",
     "test:prod": "npx hardhat test --network matic"

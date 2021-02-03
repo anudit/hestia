@@ -39,7 +39,7 @@ module.exports = {
     kovan: infuraNetwork("kovan", 42, 6283185),
     goerli: infuraNetwork("goerli", 5, 6283185),
     matic: {
-      url: "https://rpc-mumbai.matic.today",
+      url: "https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86",
       chainId: 80001,
       accounts: mnemonic ? { mnemonic } : undefined
     },

@@ -1,6 +1,18 @@
 const hre = require("hardhat");
 const SuperfluidSDK = require("@superfluid-finance/js-sdk");
 const { ethers } = require("hardhat");
+const bs58 = require('bs58')
+
+function getBytes32FromIpfsHash(ipfsListing) {
+    return "0x" + bs58.decode(ipfsListing).slice(2).toString('hex')
+  }
+
+  function getIpfsHashFromBytes32(bytes32Hex) {
+    const hashHex = "1220" + bytes32Hex.slice(2)
+    const hashBytes = Buffer.from(hashHex, 'hex');
+    const hashStr = bs58.encode(hashBytes)
+    return hashStr
+  }
 
 async function main() {
 
@@ -37,7 +49,51 @@ async function main() {
    const hestiaCreator = await HestiaCreator.deploy();
    const Dai = await ethers.getContractFactory("Dai");
    const dai = await Dai.deploy(hre.network.config.chainId);
-hestia.addNewToken(ethers.utils.formatBytes32String('DAI'), dai.address);
+   await hestia.addNewToken(ethers.utils.formatBytes32String('DAI'), dai.address);
+   await hestia.addNewToken(ethers.utils.formatBytes32String('ETH'), '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE');
+
+   let price = ethers.utils.parseEther('1');
+    let taxRate = 500; //5%
+
+    // Birth of an Idea
+    await hestia.createPost(
+        price,
+        (taxRate).toString(),
+        "QmY6VMrktkKLWvUZQwxaBn4zdd19yjeiN3KeUygx3kcRZ3",
+        getBytes32FromIpfsHash('Qmc9vCaihZWEytsSPQMc3Pgs9XUMBPxwoYehdxAEJDMMMM')
+    );
+
+    // Diamond Excellence
+    await hestia.createPost(
+        price,
+        (taxRate).toString(),
+        "QmNcXENu5U4JAeLBkFQVHZ4EopfxR63QNJNv4Lqt49c1dd",
+        getBytes32FromIpfsHash('QmQfeEafnKB2A7i5mKUfE7oQ52VvjQeJtXN8NgtjjDsw6a')
+    );
+
+    // Discover Your Hidden Talent
+    await hestia.createPost(
+        price,
+        (taxRate).toString(),
+        "QmYNpScxujZ6G4VLdXcwgYFo3qMm1kNkEpgSEWTrcXNhTn",
+        getBytes32FromIpfsHash('QmSfLd5bfFBwKymuqyQQ3SGFi8CqqgYDtzrz6hXTJLqkX2')
+    );
+
+    // Íkaros
+    await hestia.createPost(
+        price,
+        (taxRate).toString(),
+        "QmRdTukCCEc4NWrZVfuN1ZTaFNXpxPQcY8pRxDRiq9rk7C",
+        getBytes32FromIpfsHash('QmbwkgeAK1SXcfKnDekvv5SGk1VBD2KKfaUZ57rgZyn68C')
+    );
+
+    // Oddly Satisfying
+    await hestia.createPost(
+        price,
+        (taxRate).toString(),
+        "QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws",
+        getBytes32FromIpfsHash('QmdT6tJk3CrXyQqoBnkMQBWMPom9YCQJru1FzYikcxB3GN')
+    );
 
    console.log("HestiaSuperApp: ", hestia.address);
    console.log("HestiaCreator: ", hestiaCreator.address);
