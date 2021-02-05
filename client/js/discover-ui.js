@@ -577,7 +577,4 @@ function setupBase(){
     // Init slideshow.
     const slideshow = new Slideshow(document.querySelector('.slideshow'));
 
-    // Preload all the images in the page..
-    const loader = document.querySelector('.loader');
-    imagesLoaded(document.querySelectorAll('.slide__img'), {background: true}, () => document.body.classList.remove('loading'));
 }

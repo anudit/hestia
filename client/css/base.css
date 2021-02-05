@@ -379,6 +379,11 @@ a:focus {
 	opacity: 0;
 }
 
+.emp {
+	color: #fff;
+	font-weight: bold;
+}
+
 @media screen and (min-width: 53em) {
 	body {
 		padding: 0;
@@ -462,7 +467,7 @@ a:focus {
 		font-size: 2rem;
 	}
 	.content__title {
-		font-size: 7vw;
+		font-size: 3vw;
 	}
 	.content__subtitle {
 		font-size: 1.15rem;

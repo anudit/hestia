@@ -1,10 +1,20 @@
 let Hestia;
+let customWeb3;
+
+let HestiaWithSigner;
 
 window.addEventListener('load', async () => {
 
-    if (Boolean(window.ethereum) == true){
 
-        ethereum.autoRefreshOnNetworkChange = false;
+    customWeb3 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86');
+    Hestia = new ethers.Contract(hestiaAddress, hestiaAbi, customWeb3.getSigner());
+    init();
+
+});
+
+
+async function requireLogin(){
+    if (Boolean(window.ethereum) == true){
 
         window.accounts = [];
         const biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
@@ -21,13 +31,13 @@ window.addEventListener('load', async () => {
     else {
         console.log('Get web3')
     }
+}
 
-});
+function setupContracts(accounts = []){
 
-function setupContracts(accounts){
-    Hestia = new ethers.Contract(hestiaAddress, hestiaAbi, web3.getSigner());
+    HestiaWithSigner = new ethers.Contract(hestiaAddress, hestiaAbi, web3.getSigner());
     window.accounts = accounts;
-    init();
+
 }
 
 
@@ -154,4 +164,17 @@ const hashHex = "1220" + bytes32Hex.slice(2)
 const hashBytes = buffer.Buffer.from(hashHex, 'hex');
 const hashStr = bs58.encode(hashBytes)
 return hashStr
+}
+
+
+function trimhash(_hash = "", w = 6){
+    return _hash.slice(0, w) +"..."+ _hash.slice(_hash.length-w, _hash.length)
+}
+
+function trimAdd(_addr = ""){
+    return _addr.slice(0, 5) +"..."+ _addr.slice(_addr.length-3, _addr.length)
+}
+
+function openInExplorer(_add = getAddress()){
+    window.open(`${chainExplorers[customWeb3._network.chainId]}/address/${_add}`)
 }

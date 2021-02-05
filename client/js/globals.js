@@ -1000,3 +1000,8 @@ let hestiaAbi = [
 	  "type": "function"
 	}
   ]
+
+  const chainExplorers = {
+	'4':'https://rinkeby.etherscan.io',
+	'80001': 'https://mumbai-explorer.matic.today'
+}

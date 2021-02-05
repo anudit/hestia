@@ -63,9 +63,6 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
         bool isComplete;
     }
 
-    // bytes32[] public requestIdList; // Debugging, can be removed.
-    // string[] public requestApiList; // Debugging, can be removed.
-
     bytes32 private jobId;
     uint256 private fee;
 
@@ -98,10 +95,10 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
 
     event NewPost(
         uint256 indexed _postId,
-        address indexed _seller,
+        address indexed _creator,
         uint256 indexed _price,
         string _postData,
-        bytes32 _metaData
+        string _metaData
     );
 
     event PostSold(
@@ -165,7 +162,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     }
 
     function createPost(
-        uint256 price, uint256 taxrate, string memory postData, bytes32 metaData
+        uint256 price, uint256 taxrate, string memory postData, string memory metaData
     )
         public
     {
@@ -174,7 +171,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     }
 
     function createPostMeta(
-        uint256 price, uint256 taxrate, string memory postData, bytes32 metaData,
+        uint256 price, uint256 taxrate, string memory postData, string memory metaData,
         address creator, bytes32 r, bytes32 s, uint8 v
     )
         public
@@ -201,7 +198,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     }
 
     function handleCreatePost(uint256 price, uint256 taxrate,
-        string memory postData, bytes32 metaData, address creator
+        string memory postData, string memory  metaData, address creator
     )
         internal
     {

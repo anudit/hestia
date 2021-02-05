@@ -1,16 +1,21 @@
 async function init(){
-    await setupUI();
+    setupUI();
 }
 
 async function setupUI() {
 
     getAllNFTs().then(async (nfts)=>{
 
+        let nftMetaDatas = [];
         for (let index = 0; index < nfts.length; index++) {
-            await addSlide(nfts[index]);
+            nftMetaDatas.push(fetchNFTMetaData(getIpfsHashFromBytes32(nfts[index]._metaData)));
+        }
+        const nftMetaDataList = await Promise.all(nftMetaDatas);
+
+        for (let index = 0; index < nfts.length; index++) {
+            addSlide(nfts[index], nftMetaDataList[index]);
         }
 
-    }).then(()=>{
         let eleC = document.querySelector('.content');
         eleC.innerHTML+=`
         <button class="content__close">
@@ -19,26 +24,29 @@ async function setupUI() {
             </svg>
         </button>
         `;
+        document.body.classList.remove('loading');
         setupBase();
+
     });
 }
 
-async function addSlide(nftData) {
+function addSlide(nftData, metaData) {
 
-    let metaData = await fetchNFTMetaData(getIpfsHashFromBytes32(nftData._metaData));
-    console.log(`adding ${metaData.title}`);
+    console.log(nftData, metaData);
+    // let metaData = await fetchNFTMetaData(getIpfsHashFromBytes32(nftData._metaData));
+    // console.log(`adding ${metaData.title}`);
 
     let ele = document.querySelector('.slideshow');
     ele.innerHTML+= `
     <div class="slide">
             <div class="slide__img-wrap">
-                <div class="slide__img" style="background-image: url(https://gateway.pinata.cloud/ipfs/${nftData._postData});"></div>
+                <div class="slide__img" style="background-image: url(https://gateway.pinata.cloud/ipfs/${nftData._postData});" id="load-${nftData._postData}"></div>
             </div>
-            <div class="slide__side">0x00..00</div>
+            <div class="slide__side" onclick="openInExplorer('${nftData[1]}')">Owned by : ${trimAdd(nftData[1])}</div>
             <div class="slide__title-wrap">
-                <span class="slide__number">6</span>
+                <span class="slide__number">#${nftData._postId}</span>
                 <h3 class="slide__title">${metaData.title}</h3>
-                <h4 class="slide__subtitle">${metaData.author}</h4>
+                <h4 class="slide__subtitle emp">${metaData.author}</h4>
             </div>
         </div>
     `;
@@ -46,7 +54,7 @@ async function addSlide(nftData) {
     let eleC = document.querySelector('.content');
     eleC.innerHTML+=`
         <div class="content__item">
-            <span class="content__number">#1</span>
+            <span class="content__number">#${nftData._postId}</span>
             <h3 class="content__title">${metaData.title}</h3>
             <h4 class="content__subtitle">${metaData.author}</h4>
             <div class="content__text">${metaData.description}</div>

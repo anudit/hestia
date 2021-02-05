@@ -1,0 +1,88 @@
+@font-face {
+	font-family: 'Swear Variable';
+	src: url('../../fonts/SwearRomanVariable.woff2') format("woff2-variations");
+	font-style: normal;
+	font-weight: 1 999;
+}
+@font-face {
+	font-family: 'Swear Variable';
+	src: url('../../fonts/SwearItalicVariable.woff2') format("woff2-variations");
+	font-style: italic;
+	font-weight: 1 999;
+}
+*, *:after, *:before { -webkit-box-sizing: border-box; box-sizing: border-box; }
+.clearfix:before, .clearfix:after { content: ''; display: table; }
+.clearfix:after { clear: both; }
+
+html, body, .container {
+	height: 100%;
+}
+
+body {
+	background: #3b3f45;
+	color: #fff;
+	font-weight: 400;
+	font-size: 1em;
+	font-family: 'Swear Variable', 'Times New Roma', serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	overflow: hidden;
+	overflow-y: scroll;
+	min-height: 590px;
+	font-variation-settings: 'wght' 400,'opsz' 700;
+}
+
+a {
+	color: rgba(0,0,0,0.3);
+	text-decoration: none;
+	outline: none;
+}
+
+a:hover, a:focus {
+	color: #fff;
+}
+
+/* Related demos */
+.related {
+	font-weight: 700;
+	text-align: center;
+	padding: 5em 0;
+	display: none;
+	background: #fff;
+	color: rgba(0,0,0,0.3);
+}
+
+.overview .related {
+	display: block;
+}
+
+.related > a {
+	border: 3px solid black;
+	border-color: initial;
+	display: inline-block;
+	text-align: center;
+	margin: 20px 10px;
+	padding: 25px;
+}
+
+.related > a:hover,
+.related > a:focus {
+	color: rgba(0,0,0,0.5);
+}
+
+.related a img {
+	max-width: 100%;
+	opacity: 0.8;
+}
+
+.related a:hover img,
+.related a:active img {
+	opacity: 1;
+}
+
+.related a h3 {
+	margin: 0;
+	padding: 0.5em 0 0.3em;
+	max-width: 300px;
+	text-align: left;
+}
