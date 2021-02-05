@@ -82,23 +82,21 @@ async function fetchNFTMetaData(ipfshash) {
 async function getAllNFTsMatic(){
 
     let promise = new Promise((res, rej) => {
-        getLatestMaticBlockNumber().then((blk)=>{
-            fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x67cdd88cece6fe7f33bb60f6b6113642d5860f0507d575786cc51767008c5213/?starting-block=${hestiaBlock}&key=${covalent_key}&ending-block=${parseInt(blk)}`)
-            .then(response => response.json())
-            .then(data => {
-                let rs = []
-                for (let index = 0; index < data.data.items.length; index++) {
-                    const element = data.data.items[index];
-                    rs.push(
-                        Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
-                    )
-                }
-                res(rs);
-            })
-            .catch((error) => {
-                rej(error);
-            });
+        fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x67cdd88cece6fe7f33bb60f6b6113642d5860f0507d575786cc51767008c5213/?starting-block=${hestiaBlock}&key=${covalent_key}&ending-block=12000000000000`)
+        .then(response => response.json())
+        .then(data => {
+            let rs = []
+            for (let index = 0; index < data.data.items.length; index++) {
+                const element = data.data.items[index];
+                rs.push(
+                    Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
+                )
+            }
+            res(rs);
         })
+        .catch((error) => {
+            rej(error);
+        });
 
     });
     let result = await promise;
