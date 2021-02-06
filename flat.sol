@@ -7,7 +7,6 @@
 pragma solidity >=0.6.0 <0.8.0;
 
 /*
-
  * @dev Provides information about the current execution context, including the
  * sender of the transaction and its data. While these are generally available
  * via msg.sender and msg.data, they should not be accessed in such a direct
@@ -2610,28 +2609,28 @@ contract ChainlinkClient {
    * @param ensAddress The address of the ENS contract
    * @param node The ENS node hash
    */
-  function useChainlinkWithENS(address ensAddress, bytes32 node)
-    internal
-  {
-    ens = ENSInterface(ensAddress);
-    ensNode = node;
-    bytes32 linkSubnode = keccak256(abi.encodePacked(ensNode, ENS_TOKEN_SUBNAME));
-    ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(linkSubnode));
-    setChainlinkToken(resolver.addr(linkSubnode));
-    updateChainlinkOracleWithENS();
-  }
+//   function useChainlinkWithENS(address ensAddress, bytes32 node)
+//     internal
+//   {
+//     ens = ENSInterface(ensAddress);
+//     ensNode = node;
+//     bytes32 linkSubnode = keccak256(abi.encodePacked(ensNode, ENS_TOKEN_SUBNAME));
+//     ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(linkSubnode));
+//     setChainlinkToken(resolver.addr(linkSubnode));
+//     updateChainlinkOracleWithENS();
+//   }
 
-  /**
-   * @notice Sets the stored oracle contract with the address resolved by ENS
-   * @dev This may be called on its own as long as `useChainlinkWithENS` has been called previously
-   */
-  function updateChainlinkOracleWithENS()
-    internal
-  {
-    bytes32 oracleSubnode = keccak256(abi.encodePacked(ensNode, ENS_ORACLE_SUBNAME));
-    ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(oracleSubnode));
-    setChainlinkOracle(resolver.addr(oracleSubnode));
-  }
+//   /**
+//    * @notice Sets the stored oracle contract with the address resolved by ENS
+//    * @dev This may be called on its own as long as `useChainlinkWithENS` has been called previously
+//    */
+//   function updateChainlinkOracleWithENS()
+//     internal
+//   {
+//     bytes32 oracleSubnode = keccak256(abi.encodePacked(ensNode, ENS_ORACLE_SUBNAME));
+//     ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(oracleSubnode));
+//     setChainlinkOracle(resolver.addr(oracleSubnode));
+//   }
 
   /**
    * @notice Encodes the request to be sent to the oracle contract
@@ -2830,10 +2829,10 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
 
     event NewPost(
         uint256 indexed _postId,
-        address indexed _seller,
+        address indexed _creator,
         uint256 indexed _price,
         string _postData,
-        bytes32 _metaData
+        string _metaData
     );
 
     event PostSold(
@@ -2897,7 +2896,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     }
 
     function createPost(
-        uint256 price, uint256 taxrate, string memory postData, bytes32 metaData
+        uint256 price, uint256 taxrate, string memory postData, string memory metaData
     )
         public
     {
@@ -2906,7 +2905,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     }
 
     function createPostMeta(
-        uint256 price, uint256 taxrate, string memory postData, bytes32 metaData,
+        uint256 price, uint256 taxrate, string memory postData, string memory metaData,
         address creator, bytes32 r, bytes32 s, uint8 v
     )
         public
@@ -2933,7 +2932,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     }
 
     function handleCreatePost(uint256 price, uint256 taxrate,
-        string memory postData, bytes32 metaData, address creator
+        string memory postData, string memory  metaData, address creator
     )
         internal
     {

@@ -105,7 +105,7 @@
       {
         "indexed": true,
         "internalType": "address",
-        "name": "_seller",
+        "name": "_creator",
         "type": "address"
       },
       {
@@ -122,9 +122,9 @@
       },
       {
         "indexed": false,
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "_metaData",
-        "type": "bytes32"
+        "type": "string"
       }
     ],
     "name": "NewPost",
@@ -505,9 +505,9 @@
         "type": "string"
       },
       {
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "metaData",
-        "type": "bytes32"
+        "type": "string"
       }
     ],
     "name": "createPost",
@@ -533,9 +533,9 @@
         "type": "string"
       },
       {
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "metaData",
-        "type": "bytes32"
+        "type": "string"
       },
       {
         "internalType": "address",

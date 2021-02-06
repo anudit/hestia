@@ -1,5 +1,5 @@
-let hestiaAddress = "0x2158f0C150e9DCe5263BCb74Aa257F52D02cbdE2";
-let hestiaBlock = "10106770";
+let hestiaAddress = "0x0096726c2Bda88063236D4C7E61Eea0c618eaFd2";
+let hestiaBlock = "10201096";
 let covalent_key = "ckey_4f1b1d6c4659448faf00c83e597";
 let graphqlEndpoint = "https://graphql.bitquery.io";
 let hestiaAbi = [
@@ -109,7 +109,7 @@ let hestiaAbi = [
 		{
 		  "indexed": true,
 		  "internalType": "address",
-		  "name": "_seller",
+		  "name": "_creator",
 		  "type": "address"
 		},
 		{
@@ -126,9 +126,9 @@ let hestiaAbi = [
 		},
 		{
 		  "indexed": false,
-		  "internalType": "bytes32",
+		  "internalType": "string",
 		  "name": "_metaData",
-		  "type": "bytes32"
+		  "type": "string"
 		}
 	  ],
 	  "name": "NewPost",
@@ -509,9 +509,9 @@ let hestiaAbi = [
 		  "type": "string"
 		},
 		{
-		  "internalType": "bytes32",
+		  "internalType": "string",
 		  "name": "metaData",
-		  "type": "bytes32"
+		  "type": "string"
 		}
 	  ],
 	  "name": "createPost",
@@ -537,9 +537,9 @@ let hestiaAbi = [
 		  "type": "string"
 		},
 		{
-		  "internalType": "bytes32",
+		  "internalType": "string",
 		  "name": "metaData",
-		  "type": "bytes32"
+		  "type": "string"
 		},
 		{
 		  "internalType": "address",
@@ -999,9 +999,15 @@ let hestiaAbi = [
 	  "stateMutability": "nonpayable",
 	  "type": "function"
 	}
-  ]
+]
 
-  const chainExplorers = {
-	'4':'https://rinkeby.etherscan.io',
-	'80001': 'https://mumbai-explorer.matic.today'
+
+const chainExplorers = {
+	'80001': 'https://mumbai-explorer.matic.today',
+	'97': 'https://data-seed-prebsc-1-s1.binance.org:8545'
+}
+
+const supportedChains = {
+	'80001': 'Matic Network Mumbai Testnet',
+	'97': 'Binance Smart Chain Testnet'
 }

@@ -8,7 +8,7 @@ async function setupUI() {
 
         let nftMetaDatas = [];
         for (let index = 0; index < nfts.length; index++) {
-            nftMetaDatas.push(fetchNFTMetaData(getIpfsHashFromBytes32(nfts[index]._metaData)));
+            nftMetaDatas.push(fetchNFTMetaData(nfts[index]._metaData));
         }
         const nftMetaDataList = await Promise.all(nftMetaDatas);
 
@@ -32,7 +32,6 @@ async function setupUI() {
 
 function addSlide(nftData, metaData) {
 
-    console.log(nftData, metaData);
     // let metaData = await fetchNFTMetaData(getIpfsHashFromBytes32(nftData._metaData));
     // console.log(`adding ${metaData.title}`);
 
@@ -82,7 +81,7 @@ async function fetchNFTMetaData(ipfshash) {
 async function getAllNFTsMatic(){
 
     let promise = new Promise((res, rej) => {
-        fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x67cdd88cece6fe7f33bb60f6b6113642d5860f0507d575786cc51767008c5213/?starting-block=${hestiaBlock}&key=${covalent_key}&ending-block=12000000000000`)
+        fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963/?starting-block=${hestiaBlock}&key=${covalent_key}&ending-block=99999999`)
         .then(response => response.json())
         .then(data => {
             let rs = []
@@ -97,7 +96,6 @@ async function getAllNFTsMatic(){
         .catch((error) => {
             rej(error);
         });
-
     });
     let result = await promise;
     return result;

@@ -32,15 +32,22 @@ Because of these opposing pressures, NFT owners can’t set impossibly high pric
 
 ### Contract Releases
 
-Matic Mumbai Testnet:
-- HestiaSuperApp:  [0x2158f0C150e9DCe5263BCb74Aa257F52D02cbdE2](https://explorer-mumbai.maticvigil.com/address/0x2158f0C150e9DCe5263BCb74Aa257F52D02cbdE2)
-- HestiaCreator:  [0x10730aC40EA23725a6556768D6eAdF4C7B14B338](https://explorer-mumbai.maticvigil.com/address/0x10730aC40EA23725a6556768D6eAdF4C7B14B338)
-- Dai:  [0x78320F54E815fBdceBDf78aC97F05eC4f1cd5855](https://explorer-mumbai.maticvigil.com/address/0x78320F54E815fBdceBDf78aC97F05eC4f1cd5855)
-
-Binance Smart Chain Testnet:
-- HestiaSuperApp:  [0xdA3E7659E0856bA742BDB908F7A34E4C257e6963](https://testnet.bscscan.com/address/0xdA3E7659E0856bA742BDB908F7A34E4C257e6963)
-- HestiaCreator:  [0xeBA07153Eb1Bd9aC977E4Ac7aCebe6a11b59C835](https://testnet.bscscan.com/address/0xeBA07153Eb1Bd9aC977E4Ac7aCebe6a11b59C835)
-- Dai:  [0xc558fBe93A378aF861aF81490cc99334c6c75e86](https://testnet.bscscan.com/address/0xc558fBe93A378aF861aF81490cc99334c6c75e86)
+ - [Matic Mumbai Testnet (80001)](https://explorer-mumbai.maticvigil.com)
+ - [Binance Smart Chain Testnet (97)](https://testnet.bscscan.com)
+```json
+{
+  "80001": {
+    "HestiaSuperApp": "0x0096726c2Bda88063236D4C7E61Eea0c618eaFd2",
+    "HestiaCreator": "0x43a35E910506c287c86e10D919A884Ddab45c2ff",
+    "Dai": "0xE670111cab95CCf8ED48694bF536081AFb2A6137"
+  },
+ "97": {
+  "HestiaSuperApp": "0x87cB7856E9195EF062b51cf5711503e14719b60D",
+  "HestiaCreator": "0xfb5Dc74977473CB2875C377d6d5A654C72f1912F",
+  "Dai": "0xE24aC999d5A210fD3e0523db31CA84a3c0c87141"
+ }
+}
+```
 
 ### Active Deployemnts
 - [hestia.anudit.dev](https://hestia.anudit.dev)

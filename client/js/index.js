@@ -1,10 +1,15 @@
 let Hestia;
 let customWeb3;
 
-let HestiaWithSigner;
+const Web3Modal = window.Web3Modal.default;
+const Portis = window.Portis;
+let web3Modal;
+let provider;
+let modalWeb3;
+let selectedAccount;
+let HestiaSigned;
 
 window.addEventListener('load', async () => {
-
 
     customWeb3 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86');
     Hestia = new ethers.Contract(hestiaAddress, hestiaAbi, customWeb3.getSigner());
@@ -14,30 +19,106 @@ window.addEventListener('load', async () => {
 
 
 async function requireLogin(){
-    if (Boolean(window.ethereum) == true){
+    // if (Boolean(window.ethereum) == true){
 
-        window.accounts = [];
-        const biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
-        window.web3 = new ethers.providers.Web3Provider(biconomy);
+    //     window.accounts = [];
+    //     const biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
+    //     window.web3 = new ethers.providers.Web3Provider(biconomy);
+
+    //     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+    //     setupContracts(accounts)
+    // }
+    // else if (window.web3){
+
+    //     let accounts = await web3.currentProvider.enable()
+    //     setupContracts(accounts)
+    // }
+    // else {
+    //     console.log('Get web3')
+    // }
+
+
+
+    const providerOptions = {
+
+        portis: {
+            package: Portis, // required
+            options: {
+              id: "609e8124-9614-44e6-afd8-03a52b5f6add", // required
+              network: 'maticMumbai'
+            }
+        }
+    };
+
+    web3Modal = new Web3Modal({
+        theme: "dark",
+        network: "matic",
+        cacheProvider: true,
+        providerOptions,
+    });
+
+    if (web3Modal.cachedProvider == "") {
+        provider = await web3Modal.connect();
+        console.log("provider is", provider);
+    }
+    else{
+        provider = await web3Modal.connectTo(web3Modal.cachedProvider);
+        console.log("cached provider is", provider);
+    }
+
+    window.accounts = [];
+
+
+    if (provider.isMetaMask === true){
+
+        ethereum.autoRefreshOnNetworkChange = false;
+        if (provider && provider.on){
+            provider.on('disconnect', ()=>{
+                window.location.reload()
+            });
+            provider.on('chainChanged', ()=>{
+                window.location.reload()
+            });
+            provider.on('accountsChanged', ()=>{
+                window.location.reload()
+            });
+        }
 
         accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        setupContracts(accounts)
-    }
-    else if (window.web3){
+        // const biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
+        modalWeb3 = new ethers.providers.Web3Provider(ethereum);
 
-        let accounts = await web3.currentProvider.enable()
-        setupContracts(accounts)
+        window.netId = parseInt(ethereum.chainId);
+
+        if(Object.keys(supportedChains).includes(netId.toString()) === false){
+            let alHtml = '<ul class="list-group list-group">';
+            Object.keys(supportedChains).forEach((chainID)=>{
+                alHtml+=`<li class="list-group-item">${supportedChains[chainID]}</li>`
+            })
+            alHtml += '</ul>';
+            alert('Plase switch to Matic Mumbai Testnet or Binance Smart Chain Testnet.');
+        }
+        else {
+            setupContracts(accounts, netId);
+        }
+
+    }
+    else if (provider.isPortis === true){
+        accounts = await provider.enable();
+        // const biconomy = new Biconomy(provider,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
+        modalWeb3 = new ethers.providers.Web3Provider(provider);
+        setupContracts(accounts, '80001');
     }
     else {
-        console.log('Get web3')
+        alert('Unsupported Wallet.')
     }
+
+    window.modalWeb3 = modalWeb3;
 }
 
-function setupContracts(accounts = []){
-
-    HestiaWithSigner = new ethers.Contract(hestiaAddress, hestiaAbi, web3.getSigner());
+function setupContracts(accounts = [], net){
+    HestiaSigned = new ethers.Contract(hestiaAddress, hestiaAbi, modalWeb3.getSigner());
     window.accounts = accounts;
-
 }
 
 

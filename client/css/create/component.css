@@ -99,7 +99,7 @@
 .fs-nav-dots,
 .fs-progress,
 .fs-numbers,
-button.fs-continue,
+.fs-continue,
 .fs-message-error,
 .fs-message-final {
 	visibility: hidden;
@@ -116,7 +116,7 @@ button.fs-continue,
 /* Some general styles */
 .fs-form-wrap button {
 	border: none;
-	background: none;
+	background: #1b1b1b;
 }
 
 .fs-form-wrap button[disabled] {
@@ -268,7 +268,7 @@ button.fs-continue,
 }
 
 .fs-fields input:focus {
-	background-color: #3b3f45; /* Fixes chrome bug with placeholder */
+	background-color: #0e0e0e; /* Fixes chrome bug with placeholder */
 }
 
 .fs-form-overview .fs-fields input:focus {
@@ -372,7 +372,7 @@ button.fs-continue,
 	padding: 0.25em;
 	width: 100%;
 	height: 200px;
-	border: 2px solid rgba(0,0,0,0.2);
+	border: 2px solid rgb(255 255 255 / 20%);
 	background-color: transparent;
 	color: #fffed8;
 	font-weight: 700;
@@ -439,22 +439,22 @@ button.fs-continue,
 /* placeholder */
 .fs-fields input::-webkit-input-placeholder,
 .fs-fields textarea::-webkit-input-placeholder {
-	color: rgba(0,0,0,0.1);
+	color: rgba(255, 255, 255, 0.7);
 }
 
 .fs-fields input:-moz-placeholder,
 .fs-fields textarea:-moz-placeholder {
-	color: rgba(0,0,0,0.1);
+	color: rgba(255, 255, 255, 0.7);
 }
 
 .fs-fields input::-moz-placeholder,
 .fs-fields textarea::-moz-placeholder {
-	color: rgba(0,0,0,0.1);
+	color: rgba(255, 255, 255, 0.7);
 }
 
 .fs-fields input:-ms-input-placeholder,
 .fs-fields textarea:-ms-input-placeholder {
-	color: rgba(0,0,0,0.1);
+	color: rgba(255, 255, 255, 0.7);
 }
 
 /* Hide placeholder when focused in Webkit browsers */
@@ -480,7 +480,7 @@ button.fs-continue,
 	width: 16px;
 	height: 16px;
 	border-radius: 50%;
-	background: transparent;
+	background: #fff;
 	-webkit-transition: -webkit-transform 0.3s ease, opacity 0.3s ease;
 	transition: transform 0.3s ease, opacity 0.3s ease;
 }
@@ -506,13 +506,13 @@ button.fs-continue,
 	transform: perspective(1000px) rotate3d(0,1,0,180deg);
 }
 
-.fs-nav-dots button.fs-dot-current {
+.fs-nav-dots .fs-dot-current {
 	-webkit-transform: perspective(1000px) rotate3d(0,1,0,180deg);
 	transform: perspective(1000px) rotate3d(0,1,0,180deg);
 }
 
 .fs-nav-dots button:hover::before,
-.fs-nav-dots button.fs-dot-current::before {
+.fs-nav-dots .fs-dot-current::before {
 	background: #fffed8;
 }
 
@@ -533,7 +533,7 @@ button.fs-continue,
 	top: 0;
 	right: 0;
 	overflow: hidden;
-	color: rgba(0,0,0,0.4);
+	color: #fff;
 	margin: 40px;
 	width: 2em;
 	font-weight: 700;
@@ -628,14 +628,15 @@ button.fs-continue,
 	to { -webkit-transform: translateY(100%); transform: translateY(100%); }
 }
 
-/* Continue button and submit button */
-button.fs-submit,
-button.fs-continue {
+
+.fs-submit,
+.fs-continue {
 	padding: 0.6em 1.5em;
 	border: 3px solid #232529;
 	border-radius: 40px;
 	font-weight: 700;
-	color: rgba(0,0,0,0.4);
+	color: rgb(255 255 255);
+	cursor: pointer;
 }
 
 .fs-form-overview .fs-submit,
@@ -646,10 +647,10 @@ button.fs-continue {
 
 .fs-form-overview .fs-submit {
 	border-color: #232529;
-	color: #232529;
+	color: #40444d;
 }
 
-button.fs-continue {
+.fs-continue {
 	position: absolute;
 	right: 0;
 	bottom: 0;
@@ -657,9 +658,9 @@ button.fs-continue {
 	font-size: 1.25em;
 }
 
-button.fs-submit:hover,
-button.fs-submit:focus,
-button.fs-continue:hover {
+.fs-submit:hover,
+.fs-submit:focus,
+.fs-continue:hover {
 	background: #232529;
 	color: #fff;
 }
@@ -672,7 +673,7 @@ button.fs-continue:hover {
 	line-height: 3;
 	text-align: center;
 	background: transparent;
-	color: rgba(0,0,0,0.3);
+	color: rgb(255 255 255 / 30%);
 	content: 'or press ENTER';
 	font-size: 0.65em;
 	pointer-events: none;
@@ -843,7 +844,7 @@ input[type=text]::-ms-clear {
 		right: 25px;
 	}
 
-	button.fs-continue {
+	.fs-continue {
 		right: 20px;
 		bottom: 20px;
 		margin: 0;
@@ -854,7 +855,7 @@ input[type=text]::-ms-clear {
 		font-size: 2em;
 	}
 
-	button.fs-continue::before {
+	.fs-continue::before {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -866,11 +867,15 @@ input[type=text]::-ms-clear {
 		line-height: 50px;
 	}
 
+	.fs-continue {
+		content: '' !important;
+	}
+
 	.fs-continue::after {
 		content: '';
 	}
 
-	button.fs-submit {
+	.fs-submit {
 		width: 100%;
 		font-size: 1.25em;
 	}

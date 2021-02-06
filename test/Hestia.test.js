@@ -3,15 +3,15 @@ const { expect } = require("chai");
 const hre = require("hardhat");
 
 function getBytes32FromIpfsHash(ipfsListing) {
-  return "0x" + bs58.decode(ipfsListing).slice(2).toString('hex')
-}
+    return "0x" + bs58.decode(ipfsListing).slice(2).toString('hex')
+  }
 
-function getIpfsHashFromBytes32(bytes32Hex) {
-  const hashHex = "1220" + bytes32Hex.slice(2)
-  const hashBytes = Buffer.from(hashHex, 'hex');
-  const hashStr = bs58.encode(hashBytes)
-  return hashStr
-}
+  function getIpfsHashFromBytes32(bytes32Hex) {
+    const hashHex = "1220" + bytes32Hex.slice(2)
+    const hashBytes = Buffer.from(hashHex, 'hex');
+    const hashStr = bs58.encode(hashBytes)
+    return hashStr
+  }
 
 describe("Hestia", accounts => {
 
@@ -43,7 +43,7 @@ describe("Hestia", accounts => {
                 ethers.utils.parseEther('1'),
                 ethers.utils.parseEther('0.05'),
                 "This is the Post Title",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws'
             );
             expect(await hestia._postIds()).to.equal('1');
             expect(await hestia._tokenIds()).to.equal('1');
@@ -64,7 +64,7 @@ describe("Hestia", accounts => {
                 price,
                 (taxRate).toString(),
                 "This is the Post Title",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws'
             );
 
             let taxAmount = price.mul(taxRate).div(10000);
@@ -92,7 +92,7 @@ describe("Hestia", accounts => {
                 price,
                 (taxRate).toString(),
                 "This is the Post Title",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws'
             );
 
             let taxAmount = price.mul(taxRate).div(10000);
@@ -109,7 +109,7 @@ describe("Hestia", accounts => {
                 ethers.utils.parseEther('1'),
                 ethers.utils.parseEther('0.05'),
                 "This is the Post Title",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws'
             );
 
             let pData = await hestia._posts('1');
@@ -131,7 +131,7 @@ describe("Hestia", accounts => {
                 price,
                 (taxRate).toString(),
                 "This is the Post Title",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws'
             );
 
             let taxAmount = price.mul(taxRate).div(10000);
@@ -152,7 +152,7 @@ describe("Hestia", accounts => {
                 price,
                 (taxRate).toString(),
                 "This is the Post Title",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws'
             );
 
             await hestia.likePost('1');
@@ -167,7 +167,7 @@ describe("Hestia", accounts => {
         it("Should register a new Creator", async function () {
             await hestiaCreator.registerCreator(
                 "Creator1",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                getBytes32FromIpfsHash('QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws')
             );
 
             expect(await hestiaCreator.creatorIDs()).to.equal('1');
@@ -176,12 +176,12 @@ describe("Hestia", accounts => {
         it("Should update metadata", async function () {
             await hestiaCreator.registerCreator(
                 "Creator1",
-                getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb')
+                getBytes32FromIpfsHash('QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws')
             );
 
 
             let cData = await hestiaCreator.creators('1');
-            expect(cData['metaData']).to.equal(getBytes32FromIpfsHash('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNUb'));
+            expect(cData['metaData']).to.equal(getBytes32FromIpfsHash('QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws'));
 
             await hestiaCreator.updateMetaData(
                 "1",
