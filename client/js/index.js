@@ -259,3 +259,56 @@ function trimAdd(_addr = ""){
 function openInExplorer(_add = getAddress()){
     window.open(`${chainExplorers[customWeb3._network.chainId]}/address/${_add}`)
 }
+
+function sendIPFSPinningRequests(_ipfsHash, _name = ''){
+
+    fetch(`https://ipfs.infura.io:5001/api/v0/pin/add?arg=/ipfs/${_ipfsHash}`, {
+        method: 'POST',
+        redirect: 'follow'
+    })
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+
+    var myHeaders = new Headers();
+        myHeaders.append("pinata_api_key", "22adbce12b4314b7e08b");
+        myHeaders.append("pinata_secret_api_key", "1e746a0259982c83e47bb94e6b5295d546f006bbb8b8125173f4b5707c7d1756");
+        myHeaders.append("Content-Type", "application/json");
+
+    fetch("https://api.pinata.cloud/pinning/pinByHash", {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify({
+            "name": _name,
+            "hashToPin":_ipfsHash
+        }),
+    })
+    .then(response => response.text())
+    .then(result => console.log(result))
+    .catch(error => console.log('error', error));
+
+}
+function injectScript(src) {
+    console.log("Injecting : ",src )
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.addEventListener('load', resolve);
+        script.addEventListener('error', e => reject(e.error));
+        document.head.appendChild(script);
+    });
+}
+
+function sanitize(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+// UNSAFE with unsafe strings; only use on previously-escaped ones!
+function unescapeHtml(escapedStr) {
+    var div = document.createElement('div');
+    div.innerHTML = escapedStr;
+    var child = div.childNodes[0];
+    return child ? child.nodeValue : '';
+}

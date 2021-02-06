@@ -37,23 +37,28 @@
 				<form id="myform" class="fs-form fs-form-full" autocomplete="off">
 					<ol class="fs-fields">
 						<li>
-							<label class="fs-field-label fs-anim-upper" for="q1">Artwork Title</label>
-							<input class="fs-anim-lower" id="q1" name="q1" type="text" placeholder="The Infinite Machine" required/>
+							<label class="fs-field-label fs-anim-upper" for="new_title">Artwork Title</label>
+							<input class="fs-anim-lower" id="new_title" name="new_title" type="text" placeholder="The Infinite Machine" required/>
 						</li>
 						<li>
-							<label class="fs-field-label fs-anim-upper" for="q2">The story behind your Artwork</label>
-							<textarea class="fs-anim-lower" id="q2" name="q2" placeholder="Describe here" required ></textarea>
+							<label class="fs-field-label fs-anim-upper" for="new_file">Select your Artwork File. (png, jpeg, gif, mp4)</label>
+							<input class="fs-anim-lower" id="new_file" name="new_file" type="file" required/>
 						</li>
 						<li>
-							<label class="fs-field-label fs-anim-upper" for="q3">Set a starting price (in ETH)</label>
-							<input class="fs-mark fs-anim-lower" id="q3" name="q3" type="number" placeholder="10" step="1" required/>
+							<label class="fs-field-label fs-anim-upper" for="new_desc">The story behind your Artwork</label>
+							<textarea class="fs-anim-lower" id="new_desc" name="new_desc" placeholder="Describe here" required ></textarea>
 						</li>
 						<li>
-							<label class="fs-field-label fs-anim-upper" for="q4">Set Harberger tax rate (in %)</label>
-							<input class="fs-mark fs-anim-lower tax-rate" id="q4" name="q4" type="number" placeholder="5" step="1" required/>
+							<label class="fs-field-label fs-anim-upper" for="new_price">Set a starting price (in ETH)</label>
+							<input class="fs-mark fs-anim-lower" id="new_price" name="new_price" type="number" placeholder="10" step="1" required/>
 						</li>
+						<li>
+							<label class="fs-field-label fs-anim-upper" for="new_rate">Set Harberger tax rate (in %)</label>
+							<input class="fs-mark fs-anim-lower tax-rate" id="new_rate" name="new_rate" type="number" placeholder="5" step="1" required/>
+						</li>
+
 					</ol>
-					<div class="fs-submit" onclick="mintThatNft()">Mint it!</div>
+					<div class="fs-submit" onclick="mintDatNft()">Mint it!</div>
 				</form>
 			</div>
 
@@ -87,7 +92,7 @@
 
 		<script type="text/javascript" src="./js/lib/mexa@1.5.15.js"></script>
 		<script type="text/javascript" src="./js/lib/ethers@5.0.28.min.js"></script>
-		<script type="text/javascript" src="./js/lib/bs58.bundle.js"></script>
+		<script type="text/javascript" src="./js/lib/ipfs-http-client-lite.js"></script>
 
 		<script type="text/javascript" src="./js/globals.js"></script>
 		<script type="text/javascript" src="./js/create.js"></script>

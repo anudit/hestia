@@ -42,47 +42,14 @@ a:hover, a:focus {
 	color: #fff;
 }
 
-/* Related demos */
-.related {
-	font-weight: 700;
-	text-align: center;
-	padding: 5em 0;
-	display: none;
-	background: #fff;
-	color: rgba(0,0,0,0.3);
-}
-
-.overview .related {
-	display: block;
-}
-
-.related > a {
-	border: 3px solid black;
-	border-color: initial;
-	display: inline-block;
-	text-align: center;
-	margin: 20px 10px;
-	padding: 25px;
-}
-
-.related > a:hover,
-.related > a:focus {
-	color: rgba(0,0,0,0.5);
-}
-
-.related a img {
-	max-width: 100%;
-	opacity: 0.8;
-}
-
-.related a:hover img,
-.related a:active img {
-	opacity: 1;
-}
-
-.related a h3 {
-	margin: 0;
-	padding: 0.5em 0 0.3em;
-	max-width: 300px;
-	text-align: left;
+input[type="file"]::-webkit-file-upload-button {
+    background: #191919 !important;
+    border-radius: 50px !important;
+    font-size: 0.6em !important;
+    margin: 10px !important;
+    padding: 10px 30px !important;
+    border: none !important;
+    color: #ccc !important;
+    font-family: inherit !important;
+	cursor: pointer;
 }
