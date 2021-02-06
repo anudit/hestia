@@ -3,8 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Hestia</title>
-
+		<title>Register - Hestia</title>
 		<meta name="title" content="Hestia">
 		<meta name="author" content="Anudit Nagar" />
 		<meta name="description" content="A one-stop shop to Create, Sell and Showcase your Artwork aiming to democratize the control and pricing of assets by Harberger Taxes.">
@@ -33,28 +32,20 @@
 
 			<div class="fs-form-wrap" id="fs-form-wrap">
 				<div class="fs-title">
-					<h1>Mint your New Artwork</h1>
+					<h1>Register as an Artist</h1>
 				</div>
 				<form id="myform" class="fs-form fs-form-full" autocomplete="off">
 					<ol class="fs-fields">
 						<li>
-							<label class="fs-field-label fs-anim-upper" for="q1">Artwork Title</label>
-							<input class="fs-anim-lower" id="q1" name="q1" type="text" placeholder="The infinite Machine" required/>
+							<label class="fs-field-label fs-anim-upper" for="new_name">Your Name/Pseudonmym</label>
+							<input class="fs-anim-lower" id="new_name" name="new_name" type="text" placeholder="Vitalikamoto" required/>
 						</li>
 						<li>
-							<label class="fs-field-label fs-anim-upper" for="q2">The story behind your Artwork</label>
-							<textarea class="fs-anim-lower" id="q2" name="q2" placeholder="Describe here" required ></textarea>
-						</li>
-						<li>
-							<label class="fs-field-label fs-anim-upper" for="q3">Set a starting price (in ETH)</label>
-							<input class="fs-mark fs-anim-lower" id="q3" name="q3" type="number" placeholder="10" step="1" required/>
-						</li>
-						<li>
-							<label class="fs-field-label fs-anim-upper" for="q4">Set a tax rate (in %)</label>
-							<input class="fs-mark fs-anim-lower tax-rate" id="q4" name="q4" type="number" placeholder="5" step="1" required/>
+							<label class="fs-field-label fs-anim-upper" for="new_about">About you  and your Art.</label>
+							<textarea class="fs-anim-lower" id="new_about" name="new_about" placeholder="Describe here" required ></textarea>
 						</li>
 					</ol>
-					<button class="fs-submit" onclick="run(e)">Mint it!</button>
+					<div class="fs-submit" onclick="registerCreator()">Count me in!</div>
 				</form>
 			</div>
 
@@ -77,10 +68,23 @@
 
 				new FForm( formWrap, {
 					onReview : function() {
-						classie.add( document.body, 'overview' ); // for demo purposes only
+						classie.add( document.body, 'overview' );
 					}
 				} );
 			})();
 		</script>
+
+		<script type="text/javascript" src="js/providers/web3modal@1.9.3.js"></script>
+		<script type="text/javascript" src="js/providers/portis@3.0.5.js"></script>
+
+		<script type="text/javascript" src="./js/lib/mexa@1.5.15.js"></script>
+		<script type="text/javascript" src="./js/lib/ethers@5.0.28.min.js"></script>
+		<script type="text/javascript" src="./js/lib/ipfs-http-client-lite.js"></script>
+		<script type="text/javascript" src="./js/lib/bs58.bundle.js"></script>
+
+		<script type="text/javascript" src="./js/globals.js"></script>
+		<script type="text/javascript" src="./js/register.js"></script>
+		<script type="text/javascript" src="./js/index.js"></script>
+
 	</body>
 </html>

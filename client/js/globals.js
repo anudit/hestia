@@ -1,4 +1,5 @@
 let hestiaAddress = "0x0096726c2Bda88063236D4C7E61Eea0c618eaFd2";
+let hestiaCreatorAddress = "0xf43AAB8b554713be0139C297d6C4Cc394C167ae9";
 let hestiaBlock = "10201096";
 let covalent_key = "ckey_4f1b1d6c4659448faf00c83e597";
 let graphqlEndpoint = "https://graphql.bitquery.io";
@@ -995,6 +996,152 @@ let hestiaAbi = [
 	{
 	  "inputs": [],
 	  "name": "withdrawLink",
+	  "outputs": [],
+	  "stateMutability": "nonpayable",
+	  "type": "function"
+	}
+]
+let hestiaCreatorAbi = [
+	{
+	  "inputs": [],
+	  "stateMutability": "nonpayable",
+	  "type": "constructor"
+	},
+	{
+	  "anonymous": false,
+	  "inputs": [
+		{
+		  "indexed": true,
+		  "internalType": "uint256",
+		  "name": "creatorID",
+		  "type": "uint256"
+		},
+		{
+		  "indexed": true,
+		  "internalType": "address",
+		  "name": "creatorAddress",
+		  "type": "address"
+		},
+		{
+		  "indexed": true,
+		  "internalType": "string",
+		  "name": "creatorName",
+		  "type": "string"
+		},
+		{
+		  "indexed": false,
+		  "internalType": "string",
+		  "name": "creatorNameString",
+		  "type": "string"
+		},
+		{
+		  "indexed": false,
+		  "internalType": "bytes32",
+		  "name": "metaData",
+		  "type": "bytes32"
+		}
+	  ],
+	  "name": "NewCreator",
+	  "type": "event"
+	},
+	{
+	  "anonymous": false,
+	  "inputs": [
+		{
+		  "indexed": true,
+		  "internalType": "uint256",
+		  "name": "creatorID",
+		  "type": "uint256"
+		},
+		{
+		  "indexed": false,
+		  "internalType": "bytes32",
+		  "name": "metaData",
+		  "type": "bytes32"
+		}
+	  ],
+	  "name": "UpdateMetadata",
+	  "type": "event"
+	},
+	{
+	  "inputs": [],
+	  "name": "creatorIDs",
+	  "outputs": [
+		{
+		  "internalType": "uint256",
+		  "name": "",
+		  "type": "uint256"
+		}
+	  ],
+	  "stateMutability": "view",
+	  "type": "function"
+	},
+	{
+	  "inputs": [
+		{
+		  "internalType": "uint256",
+		  "name": "",
+		  "type": "uint256"
+		}
+	  ],
+	  "name": "creators",
+	  "outputs": [
+		{
+		  "internalType": "uint256",
+		  "name": "creatorID",
+		  "type": "uint256"
+		},
+		{
+		  "internalType": "address",
+		  "name": "creatorAddress",
+		  "type": "address"
+		},
+		{
+		  "internalType": "string",
+		  "name": "creatorName",
+		  "type": "string"
+		},
+		{
+		  "internalType": "bytes32",
+		  "name": "metaData",
+		  "type": "bytes32"
+		}
+	  ],
+	  "stateMutability": "view",
+	  "type": "function"
+	},
+	{
+	  "inputs": [
+		{
+		  "internalType": "string",
+		  "name": "_creatorName",
+		  "type": "string"
+		},
+		{
+		  "internalType": "bytes32",
+		  "name": "_metaData",
+		  "type": "bytes32"
+		}
+	  ],
+	  "name": "registerCreator",
+	  "outputs": [],
+	  "stateMutability": "nonpayable",
+	  "type": "function"
+	},
+	{
+	  "inputs": [
+		{
+		  "internalType": "uint256",
+		  "name": "_creatorID",
+		  "type": "uint256"
+		},
+		{
+		  "internalType": "bytes32",
+		  "name": "metaData",
+		  "type": "bytes32"
+		}
+	  ],
+	  "name": "updateMetaData",
 	  "outputs": [],
 	  "stateMutability": "nonpayable",
 	  "type": "function"

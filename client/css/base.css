@@ -405,6 +405,7 @@ a:focus {
 	}
 	.hestia-header__title {
 		padding: 0 0.5rem;
+		text-align: right;
 	}
 	.hestia-links {
 		margin: 0.25rem auto 0 0.25rem;

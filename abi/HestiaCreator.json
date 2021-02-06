@@ -27,6 +27,12 @@
       },
       {
         "indexed": false,
+        "internalType": "string",
+        "name": "creatorNameString",
+        "type": "string"
+      },
+      {
+        "indexed": false,
         "internalType": "bytes32",
         "name": "metaData",
         "type": "bytes32"

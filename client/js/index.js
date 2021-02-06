@@ -1,4 +1,5 @@
 let Hestia;
+let HestiaCreator;
 let customWeb3;
 
 const Web3Modal = window.Web3Modal.default;
@@ -8,43 +9,24 @@ let provider;
 let modalWeb3;
 let selectedAccount;
 let HestiaSigned;
+let HestiaCreatorSigned;
 
 window.addEventListener('load', async () => {
 
     customWeb3 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86');
     Hestia = new ethers.Contract(hestiaAddress, hestiaAbi, customWeb3.getSigner());
+    HestiaCreator = new ethers.Contract(hestiaCreatorAddress, hestiaCreatorAbi, customWeb3.getSigner());
     init();
 
 });
 
-
 async function requireLogin(){
-    // if (Boolean(window.ethereum) == true){
-
-    //     window.accounts = [];
-    //     const biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
-    //     window.web3 = new ethers.providers.Web3Provider(biconomy);
-
-    //     accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-    //     setupContracts(accounts)
-    // }
-    // else if (window.web3){
-
-    //     let accounts = await web3.currentProvider.enable()
-    //     setupContracts(accounts)
-    // }
-    // else {
-    //     console.log('Get web3')
-    // }
-
-
 
     const providerOptions = {
-
         portis: {
-            package: Portis, // required
+            package: Portis,
             options: {
-              id: "609e8124-9614-44e6-afd8-03a52b5f6add", // required
+              id: "609e8124-9614-44e6-afd8-03a52b5f6add",
               network: 'maticMumbai'
             }
         }
@@ -118,6 +100,7 @@ async function requireLogin(){
 
 function setupContracts(accounts = [], net){
     HestiaSigned = new ethers.Contract(hestiaAddress, hestiaAbi, modalWeb3.getSigner());
+    HestiaCreatorSigned = new ethers.Contract(hestiaCreatorAddress, hestiaCreatorAbi, modalWeb3.getSigner());
     window.accounts = accounts;
 }
 

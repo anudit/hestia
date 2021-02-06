@@ -23,6 +23,7 @@ contract HestiaCreator {
         uint256 indexed creatorID,
         address indexed creatorAddress,
         string indexed creatorName,
+        string creatorNameString,
         bytes32 metaData
     );
 
@@ -40,7 +41,7 @@ contract HestiaCreator {
         creatorIDs+=1;
         creators[creatorIDs] = Creator(creatorIDs, msg.sender, _creatorName, _metaData);
 
-        emit NewCreator(creatorIDs, msg.sender, _creatorName, _metaData);
+        emit NewCreator(creatorIDs, msg.sender, _creatorName, _creatorName, _metaData);
     }
 
     function updateMetaData(uint256 _creatorID, bytes32 metaData) public {
