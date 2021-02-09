@@ -81,21 +81,32 @@ async function fetchNFTMetaData(ipfshash) {
 async function getAllNFTsMatic(){
 
     let promise = new Promise((res, rej) => {
-        fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963/?starting-block=${hestiaBlock}&key=${covalent_key}&ending-block=99999999`)
-        .then(response => response.json())
-        .then(data => {
-            let rs = []
-            for (let index = 0; index < data.data.items.length; index++) {
-                const element = data.data.items[index];
-                rs.push(
-                    Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
-                )
-            }
-            res(rs);
+        fetch("https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86", {
+        "headers": {
+            "content-type": "application/json",
+        },
+        "body": "{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":43,\"jsonrpc\":\"2.0\"}",
+        "method": "POST",
         })
-        .catch((error) => {
-            rej(error);
+        .then(response => response.json())
+        .then(blk => {
+            fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963/?starting-block=${parseInt(blk['result'])-1000000}&key=${covalent_key}&ending-block=${parseInt(blk['result'])}`)
+            .then(response => response.json())
+            .then(data => {
+                let rs = []
+                for (let index = 0; index < data.data.items.length; index++) {
+                    const element = data.data.items[index];
+                    rs.push(
+                        Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
+                    )
+                }
+                res(rs);
+            })
+            .catch((error) => {
+                rej(error);
+            });
         });
+
     });
     let result = await promise;
     return result;
