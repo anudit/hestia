@@ -20,7 +20,7 @@ async function registerCreator(){
             sendIPFSPinningRequests(result[0].hash);
             await HestiaCreatorSigned.registerCreator(
                 sanitize(document.querySelector('#new_name').value),
-                getBytes32FromIpfsHash(result[0].hash)
+                result[0].hash
             );
         }
         else{

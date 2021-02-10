@@ -38,12 +38,12 @@ Because of these opposing pressures, NFT owners can’t set impossibly high pric
 {
   "80001": {
     "HestiaSuperApp": "0x0096726c2Bda88063236D4C7E61Eea0c618eaFd2",
-    "HestiaCreator": "0xf43AAB8b554713be0139C297d6C4Cc394C167ae9",
+    "HestiaCreator": "0xAD068b9E6344574C107f93De5922386036215Afb",
     "Dai": "0xE670111cab95CCf8ED48694bF536081AFb2A6137"
   },
  "97": {
   "HestiaSuperApp": "0x87cB7856E9195EF062b51cf5711503e14719b60D",
-  "HestiaCreator": "0xC7829beBbCcd7f2bfd528676a2E928fA8cB2AA4A",
+  "HestiaCreator": "0xa44Db34E0869334016FEe0ED8e4Fdb8c8F816656",
   "Dai": "0xE24aC999d5A210fD3e0523db31CA84a3c0c87141"
  }
 }

@@ -9,44 +9,46 @@
 
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.7.6 <0.8.0;
+pragma abicoder v2;
 
 contract HestiaCreator {
 
     struct Creator {
-        uint256 creatorID;
         address creatorAddress;
         string creatorName;
-        bytes32 metaData;
+        string metaData;
+        bool active;
     }
 
     event NewCreator(
-        uint256 indexed creatorID,
         address indexed creatorAddress,
         string indexed creatorName,
         string creatorNameString,
-        bytes32 metaData
+        string metaData
     );
 
     event UpdateMetadata(
-        uint256 indexed creatorID,
-        bytes32 metaData
+        address indexed creatorAddress,
+        string newMetaData
     );
 
-    uint256 public creatorIDs;
-    mapping(uint256 => Creator) public creators;
+    mapping(address => Creator) public creators;
 
     constructor() {}
 
-    function registerCreator(string memory _creatorName, bytes32 _metaData) public {
-        creatorIDs+=1;
-        creators[creatorIDs] = Creator(creatorIDs, msg.sender, _creatorName, _metaData);
-
-        emit NewCreator(creatorIDs, msg.sender, _creatorName, _creatorName, _metaData);
+    function registerCreator(string memory _creatorName, string memory _metaData) public {
+        require(creators[msg.sender].active == false, "HestiaCreator: Creator already registered.");
+        creators[msg.sender] = Creator(msg.sender, _creatorName, _metaData, true);
+        emit NewCreator(msg.sender, _creatorName, _creatorName, _metaData);
     }
 
-    function updateMetaData(uint256 _creatorID, bytes32 metaData) public {
-        require(msg.sender == creators[_creatorID].creatorAddress);
-        creators[_creatorID].metaData = metaData;
-        emit UpdateMetadata(_creatorID, metaData);
+    function updateMetaData(string memory _newMetaData) public {
+        require(creators[msg.sender].active == true, "HestiaCreator: Creator not registered.");
+        creators[msg.sender].metaData = _newMetaData;
+        emit UpdateMetadata(msg.sender, _newMetaData);
+    }
+
+    function getCreator(address _creatorAddress) public view returns (Creator memory){
+        return creators[_creatorAddress];
     }
 }

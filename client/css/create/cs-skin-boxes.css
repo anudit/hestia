@@ -1,9 +1,3 @@
-/* Custom select */
-/* Read the article: http://tympanus.net/codrops/2014/07/10/inspiration-for-custom-select-elements/ */
-/* Demo: http://tympanus.net/Development/SelectInspiration/ */
-/* GitHub: https://github.com/codrops/SelectInspiration */
-
-/* Custom select skin: fullscreen color picker (adjusted for fullscreen form) */
 div.cs-skin-boxes {
 	background: transparent;
 	font-size: 0.65em;
@@ -213,7 +207,7 @@ div.cs-skin-boxes:focus > span {
 }
 
 @media screen and (max-width: 30em) {
-	.cs-skin-boxes .cs-options li.cs-selected::after { 
+	.cs-skin-boxes .cs-options li.cs-selected::after {
 		-webkit-transform: translate3d(-50%,-50%,0);
 		transform: translate3d(-50%,-50%,0);
 	}

@@ -9,12 +9,6 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "creatorID",
-        "type": "uint256"
-      },
-      {
-        "indexed": true,
         "internalType": "address",
         "name": "creatorAddress",
         "type": "address"
@@ -33,9 +27,9 @@
       },
       {
         "indexed": false,
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "metaData",
-        "type": "bytes32"
+        "type": "string"
       }
     ],
     "name": "NewCreator",
@@ -46,48 +40,30 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
-        "name": "creatorID",
-        "type": "uint256"
+        "internalType": "address",
+        "name": "creatorAddress",
+        "type": "address"
       },
       {
         "indexed": false,
-        "internalType": "bytes32",
-        "name": "metaData",
-        "type": "bytes32"
+        "internalType": "string",
+        "name": "newMetaData",
+        "type": "string"
       }
     ],
     "name": "UpdateMetadata",
     "type": "event"
   },
   {
-    "inputs": [],
-    "name": "creatorIDs",
-    "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "address",
         "name": "",
-        "type": "uint256"
+        "type": "address"
       }
     ],
     "name": "creators",
     "outputs": [
-      {
-        "internalType": "uint256",
-        "name": "creatorID",
-        "type": "uint256"
-      },
       {
         "internalType": "address",
         "name": "creatorAddress",
@@ -99,9 +75,55 @@
         "type": "string"
       },
       {
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "metaData",
-        "type": "bytes32"
+        "type": "string"
+      },
+      {
+        "internalType": "bool",
+        "name": "active",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_creatorAddress",
+        "type": "address"
+      }
+    ],
+    "name": "getCreator",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "address",
+            "name": "creatorAddress",
+            "type": "address"
+          },
+          {
+            "internalType": "string",
+            "name": "creatorName",
+            "type": "string"
+          },
+          {
+            "internalType": "string",
+            "name": "metaData",
+            "type": "string"
+          },
+          {
+            "internalType": "bool",
+            "name": "active",
+            "type": "bool"
+          }
+        ],
+        "internalType": "struct HestiaCreator.Creator",
+        "name": "",
+        "type": "tuple"
       }
     ],
     "stateMutability": "view",
@@ -115,9 +137,9 @@
         "type": "string"
       },
       {
-        "internalType": "bytes32",
+        "internalType": "string",
         "name": "_metaData",
-        "type": "bytes32"
+        "type": "string"
       }
     ],
     "name": "registerCreator",
@@ -128,14 +150,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_creatorID",
-        "type": "uint256"
-      },
-      {
-        "internalType": "bytes32",
-        "name": "metaData",
-        "type": "bytes32"
+        "internalType": "string",
+        "name": "_newMetaData",
+        "type": "string"
       }
     ],
     "name": "updateMetaData",

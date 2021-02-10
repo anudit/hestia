@@ -1,5 +1,5 @@
 let hestiaAddress = "0x0096726c2Bda88063236D4C7E61Eea0c618eaFd2";
-let hestiaCreatorAddress = "0xf43AAB8b554713be0139C297d6C4Cc394C167ae9";
+let hestiaCreatorAddress = "0xAD068b9E6344574C107f93De5922386036215Afb";
 let hestiaBlock = "10201096";
 let covalent_key = "ckey_4f1b1d6c4659448faf00c83e597";
 let graphqlEndpoint = "https://graphql.bitquery.io";
@@ -1012,12 +1012,6 @@ let hestiaCreatorAbi = [
 	  "inputs": [
 		{
 		  "indexed": true,
-		  "internalType": "uint256",
-		  "name": "creatorID",
-		  "type": "uint256"
-		},
-		{
-		  "indexed": true,
 		  "internalType": "address",
 		  "name": "creatorAddress",
 		  "type": "address"
@@ -1036,9 +1030,9 @@ let hestiaCreatorAbi = [
 		},
 		{
 		  "indexed": false,
-		  "internalType": "bytes32",
+		  "internalType": "string",
 		  "name": "metaData",
-		  "type": "bytes32"
+		  "type": "string"
 		}
 	  ],
 	  "name": "NewCreator",
@@ -1049,48 +1043,30 @@ let hestiaCreatorAbi = [
 	  "inputs": [
 		{
 		  "indexed": true,
-		  "internalType": "uint256",
-		  "name": "creatorID",
-		  "type": "uint256"
+		  "internalType": "address",
+		  "name": "creatorAddress",
+		  "type": "address"
 		},
 		{
 		  "indexed": false,
-		  "internalType": "bytes32",
-		  "name": "metaData",
-		  "type": "bytes32"
+		  "internalType": "string",
+		  "name": "newMetaData",
+		  "type": "string"
 		}
 	  ],
 	  "name": "UpdateMetadata",
 	  "type": "event"
 	},
 	{
-	  "inputs": [],
-	  "name": "creatorIDs",
-	  "outputs": [
-		{
-		  "internalType": "uint256",
-		  "name": "",
-		  "type": "uint256"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
 	  "inputs": [
 		{
-		  "internalType": "uint256",
+		  "internalType": "address",
 		  "name": "",
-		  "type": "uint256"
+		  "type": "address"
 		}
 	  ],
 	  "name": "creators",
 	  "outputs": [
-		{
-		  "internalType": "uint256",
-		  "name": "creatorID",
-		  "type": "uint256"
-		},
 		{
 		  "internalType": "address",
 		  "name": "creatorAddress",
@@ -1102,9 +1078,55 @@ let hestiaCreatorAbi = [
 		  "type": "string"
 		},
 		{
-		  "internalType": "bytes32",
+		  "internalType": "string",
 		  "name": "metaData",
-		  "type": "bytes32"
+		  "type": "string"
+		},
+		{
+		  "internalType": "bool",
+		  "name": "active",
+		  "type": "bool"
+		}
+	  ],
+	  "stateMutability": "view",
+	  "type": "function"
+	},
+	{
+	  "inputs": [
+		{
+		  "internalType": "address",
+		  "name": "_creatorAddress",
+		  "type": "address"
+		}
+	  ],
+	  "name": "getCreator",
+	  "outputs": [
+		{
+		  "components": [
+			{
+			  "internalType": "address",
+			  "name": "creatorAddress",
+			  "type": "address"
+			},
+			{
+			  "internalType": "string",
+			  "name": "creatorName",
+			  "type": "string"
+			},
+			{
+			  "internalType": "string",
+			  "name": "metaData",
+			  "type": "string"
+			},
+			{
+			  "internalType": "bool",
+			  "name": "active",
+			  "type": "bool"
+			}
+		  ],
+		  "internalType": "struct HestiaCreator.Creator",
+		  "name": "",
+		  "type": "tuple"
 		}
 	  ],
 	  "stateMutability": "view",
@@ -1118,9 +1140,9 @@ let hestiaCreatorAbi = [
 		  "type": "string"
 		},
 		{
-		  "internalType": "bytes32",
+		  "internalType": "string",
 		  "name": "_metaData",
-		  "type": "bytes32"
+		  "type": "string"
 		}
 	  ],
 	  "name": "registerCreator",
@@ -1131,14 +1153,9 @@ let hestiaCreatorAbi = [
 	{
 	  "inputs": [
 		{
-		  "internalType": "uint256",
-		  "name": "_creatorID",
-		  "type": "uint256"
-		},
-		{
-		  "internalType": "bytes32",
-		  "name": "metaData",
-		  "type": "bytes32"
+		  "internalType": "string",
+		  "name": "_newMetaData",
+		  "type": "string"
 		}
 	  ],
 	  "name": "updateMetaData",
@@ -1146,12 +1163,11 @@ let hestiaCreatorAbi = [
 	  "stateMutability": "nonpayable",
 	  "type": "function"
 	}
-]
-
+  ]
 
 const chainExplorers = {
 	'80001': 'https://mumbai-explorer.matic.today',
-	'97': 'https://data-seed-prebsc-1-s1.binance.org:8545'
+	'97': 'https://testnet.bscscan.com'
 }
 
 const supportedChains = {

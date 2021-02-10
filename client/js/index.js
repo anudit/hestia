@@ -13,7 +13,7 @@ let HestiaCreatorSigned;
 
 window.addEventListener('load', async () => {
 
-    customWeb3 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86');
+    customWeb3 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.matic.today');
     Hestia = new ethers.Contract(hestiaAddress, hestiaAbi, customWeb3.getSigner());
     HestiaCreator = new ethers.Contract(hestiaCreatorAddress, hestiaCreatorAbi, customWeb3.getSigner());
     init();
@@ -219,18 +219,6 @@ async function queryGraphQL(query = '') {
 
 }
 
-function getBytes32FromIpfsHash(ipfsListing) {
-    return "0x" + bs58.decode(ipfsListing).slice(2).toString('hex')
-}
-
-function getIpfsHashFromBytes32(bytes32Hex) {
-const hashHex = "1220" + bytes32Hex.slice(2)
-const hashBytes = buffer.Buffer.from(hashHex, 'hex');
-const hashStr = bs58.encode(hashBytes)
-return hashStr
-}
-
-
 function trimhash(_hash = "", w = 6){
     return _hash.slice(0, w) +"..."+ _hash.slice(_hash.length-w, _hash.length)
 }
@@ -294,4 +282,14 @@ function unescapeHtml(escapedStr) {
     div.innerHTML = escapedStr;
     var child = div.childNodes[0];
     return child ? child.nodeValue : '';
+}
+
+function getParameterByName(name) {
+    url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
 }

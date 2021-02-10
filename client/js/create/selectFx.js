@@ -1,15 +1,5 @@
-/**
- * selectFx.js v1.0.0
- * http://www.codrops.com
- *
- * Licensed under the MIT license.
- * http://www.opensource.org/licenses/mit-license.php
- * 
- * Copyright 2014, Codrops
- * http://www.codrops.com
- */
 ;( function( window ) {
-	
+
 	'use strict';
 
 	/**
@@ -23,12 +13,12 @@
 		}
 		return (el!==false);
 	};
-	
+
 	/**
 	 * extend obj function
 	 */
 	function extend( a, b ) {
-		for( var key in b ) { 
+		for( var key in b ) {
 			if( b.hasOwnProperty( key ) ) {
 				a[key] = b[key];
 			}
@@ -39,7 +29,7 @@
 	/**
 	 * SelectFx function
 	 */
-	function SelectFx( el, options ) {	
+	function SelectFx( el, options ) {
 		this.el = el;
 		this.options = extend( {}, this.options );
 		extend( this.options, options );
@@ -77,13 +67,13 @@
 
 		// all options
 		this.selOpts = [].slice.call( this.selEl.querySelectorAll( 'li[data-option]' ) );
-		
+
 		// total options
 		this.selOptsCount = this.selOpts.length;
-		
+
 		// current index
 		this.current = this.selOpts.indexOf( this.selEl.querySelector( 'li.cs-selected' ) ) || -1;
-		
+
 		// placeholder elem
 		this.selPlaceholder = this.selEl.querySelector( 'span.cs-placeholder' );
 
@@ -225,7 +215,7 @@
 		}
 
 		var tmpcurrent = typeof this.preSelCurrent != 'undefined' && this.preSelCurrent !== -1 ? this.preSelCurrent : this.current;
-		
+
 		if( dir === 'prev' && tmpcurrent > 0 || dir === 'next' && tmpcurrent < this.selOptsCount - 1 ) {
 			// save pre selected current - if we click on option, or press enter, or press space this is going to be the index of the current option
 			this.preSelCurrent = dir === 'next' ? tmpcurrent + 1 : tmpcurrent - 1;
@@ -243,7 +233,7 @@
 	SelectFx.prototype._toggleSelect = function() {
 		// remove focus class if any..
 		this._removeFocus();
-		
+
 		if( this._isOpen() ) {
 			if( this.current !== -1 ) {
 				// update placeholder text
@@ -275,7 +265,7 @@
 
 		// update current selected value
 		this.selPlaceholder.textContent = opt.textContent;
-		
+
 		// change native select element´s value
 		this.el.value = opt.getAttribute( 'data-value' );
 

@@ -12,7 +12,7 @@ pragma solidity >=0.7.6 <0.8.0;
 
 // import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@chainlink/contracts/v0.7/ChainlinkClient.sol";
+import "@chainlink/contracts/src/v0.7/ChainlinkClient.sol";
 import "./StringUtils.sol";
 
 interface IERC20 {

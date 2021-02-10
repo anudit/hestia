@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.7.0;
 
-import "@chainlink/contracts/v0.7/ChainlinkClient.sol";
+import "@chainlink/contracts/src/v0.7/ChainlinkClient.sol";
 import "./StringUtils.sol";
 
 interface IERC20 {

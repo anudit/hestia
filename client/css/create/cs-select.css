@@ -1,9 +1,3 @@
-/* Custom select */
-/* Read the article: http://tympanus.net/codrops/2014/07/10/inspiration-for-custom-select-elements/ */
-/* Demo: http://tympanus.net/Development/SelectInspiration/ */
-/* GitHub: https://github.com/codrops/SelectInspiration */
-
-/* Default custom select styles */
 div.cs-select {
 	display: inline-block;
 	vertical-align: middle;
