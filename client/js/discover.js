@@ -32,8 +32,6 @@ async function setupUI() {
 
 function addSlide(nftData, metaData) {
 
-    console.log(nftData, metaData);
-
     let ele = document.querySelector('.slideshow');
     ele.innerHTML+= `
     <div class="slide">
@@ -126,5 +124,15 @@ async function getAllNFTs(){
 
 
 async function buy(_postId, _price){
-    alert(`Buying ${_postId} for ${_price}`);
+    await requireLogin();
+
+    let price = new ethers.BigNumber.from(_price.toString());
+    let taxRate = 500; //5%
+    let taxAmount = price.mul(taxRate).div(10000);
+    let totalCost = price.add(taxAmount);
+
+    await HestiaSigned.purchasePost(
+        '1',ethers.utils.formatBytes32String('ETH'),
+        {value:totalCost}
+    );
 }

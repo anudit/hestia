@@ -19,7 +19,7 @@ async function setupUI(creatorAddress){
 
     const filter = {
         address: hestiaAddress,
-        fromBlock : "0x9BA808",
+        fromBlock : hestiaBlock,
         topics: [
             ethers.utils.id("NewPost(uint256,address,uint256,string,string)"),
             null,
@@ -28,7 +28,7 @@ async function setupUI(creatorAddress){
     }
     const filter2 = {
         address: hestiaCreatorAddress,
-        fromBlock : "0x9E108E",
+        fromBlock : hestiaCreatorBlock,
         topics: [
             ethers.utils.id("NewCreator(address,string,string,string)"),
             "0x000000000000000000000000" + creatorAddress.slice(2)

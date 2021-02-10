@@ -43,6 +43,66 @@ describe("Hestia", accounts => {
 
         });
 
+        it("Should create New Post via Meta-Txn", async function () {
+            const userNonce = await hestia.nonces(owner.address);
+            expect(userNonce).to.equal('0');
+
+            const typedMessage = {
+                domain:{
+                    name: "Hestia",
+                    version: "1",
+                    chainId : hre.network.config.chainId,
+                    verifyingContract: hestia.address
+                },
+                primaryType: "MetaTransaction",
+                types: {
+                    EIP712Domain: [
+                        { name: "name", type: "string" },
+                        { name: "version", type: "string" },
+                        { name: "chainId", type: "uint256" },
+                        { name: "verifyingContract", type: "address" }
+                    ],
+                    MetaTransaction: [
+                        { name: "nonce", type: "uint256" },
+                        { name: "from", type: "address" }
+                    ]
+                },
+                message: {
+                    nonce: parseInt(userNonce),
+                    from: owner.address
+                },
+            };
+
+            const signature = await hre.network.provider.request({
+                method: "eth_signTypedData_v4",
+                params: [owner.address, typedMessage],
+            });
+            const sig = signature.substring(2);
+            const r = "0x" + sig.substring(0, 64);
+            const s = "0x" + sig.substring(64, 128);
+            const v = parseInt(sig.substring(128, 130), 16).toString();
+
+            let price = ethers.utils.parseEther('1');
+            let taxRate = 500; //5%
+
+            await hestia.createPostMeta(
+                price,
+                (taxRate).toString(),
+                "This is the Post Title",
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws',
+                owner.address, r, s, v
+            );
+
+            expect(await hestia._postIds()).to.equal('1');
+            expect(await hestia._tokenIds()).to.equal('1');
+            expect(await hestia.balanceOf(owner.address)).to.equal('1');
+            let pData = await hestia._posts('1');
+            expect(pData['price']).to.equal(ethers.utils.parseEther('1'));
+            let appData = await hestia.getApproved('1');
+            expect(appData).to.equal(hestia.address);
+
+        });
+
         it("Should purchase Post in ETH", async () => {
 
             let price = ethers.utils.parseEther('1');
@@ -144,6 +204,62 @@ describe("Hestia", accounts => {
             );
 
             await hestia.likePost('1');
+
+            expect(await hestia._postLikedByAddress('1', owner.address)).to.eq(true);
+
+        });
+
+        it("Should like a post via Meta-Txn", async function () {
+            const userNonce = await hestia.nonces(owner.address);
+            expect(userNonce).to.equal('0');
+
+            const typedMessage = {
+                domain:{
+                    name: "Hestia",
+                    version: "1",
+                    chainId : hre.network.config.chainId,
+                    verifyingContract: hestia.address
+                },
+                primaryType: "MetaTransaction",
+                types: {
+                    EIP712Domain: [
+                        { name: "name", type: "string" },
+                        { name: "version", type: "string" },
+                        { name: "chainId", type: "uint256" },
+                        { name: "verifyingContract", type: "address" }
+                    ],
+                    MetaTransaction: [
+                        { name: "nonce", type: "uint256" },
+                        { name: "from", type: "address" }
+                    ]
+                },
+                message: {
+                    nonce: parseInt(userNonce),
+                    from: owner.address
+                },
+            };
+
+            const signature = await hre.network.provider.request({
+                method: "eth_signTypedData_v4",
+                params: [owner.address, typedMessage],
+            });
+            const sig = signature.substring(2);
+            const r = "0x" + sig.substring(0, 64);
+            const s = "0x" + sig.substring(64, 128);
+            const v = parseInt(sig.substring(128, 130), 16).toString();
+
+            let price = ethers.utils.parseEther('1');
+            let taxRate = 500; //5%
+
+            await hestia.createPostMeta(
+                price,
+                (taxRate).toString(),
+                "This is the Post Title",
+                'QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws',
+                owner.address, r, s, v
+            );
+
+            await hestia.likePostMeta('1', owner.address, r, s, v);
 
             expect(await hestia._postLikedByAddress('1', owner.address)).to.eq(true);
 

@@ -1,6 +1,7 @@
-let hestiaAddress = "0x0096726c2Bda88063236D4C7E61Eea0c618eaFd2";
-let hestiaCreatorAddress = "0xAD068b9E6344574C107f93De5922386036215Afb";
-let hestiaBlock = "10201096";
+let hestiaAddress = "0x847E33E81c4A94bf3c8D9cE355CadB25817B3Ef7";
+let hestiaCreatorAddress = "0xA92eEe5a804eDcB8A963066756e4fEc0FB07FAD7";
+let hestiaBlock = "0x9E395B";
+let hestiaCreatorBlock = "0x9E395D";
 let covalent_key = "ckey_4f1b1d6c4659448faf00c83e597";
 let graphqlEndpoint = "https://graphql.bitquery.io";
 let hestiaAbi = [
@@ -1094,47 +1095,6 @@ let hestiaCreatorAbi = [
 	{
 	  "inputs": [
 		{
-		  "internalType": "address",
-		  "name": "_creatorAddress",
-		  "type": "address"
-		}
-	  ],
-	  "name": "getCreator",
-	  "outputs": [
-		{
-		  "components": [
-			{
-			  "internalType": "address",
-			  "name": "creatorAddress",
-			  "type": "address"
-			},
-			{
-			  "internalType": "string",
-			  "name": "creatorName",
-			  "type": "string"
-			},
-			{
-			  "internalType": "string",
-			  "name": "metaData",
-			  "type": "string"
-			},
-			{
-			  "internalType": "bool",
-			  "name": "active",
-			  "type": "bool"
-			}
-		  ],
-		  "internalType": "struct HestiaCreator.Creator",
-		  "name": "",
-		  "type": "tuple"
-		}
-	  ],
-	  "stateMutability": "view",
-	  "type": "function"
-	},
-	{
-	  "inputs": [
-		{
 		  "internalType": "string",
 		  "name": "_creatorName",
 		  "type": "string"
@@ -1163,7 +1123,7 @@ let hestiaCreatorAbi = [
 	  "stateMutability": "nonpayable",
 	  "type": "function"
 	}
-  ]
+]
 
 const chainExplorers = {
 	'80001': 'https://mumbai-explorer.matic.today',

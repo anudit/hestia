@@ -1,8 +1,8 @@
-// Sources flattened with hardhat v2.0.8 https://hardhat.org
+// Sources flattened with hardhat v2.0.9 https://hardhat.org
 
-// File @openzeppelin/contracts/utils/Context.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/utils/Context.sol@v3.4.0
 
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-3.0
 
 pragma solidity >=0.6.0 <0.8.0;
 
@@ -28,10 +28,10 @@ abstract contract Context {
 }
 
 
-// File @openzeppelin/contracts/introspection/IERC165.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/introspection/IERC165.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -55,10 +55,10 @@ interface IERC165 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/token/ERC721/IERC721.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.2 <0.8.0;
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
@@ -185,10 +185,10 @@ interface IERC721 is IERC165 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.2 <0.8.0;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
@@ -213,10 +213,10 @@ interface IERC721Metadata is IERC721 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.2 <0.8.0;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional enumeration extension
@@ -243,10 +243,10 @@ interface IERC721Enumerable is IERC721 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 /**
  * @title ERC721 token receiver interface
@@ -267,10 +267,10 @@ interface IERC721Receiver {
 }
 
 
-// File @openzeppelin/contracts/introspection/ERC165.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/introspection/ERC165.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -289,7 +289,7 @@ abstract contract ERC165 is IERC165 {
      */
     mapping(bytes4 => bool) private _supportedInterfaces;
 
-    constructor () {
+    constructor () internal {
         // Derived contracts need only register support for their own interfaces,
         // we register support for ERC165 itself here
         _registerInterface(_INTERFACE_ID_ERC165);
@@ -322,10 +322,10 @@ abstract contract ERC165 is IERC165 {
 }
 
 
-// File @openzeppelin/contracts/math/SafeMath.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/math/SafeMath.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -539,10 +539,10 @@ library SafeMath {
 }
 
 
-// File @openzeppelin/contracts/utils/Address.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/utils/Address.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.2 <0.8.0;
 
 /**
  * @dev Collection of functions related to the address type
@@ -731,10 +731,10 @@ library Address {
 }
 
 
-// File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 /**
  * @dev Library for managing
@@ -1031,10 +1031,10 @@ library EnumerableSet {
 }
 
 
-// File @openzeppelin/contracts/utils/EnumerableMap.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/utils/EnumerableMap.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 /**
  * @dev Library for managing an enumerable variant of Solidity's
@@ -1300,10 +1300,10 @@ library EnumerableMap {
 }
 
 
-// File @openzeppelin/contracts/utils/Strings.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/utils/Strings.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 /**
  * @dev String operations.
@@ -1337,10 +1337,10 @@ library Strings {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/ERC721.sol@v3.4.0-solc-0.7
+// File @openzeppelin/contracts/token/ERC721/ERC721.sol@v3.4.0
 
 
-pragma solidity ^0.7.0;
+pragma solidity >=0.6.0 <0.8.0;
 
 
 
@@ -1428,7 +1428,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor (string memory name_, string memory symbol_) {
+    constructor (string memory name_, string memory symbol_) public {
         _name = name_;
         _symbol = symbol_;
 
@@ -1811,7 +1811,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
 }
 
 
-// File @chainlink/contracts/v0.7/vendor/BufferChainlink.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/vendor/BufferChainlink.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2116,7 +2116,7 @@ library BufferChainlink {
 }
 
 
-// File @chainlink/contracts/v0.7/vendor/CBORChainlink.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/vendor/CBORChainlink.sol@v0.1.6
 
 pragma solidity >= 0.4.19;
 
@@ -2207,7 +2207,7 @@ library CBORChainlink {
 }
 
 
-// File @chainlink/contracts/v0.7/Chainlink.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/Chainlink.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2335,7 +2335,7 @@ library Chainlink {
 }
 
 
-// File @chainlink/contracts/v0.7/interfaces/ENSInterface.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/interfaces/ENSInterface.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2365,7 +2365,7 @@ interface ENSInterface {
 }
 
 
-// File @chainlink/contracts/v0.7/interfaces/LinkTokenInterface.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/interfaces/LinkTokenInterface.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2385,7 +2385,7 @@ interface LinkTokenInterface {
 }
 
 
-// File @chainlink/contracts/v0.7/interfaces/ChainlinkRequestInterface.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/interfaces/ChainlinkRequestInterface.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2410,7 +2410,7 @@ interface ChainlinkRequestInterface {
 }
 
 
-// File @chainlink/contracts/v0.7/interfaces/PointerInterface.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/interfaces/PointerInterface.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2419,7 +2419,7 @@ interface PointerInterface {
 }
 
 
-// File @chainlink/contracts/v0.7/vendor/ENSResolver.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/vendor/ENSResolver.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2428,7 +2428,7 @@ abstract contract ENSResolver {
 }
 
 
-// File @chainlink/contracts/v0.7/ChainlinkClient.sol@v0.1.4
+// File @chainlink/contracts/src/v0.7/ChainlinkClient.sol@v0.1.6
 
 pragma solidity ^0.7.0;
 
@@ -2609,28 +2609,28 @@ contract ChainlinkClient {
    * @param ensAddress The address of the ENS contract
    * @param node The ENS node hash
    */
-//   function useChainlinkWithENS(address ensAddress, bytes32 node)
-//     internal
-//   {
-//     ens = ENSInterface(ensAddress);
-//     ensNode = node;
-//     bytes32 linkSubnode = keccak256(abi.encodePacked(ensNode, ENS_TOKEN_SUBNAME));
-//     ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(linkSubnode));
-//     setChainlinkToken(resolver.addr(linkSubnode));
-//     updateChainlinkOracleWithENS();
-//   }
+  function useChainlinkWithENS(address ensAddress, bytes32 node)
+    internal
+  {
+    ens = ENSInterface(ensAddress);
+    ensNode = node;
+    bytes32 linkSubnode = keccak256(abi.encodePacked(ensNode, ENS_TOKEN_SUBNAME));
+    ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(linkSubnode));
+    setChainlinkToken(resolver.addr(linkSubnode));
+    updateChainlinkOracleWithENS();
+  }
 
-//   /**
-//    * @notice Sets the stored oracle contract with the address resolved by ENS
-//    * @dev This may be called on its own as long as `useChainlinkWithENS` has been called previously
-//    */
-//   function updateChainlinkOracleWithENS()
-//     internal
-//   {
-//     bytes32 oracleSubnode = keccak256(abi.encodePacked(ensNode, ENS_ORACLE_SUBNAME));
-//     ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(oracleSubnode));
-//     setChainlinkOracle(resolver.addr(oracleSubnode));
-//   }
+  /**
+   * @notice Sets the stored oracle contract with the address resolved by ENS
+   * @dev This may be called on its own as long as `useChainlinkWithENS` has been called previously
+   */
+  function updateChainlinkOracleWithENS()
+    internal
+  {
+    bytes32 oracleSubnode = keccak256(abi.encodePacked(ensNode, ENS_ORACLE_SUBNAME));
+    ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(oracleSubnode));
+    setChainlinkOracle(resolver.addr(oracleSubnode));
+  }
 
   /**
    * @notice Encodes the request to be sent to the oracle contract

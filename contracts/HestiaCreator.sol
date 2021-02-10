@@ -7,7 +7,7 @@
 
 ===============================*/
 
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-3.0
 pragma solidity >=0.7.6 <0.8.0;
 pragma abicoder v2;
 
@@ -46,9 +46,5 @@ contract HestiaCreator {
         require(creators[msg.sender].active == true, "HestiaCreator: Creator not registered.");
         creators[msg.sender].metaData = _newMetaData;
         emit UpdateMetadata(msg.sender, _newMetaData);
-    }
-
-    function getCreator(address _creatorAddress) public view returns (Creator memory){
-        return creators[_creatorAddress];
     }
 }

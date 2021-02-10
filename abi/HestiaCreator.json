@@ -91,47 +91,6 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_creatorAddress",
-        "type": "address"
-      }
-    ],
-    "name": "getCreator",
-    "outputs": [
-      {
-        "components": [
-          {
-            "internalType": "address",
-            "name": "creatorAddress",
-            "type": "address"
-          },
-          {
-            "internalType": "string",
-            "name": "creatorName",
-            "type": "string"
-          },
-          {
-            "internalType": "string",
-            "name": "metaData",
-            "type": "string"
-          },
-          {
-            "internalType": "bool",
-            "name": "active",
-            "type": "bool"
-          }
-        ],
-        "internalType": "struct HestiaCreator.Creator",
-        "name": "",
-        "type": "tuple"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "string",
         "name": "_creatorName",
         "type": "string"

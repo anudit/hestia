@@ -36,16 +36,16 @@ Because of these opposing pressures, NFT owners can’t set impossibly high pric
  - [Binance Smart Chain Testnet (97)](https://testnet.bscscan.com)
 ```json
 {
-  "80001": {
-    "HestiaSuperApp": "0x0096726c2Bda88063236D4C7E61Eea0c618eaFd2",
-    "HestiaCreator": "0xAD068b9E6344574C107f93De5922386036215Afb",
-    "Dai": "0xE670111cab95CCf8ED48694bF536081AFb2A6137"
+  "80001":{
+      "HestiaSuperApp":"0x847E33E81c4A94bf3c8D9cE355CadB25817B3Ef7",
+      "HestiaCreator":"0xA92eEe5a804eDcB8A963066756e4fEc0FB07FAD7",
+      "Dai":"0xc951EDBFc31E77e6c808dC7E396A64430f484A46"
   },
- "97": {
-  "HestiaSuperApp": "0x87cB7856E9195EF062b51cf5711503e14719b60D",
-  "HestiaCreator": "0xa44Db34E0869334016FEe0ED8e4Fdb8c8F816656",
-  "Dai": "0xE24aC999d5A210fD3e0523db31CA84a3c0c87141"
- }
+  "97":{
+      "HestiaSuperApp":"0x2DA6a4A11133644257A87bC02b5b9edEB30e5E3F",
+      "HestiaCreator":"0xCC150eCc4f50a9628A659dcEe3e3F4c0661cdfE7",
+      "Dai":"0x37c2BB4A23FF220eDAAeC316cBe4c52db6dfD960"
+  }
 }
 ```
 

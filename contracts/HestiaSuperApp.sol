@@ -7,7 +7,7 @@
 
 ===============================*/
 
-// SPDX-License-Identifier: MIT
+// SPDX-License-Identifier: AGPL-3.0
 pragma solidity >=0.7.6 <0.8.0;
 
 // import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";

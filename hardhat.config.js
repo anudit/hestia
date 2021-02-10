@@ -32,6 +32,7 @@ module.exports = {
   },
   networks: {
     hardhat: {
+      chainId: 80001,
       saveDeployments: true,
       accounts: mnemonic ? { mnemonic } : undefined
     },

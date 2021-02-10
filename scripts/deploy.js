@@ -39,6 +39,8 @@ async function main() {
     const dai = await Dai.deploy(hre.network.config.chainId);
     await hestia.addNewToken(ethers.utils.formatBytes32String('DAI'), dai.address);
 
+    await hestiaCreator.registerCreator('Saito Kareshi', 'QmTDKAGkgBsKscHwtPjFYsdnxw7ZrJgDhrCcRRXwVkRGFk');
+
     let price = ethers.utils.parseEther('1');
     let taxRate = 500; //5%
 

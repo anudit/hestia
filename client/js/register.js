@@ -1,8 +1,17 @@
 let storage;
 
 async function init(){
-    requireLogin();
     storage = IpfsHttpClientLite({apiUrl: 'https://ipfs.infura.io:5001'});
+
+    await requireLogin();
+
+    let creatorData = await HestiaCreatorSigned.queryFilter(
+        HestiaCreator.filters.NewCreator(accounts[0]), parseInt(hestiaCreatorBlock), 99999999
+    );
+
+    if (creatorData.length >= 1){
+        window.location.href = './create.html';
+    }
 }
 
 async function registerCreator(){
