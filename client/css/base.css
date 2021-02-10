@@ -380,6 +380,16 @@ a:focus {
 	opacity: 0;
 }
 
+.content__buy {
+    margin-left: 10px;
+    background: #c7c3c3;
+    border: none;
+    border-radius: 10px;
+    font-size: 12px;
+    padding: 2px 7px;
+
+}
+
 .emp {
 	color: #fff;
 	font-weight: bold;

@@ -8,6 +8,19 @@
 	font-size: 15px;
 }
 
+@font-face {
+	font-family: 'Swear Variable';
+	src: url('../../fonts/SwearRomanVariable.woff2') format("woff2-variations");
+	font-style: normal;
+	font-weight: 1 999;
+}
+@font-face {
+	font-family: 'Swear Variable';
+	src: url('../../fonts/SwearItalicVariable.woff2') format("woff2-variations");
+	font-style: italic;
+	font-weight: 1 999;
+}
+
 body {
 	margin: 0;
 	--color-text: #111;
@@ -16,7 +29,7 @@ body {
 	--color-link-hover: #000;
 	color: var(--color-text);
 	background-color: var(--color-bg);
-	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Helvetica, Arial, sans-serif;
+	font-family: 'Swear Variable', 'Times New Roma', serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	position: relative;
@@ -162,12 +175,13 @@ a:focus {
 }
 
 .frame__title {
-	font-size: 1rem;
+	font-size: 2rem;
 	margin: 0 0 1rem;
 	font-weight: normal;
 }
 
 .frame__links {
+	font-size: 1rem;
 	display: inline;
 }
 

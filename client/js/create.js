@@ -10,12 +10,14 @@ async function init(){
     var reader = new FileReader();
     reader.onload = async function (e) {
         console.log("Uploading..");
+        document.querySelector('#mintBtn').innerText = 'Uploading Artwork, Please Wait.';
         let uintBuffer = new Uint8Array(reader.result);
         storage.add(uintBuffer, (err, result) => {
             console.log(err, result);
             if (!err){
                 fileHash = result[0].hash;
                 sendIPFSPinningRequests(result[0].hash, sanitize(document.querySelector('#new_title').value));
+                document.querySelector('#mintBtn').innerText = 'Mint it!';
             }
             else{
                 console.log(err);
@@ -44,10 +46,10 @@ async function init(){
   await requireLogin();
 
   creatorData = await HestiaCreatorSigned.queryFilter(
-    HestiaCreator.filters.NewCreator(null, provider.selectedAddress), 10201096, 99999999
+    HestiaCreator.filters.NewCreator(accounts[0]), 10201096, 99999999
   );
 
-  if (creatorData.length <1){
+  if (creatorData.length < 1){
     window.location.href = './register.html';
   }
   else {
@@ -68,8 +70,8 @@ async function mintDatNft() {
     const uint8Buffer = enc.encode(JSON.stringify(
         {
             "author":creatorName,
-            "title": sanitize(document.querySelector('#new_name').value),
-            "description":sanitize(document.querySelector('#new_about').value)
+            "title": sanitize(document.querySelector('#new_title').value),
+            "description":sanitize(document.querySelector('#new_desc').value)
         }
     ));
     storage.add(uint8Buffer, async (err, result) => {

@@ -4,15 +4,18 @@ async function init(){
         setupUI(getParameterByName('creator'));
     }
     else {
-        await requireLogin();
-        setupUI(accounts[0]);
+        document.body.classList.remove('loading');
+        requireLogin().then(()=>{
+            document.body.classList.add('loading');
+            setupUI(accounts[0]);
+        });
     }
 
 }
 
 async function setupUI(creatorAddress){
 
-    console.log('Fectching Data for ', creatorAddress);
+    console.log('Fectching Data for : ', creatorAddress);
 
     const filter = {
         address: hestiaAddress,
@@ -44,6 +47,9 @@ async function setupUI(creatorAddress){
         )
     }
 
+    if (res[1].length == 0){
+        window.location.href= "./create.html";
+    }
     let parsedCreator =  HestiaCreator.interface.decodeEventLog('NewCreator', res[1][0].data, res[1][0].topics );
     document.querySelector('#creatorName').innerText = parsedCreator.creatorNameString;
     document.querySelector('#creatorAddress').innerText = trimAdd(creatorAddress);

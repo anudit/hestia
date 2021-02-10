@@ -54,10 +54,12 @@ function addSlide(nftData, metaData) {
         <div class="content__item">
             <span class="content__number">#${nftData._postId}</span>
             <h3 class="content__title">${metaData.title}</h3>
-            <h4 class="content__subtitle" style="cursor:pointer;">${metaData.author}
+            <h4 class="content__subtitle" style="cursor:pointer;" >
+                ${metaData.author}
                 <a href="./gallery.html?creator=${nftData['_creator']}" style="vertical-align: middle; display: inline-block" title="View Artist Gallery">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></svg>
                 </a>
+                <button class="content__buy" onclick="buy(${nftData._postId.toString()}, ${nftData['_price'].toString()})">Buy for ${ethers.utils.formatEther(nftData['_price'])} ETH</button>
             </h4>
             <div class="content__text">${metaData.description}</div>
         </div>
@@ -120,4 +122,9 @@ async function getAllNFTs(){
     let promiseArray= [getAllNFTsMatic()];
     const res = await Promise.all(promiseArray);
     return res[0];
+}
+
+
+async function buy(_postId, _price){
+    alert(`Buying ${_postId} for ${_price}`);
 }
