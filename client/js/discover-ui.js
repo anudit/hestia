@@ -1,3 +1,4 @@
+let slideshow;
 function setupBase(){
     // From http://www.quirksmode.org/js/events_properties.html#position
     // Get the mouse position.
@@ -575,6 +576,6 @@ function setupBase(){
     let allowTilt = true;
 
     // Init slideshow.
-    const slideshow = new Slideshow(document.querySelector('.slideshow'));
+    slideshow = new Slideshow(document.querySelector('.slideshow'));
 
 }

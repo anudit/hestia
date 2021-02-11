@@ -381,13 +381,16 @@ a:focus {
 }
 
 .content__buy {
-    margin-left: 10px;
-    background: #c7c3c3;
+	margin-left: 10px;
+    background: #f7f7f7;
     border: none;
-    border-radius: 10px;
-    font-size: 12px;
-    padding: 2px 7px;
+    border-radius: 2px;
+    font-size: 15px;
+    padding: 7px 10px;
+}
 
+.content__buy:hover {
+    background: #c2c2c2;
 }
 
 .emp {

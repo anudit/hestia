@@ -39,50 +39,56 @@ async function main() {
     const dai = await Dai.deploy(hre.network.config.chainId);
     await hestia.addNewToken(ethers.utils.formatBytes32String('DAI'), dai.address);
 
-    await hestiaCreator.registerCreator('Saito Kareshi', 'QmTDKAGkgBsKscHwtPjFYsdnxw7ZrJgDhrCcRRXwVkRGFk');
+    if (hre.network.config.chainId == "80001") {
+        await hestiaCreator.registerCreator('Saito Kareshi', 'QmTDKAGkgBsKscHwtPjFYsdnxw7ZrJgDhrCcRRXwVkRGFk');
 
-    let price = ethers.utils.parseEther('1');
-    let taxRate = 500; //5%
+        let price = ethers.utils.parseEther('1');
+        let taxRate = 500; //5%
 
-    // Birth of an Idea
-    await hestia.createPost(
-        price,
-        (taxRate).toString(),
-        "QmY6VMrktkKLWvUZQwxaBn4zdd19yjeiN3KeUygx3kcRZ3",
-        'Qmc9vCaihZWEytsSPQMc3Pgs9XUMBPxwoYehdxAEJDMMMM'
-    );
+        // Birth of an Idea
+        await hestia.createPost(
+            price,
+            (taxRate).toString(),
+            "QmY6VMrktkKLWvUZQwxaBn4zdd19yjeiN3KeUygx3kcRZ3",
+            'Qmc9vCaihZWEytsSPQMc3Pgs9XUMBPxwoYehdxAEJDMMMM'
+        );
 
-    // Diamond Excellence
-    await hestia.createPost(
-        price,
-        (taxRate).toString(),
-        "QmNcXENu5U4JAeLBkFQVHZ4EopfxR63QNJNv4Lqt49c1dd",
-        'QmQfeEafnKB2A7i5mKUfE7oQ52VvjQeJtXN8NgtjjDsw6a'
-    );
+        // Diamond Excellence
+        await hestia.createPost(
+            price,
+            (taxRate).toString(),
+            "QmNcXENu5U4JAeLBkFQVHZ4EopfxR63QNJNv4Lqt49c1dd",
+            'QmQfeEafnKB2A7i5mKUfE7oQ52VvjQeJtXN8NgtjjDsw6a'
+        );
 
-    // Discover Your Hidden Talent
-    await hestia.createPost(
-        price,
-        (taxRate).toString(),
-        "QmYNpScxujZ6G4VLdXcwgYFo3qMm1kNkEpgSEWTrcXNhTn",
-        'QmSfLd5bfFBwKymuqyQQ3SGFi8CqqgYDtzrz6hXTJLqkX2'
-    );
+        // Discover Your Hidden Talent
+        await hestia.createPost(
+            price,
+            (taxRate).toString(),
+            "QmYNpScxujZ6G4VLdXcwgYFo3qMm1kNkEpgSEWTrcXNhTn",
+            'QmSfLd5bfFBwKymuqyQQ3SGFi8CqqgYDtzrz6hXTJLqkX2'
+        );
 
-    // Íkaros
-    await hestia.createPost(
-        price,
-        (taxRate).toString(),
-        "QmRdTukCCEc4NWrZVfuN1ZTaFNXpxPQcY8pRxDRiq9rk7C",
-        'QmbwkgeAK1SXcfKnDekvv5SGk1VBD2KKfaUZ57rgZyn68C'
-    );
+        // Íkaros
+        await hestia.createPost(
+            price,
+            (taxRate).toString(),
+            "QmRdTukCCEc4NWrZVfuN1ZTaFNXpxPQcY8pRxDRiq9rk7C",
+            'QmbwkgeAK1SXcfKnDekvv5SGk1VBD2KKfaUZ57rgZyn68C'
+        );
 
-    // Oddly Satisfying
-    await hestia.createPost(
-        price,
-        (taxRate).toString(),
-        "QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws",
-        'QmdT6tJk3CrXyQqoBnkMQBWMPom9YCQJru1FzYikcxB3GN'
-    );
+        // Oddly Satisfying
+        await hestia.createPost(
+            price,
+            (taxRate).toString(),
+            "QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws",
+            'QmdT6tJk3CrXyQqoBnkMQBWMPom9YCQJru1FzYikcxB3GN'
+        );
+    }
+    else if (hre.network.config.chainId == "97") {
+        await hestiaCreator.registerCreator('26th Dimension', 'QmTDKAGkgBsKscHwtPjFYsdnxw7ZrJgDhrCcRRXwVkRGFk');
+
+    }
 
     let net = hre.network.config.chainId.toString();
     console.log("%j", {

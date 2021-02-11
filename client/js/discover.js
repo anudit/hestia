@@ -52,17 +52,21 @@ function addSlide(nftData, metaData) {
         <div class="content__item">
             <span class="content__number">#${nftData._postId}</span>
             <h3 class="content__title">${metaData.title}</h3>
-            <h4 class="content__subtitle" style="cursor:pointer;" >
-                ${metaData.author}
-                <a href="./gallery.html?creator=${nftData['_creator']}" style="vertical-align: middle; display: inline-block" title="View Artist Gallery">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></svg>
-                </a>
+            <div class="content__subtitle" style="cursor:pointer;" >
+                <h1 style="margin:2px" onclick="window.location.href = './gallery.html?creator=${nftData['_creator']}'" title="View Artist Gallery">
+                    ${metaData.author}
+                    <a style="vertical-align: baseline; display: inline-block">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></svg>
+                    </a>
+                </h1>
+                <br/>
                 <button class="content__buy" onclick="buy(${nftData._postId.toString()}, ${nftData['_price'].toString()})">Buy for ${ethers.utils.formatEther(nftData['_price'])} ETH</button>
-            </h4>
+                <button class="content__buy" id='like-${nftData._postId}' onclick="like(${nftData._postId.toString()})">0 Likes</button>
+            </div>
             <div class="content__text">${metaData.description}</div>
         </div>
     `;
-
+    setupLikes(nftData._postId);
 }
 
 async function fetchNFTMetaData(ipfshash) {
@@ -116,6 +120,16 @@ async function getAllNFTsMatic(){
 }
 
 
+async function setupLikes(_postId){
+    let likes = await Hestia.queryFilter(
+        Hestia.filters.PostLiked(parseInt(_postId)), parseInt(block_numbers[customWeb3._network.chainId]), parseInt(block_numbers[customWeb3._network.chainId])
+    );
+    document.querySelector(`#like-${_postId}`).innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style=" position: relative; padding-top: 4px; "><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z"/></svg>
+        ${likes.length+100} Likes
+    `;
+}
+
 async function getAllNFTs(){
     let promiseArray= [getAllNFTsMatic()];
     const res = await Promise.all(promiseArray);
@@ -135,4 +149,70 @@ async function buy(_postId, _price){
         '1',ethers.utils.formatBytes32String('ETH'),
         {value:totalCost}
     );
+}
+
+
+async function like(_postId){
+    await requireLogin();
+
+    let domainData = {
+        name: "Hestia",
+        version: "1",
+        chainId : "80001",
+        verifyingContract: contract_addresses[customWeb3.network.chainId]['HestiaSuperApp']
+    };
+
+    const metaTransactionType = [
+        { name: "nonce", type: "uint256" },
+        { name: "from", type: "address" }
+    ];
+
+    const domainType = [
+        { name: "name", type: "string" },
+        { name: "version", type: "string" },
+        { name: "chainId", type: "uint256" },
+        { name: "verifyingContract", type: "address" }
+    ];
+
+    const nonce = await HestiaSigned.nonces(accounts[0]);
+
+    let message = {};
+    message.nonce = parseInt(nonce);
+    message.from = accounts[0];
+
+    const dataToSign = JSON.stringify({
+        types: {
+            EIP712Domain: domainType,
+            MetaTransaction: metaTransactionType
+        },
+        domain: domainData,
+        primaryType: "MetaTransaction",
+        message: message
+    });
+
+    console.log(dataToSign);
+
+    provider.sendAsync(
+        {
+           jsonrpc: "2.0",
+           id: 999999999999,
+           method: "eth_signTypedData_v4",
+           params: [accounts[0], dataToSign]
+        },
+        async (err, result)=>{
+            if (err) {
+                return console.error(err);
+            }
+            const signature = result.result.substring(2);
+            const r = "0x" + signature.substring(0, 64);
+            const s = "0x" + signature.substring(64, 128);
+            const v = parseInt(signature.substring(128, 130), 16);
+
+            let data = await HestiaSigned.likePostMeta(_postId, accounts[0], r, s, v);
+            document.querySelector(`#like-${_postId}`).innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style=" position: relative; padding-top: 4px; "><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z"/></svg>
+                ${parseInt(document.querySelector(`#like-${_postId}`).innerText.replace('Likes', ''))+1} Likes
+            `;
+            console.log(data);
+        });
 }

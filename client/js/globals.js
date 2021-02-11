@@ -1134,3 +1134,28 @@ const supportedChains = {
 	'80001': 'Matic Network Mumbai Testnet',
 	'97': 'Binance Smart Chain Testnet'
 }
+
+const contract_addresses = {
+	"80001":{
+		"HestiaSuperApp":"0x847E33E81c4A94bf3c8D9cE355CadB25817B3Ef7",
+		"HestiaCreator":"0xA92eEe5a804eDcB8A963066756e4fEc0FB07FAD7",
+		"Dai":"0xc951EDBFc31E77e6c808dC7E396A64430f484A46"
+	},
+	"97":{
+		"HestiaSuperApp":"0x2DA6a4A11133644257A87bC02b5b9edEB30e5E3F",
+		"HestiaCreator":"0xCC150eCc4f50a9628A659dcEe3e3F4c0661cdfE7",
+		"Dai":"0x37c2BB4A23FF220eDAAeC316cBe4c52db6dfD960"
+	}
+}
+
+const block_numbers = {
+	"80001":{
+		"HestiaSuperApp":"0x9E395B",
+		"HestiaCreator":"0x9E395D"
+	},
+	"97":{
+		"HestiaSuperApp":"0x5E31F4",
+		"HestiaCreator":"0x5E31F5",
+	}
+}
+

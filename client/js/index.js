@@ -1,7 +1,7 @@
 let Hestia;
 let HestiaCreator;
 let customWeb3;
-
+let biconomy;
 const Web3Modal = window.Web3Modal.default;
 const Portis = window.Portis;
 let web3Modal;
@@ -14,8 +14,8 @@ let HestiaCreatorSigned;
 window.addEventListener('load', async () => {
 
     customWeb3 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.matic.today');
-    Hestia = new ethers.Contract(hestiaAddress, hestiaAbi, customWeb3.getSigner());
-    HestiaCreator = new ethers.Contract(hestiaCreatorAddress, hestiaCreatorAbi, customWeb3.getSigner());
+    Hestia = new ethers.Contract(contract_addresses['80001']['HestiaSuperApp'], hestiaAbi, customWeb3.getSigner());
+    HestiaCreator = new ethers.Contract(contract_addresses['80001']['HestiaCreator'], hestiaCreatorAbi, customWeb3.getSigner());
     init();
 
 });
@@ -67,12 +67,13 @@ async function requireLogin(){
         }
 
         accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        // const biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
-        modalWeb3 = new ethers.providers.Web3Provider(ethereum);
+        biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
+        modalWeb3 = new ethers.providers.Web3Provider(biconomy);
 
         window.netId = parseInt(ethereum.chainId);
 
         if(Object.keys(supportedChains).includes(netId.toString()) === false){
+            alert('Please switch to Matic Mumbai Testnet or Binance Smart Chain Testnet.')
             let alHtml = '<ul class="list-group list-group">';
             Object.keys(supportedChains).forEach((chainID)=>{
                 alHtml+=`<li class="list-group-item">${supportedChains[chainID]}</li>`
@@ -98,72 +99,16 @@ async function requireLogin(){
     window.modalWeb3 = modalWeb3;
 }
 
-function setupContracts(accounts = [], net){
-    HestiaSigned = new ethers.Contract(hestiaAddress, hestiaAbi, modalWeb3.getSigner());
-    HestiaCreatorSigned = new ethers.Contract(hestiaCreatorAddress, hestiaCreatorAbi, modalWeb3.getSigner());
+function setupContracts(accounts, netId){
+    HestiaSigned = new ethers.Contract(
+        contract_addresses[netId.toString()]['HestiaSuperApp'],
+        hestiaAbi, modalWeb3.getSigner()
+    );
+    HestiaCreatorSigned = new ethers.Contract(
+        contract_addresses[netId.toString()]['HestiaCreator'],
+        hestiaCreatorAbi, modalWeb3.getSigner()
+    );
     window.accounts = accounts;
-}
-
-
-
-async function call(msg ="yolo"){
-
-    let domainData = {
-        name: "Quote",
-        version: "1",
-        chainId : "80001",
-        verifyingContract: quoteAddress
-    };
-
-    const metaTransactionType = [
-        { name: "nonce", type: "uint256" },
-        { name: "from", type: "address" }
-    ];
-
-    const domainType = [
-        { name: "name", type: "string" },
-        { name: "version", type: "string" },
-        { name: "chainId", type: "uint256" },
-        { name: "verifyingContract", type: "address" }
-    ];
-
-    const nonce = await Quote.nonces(accounts[0]);
-
-    let message = {};
-    message.nonce = parseInt(nonce);
-    message.from = accounts[0];
-
-    const dataToSign = JSON.stringify({
-        types: {
-            EIP712Domain: domainType,
-            MetaTransaction: metaTransactionType
-        },
-        domain: domainData,
-        primaryType: "MetaTransaction",
-        message: message
-    });
-
-    console.log(dataToSign);
-
-    web3.provider.sendAsync(
-        {
-           jsonrpc: "2.0",
-           id: 999999999999,
-           method: "eth_signTypedData_v4",
-           params: [accounts[0], dataToSign]
-        },
-        async (err, result)=>{
-            if (err) {
-                return console.error(err);
-            }
-            const signature = result.result.substring(2);
-            const r = "0x" + signature.substring(0, 64);
-            const s = "0x" + signature.substring(64, 128);
-            const v = parseInt(signature.substring(128, 130), 16);
-
-            let data = await Quote.setQuoteMeta(accounts[0], msg, r, s, v);
-            console.log(data);
-        });
 }
 
 async function getLatestMaticBlockNumber(){
