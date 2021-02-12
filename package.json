@@ -10,7 +10,7 @@
     "client": "npx static-server ./client -p 80",
     "test": "npx hardhat test",
     "flatten": "npx hardhat flatten ./contracts/HestiaSuperApp.sol > flat.sol",
-    "testInProd": "npx hardhat test --network matic"
+    "check": "npm run test && npm run deploy:local"
   },
   "repository": {
     "type": "git",
@@ -34,7 +34,7 @@
     "dotenv": "^8.2.0",
     "ethereum-waffle": "^3.2.2",
     "ethers": "^5.0.30",
-    "hardhat": "^2.0.9",
+    "hardhat": "^2.0.10",
     "hardhat-abi-exporter": "^2.0.8",
     "hardhat-contract-sizer": "^2.0.2",
     "hardhat-gas-reporter": "^1.0.4"

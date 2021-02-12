@@ -18,8 +18,8 @@ async function setupUI(creatorAddress){
     console.log('Fectching Data for : ', creatorAddress);
 
     const filter = {
-        address: hestiaAddress,
-        fromBlock : hestiaBlock,
+        address: contract_addresses[netId.toString()]['HestiaSuperApp'],
+        fromBlock : parseInt(block_numbers[customWeb3._network.chainId]['HestiaSuperApp']),
         topics: [
             ethers.utils.id("NewPost(uint256,address,uint256,string,string)"),
             null,
@@ -27,8 +27,8 @@ async function setupUI(creatorAddress){
         ]
     }
     const filter2 = {
-        address: hestiaCreatorAddress,
-        fromBlock : hestiaCreatorBlock,
+        address: contract_addresses[netId.toString()]['HestiaCreator'],
+        fromBlock : parseInt(block_numbers[customWeb3._network.chainId]['HestiaCreator']),
         topics: [
             ethers.utils.id("NewCreator(address,string,string,string)"),
             "0x000000000000000000000000" + creatorAddress.slice(2)

@@ -46,14 +46,14 @@ async function init(){
   await requireLogin();
 
   creatorData = await HestiaCreatorSigned.queryFilter(
-    HestiaCreator.filters.NewCreator(accounts[0]), 10201096, 99999999
+    HestiaCreatorSigned.filters.NewCreator(accounts[0]), 10201096, 'latest'
   );
 
   if (creatorData.length < 1){
     window.location.href = './register.html';
   }
   else {
-    let decoded = HestiaCreatorSigned.interface.decodeEventLog('NewCreator', creatorData[0].data, creatorData[0].topics);
+    let decoded = HestiaCreator.interface.decodeEventLog('NewCreator', creatorData[0].data, creatorData[0].topics);
     creatorName = decoded.creatorNameString;
   }
 

@@ -262,7 +262,6 @@ describe("Hestia", accounts => {
             await hestia.likePostMeta('1', owner.address, r, s, v);
 
             expect(await hestia._postLikedByAddress('1', owner.address)).to.eq(true);
-
         });
     });
 
@@ -285,9 +284,6 @@ describe("Hestia", accounts => {
             );
 
             await hestiaCreator.updateMetaData('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNU2');
-
-            let cData2 = await hestiaCreator.creators(owner.address);
-            expect(cData2['metaData']).to.equal('QmZGvbHuaiUpt7gQqtjQoZL46d2hFrCoZFBDxaCYz8NNU2');
         });
 
     });

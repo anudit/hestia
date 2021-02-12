@@ -398,6 +398,11 @@
         "type": "string"
       },
       {
+        "internalType": "uint256",
+        "name": "likes",
+        "type": "uint256"
+      },
+      {
         "internalType": "bool",
         "name": "exists",
         "type": "bool"

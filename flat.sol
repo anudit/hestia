@@ -1,8 +1,7 @@
-// Sources flattened with hardhat v2.0.9 https://hardhat.org
+// Sources flattened with hardhat v2.0.10 https://hardhat.org
+// SPDX-License-Identifier: AGPL-3.0
 
 // File @openzeppelin/contracts/utils/Context.sol@v3.4.0
-
-// SPDX-License-Identifier: AGPL-3.0
 
 pragma solidity >=0.6.0 <0.8.0;
 
@@ -2609,28 +2608,28 @@ contract ChainlinkClient {
    * @param ensAddress The address of the ENS contract
    * @param node The ENS node hash
    */
-  function useChainlinkWithENS(address ensAddress, bytes32 node)
-    internal
-  {
-    ens = ENSInterface(ensAddress);
-    ensNode = node;
-    bytes32 linkSubnode = keccak256(abi.encodePacked(ensNode, ENS_TOKEN_SUBNAME));
-    ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(linkSubnode));
-    setChainlinkToken(resolver.addr(linkSubnode));
-    updateChainlinkOracleWithENS();
-  }
+//   function useChainlinkWithENS(address ensAddress, bytes32 node)
+//     internal
+//   {
+//     ens = ENSInterface(ensAddress);
+//     ensNode = node;
+//     bytes32 linkSubnode = keccak256(abi.encodePacked(ensNode, ENS_TOKEN_SUBNAME));
+//     ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(linkSubnode));
+//     setChainlinkToken(resolver.addr(linkSubnode));
+//     updateChainlinkOracleWithENS();
+//   }
 
   /**
    * @notice Sets the stored oracle contract with the address resolved by ENS
    * @dev This may be called on its own as long as `useChainlinkWithENS` has been called previously
    */
-  function updateChainlinkOracleWithENS()
-    internal
-  {
-    bytes32 oracleSubnode = keccak256(abi.encodePacked(ensNode, ENS_ORACLE_SUBNAME));
-    ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(oracleSubnode));
-    setChainlinkOracle(resolver.addr(oracleSubnode));
-  }
+//   function updateChainlinkOracleWithENS()
+//     internal
+//   {
+//     bytes32 oracleSubnode = keccak256(abi.encodePacked(ensNode, ENS_ORACLE_SUBNAME));
+//     ENSResolver_Chainlink resolver = ENSResolver_Chainlink(ens.resolver(oracleSubnode));
+//     setChainlinkOracle(resolver.addr(oracleSubnode));
+//   }
 
   /**
    * @notice Encodes the request to be sent to the oracle contract
@@ -2824,6 +2823,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
         uint256 taxrate; // 5% = 0.05 * 10000 = 500
         uint256 lastTaxCollected;
         string postData;
+        uint256 likes;
         bool exists;
     }
 
@@ -2937,7 +2937,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
         internal
     {
         _postIds++;
-        _posts[_postIds] = Post(creator, creator, price, taxrate, block.timestamp,  postData, true);
+        _posts[_postIds] = Post(creator, creator, price, taxrate, block.timestamp, postData, 0, true);
 
         _tokenIds++;
 
@@ -3097,6 +3097,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
 
     function _handleLikePost(uint256 postId, address liker) internal {
         _postLikedByAddress[postId][liker] = true;
+        _posts[postId].likes += 1;
         emit PostLiked(postId, liker);
     }
 }

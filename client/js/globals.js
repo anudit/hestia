@@ -1,7 +1,3 @@
-let hestiaAddress = "0x847E33E81c4A94bf3c8D9cE355CadB25817B3Ef7";
-let hestiaCreatorAddress = "0xA92eEe5a804eDcB8A963066756e4fEc0FB07FAD7";
-let hestiaBlock = "0x9E395B";
-let hestiaCreatorBlock = "0x9E395D";
 let covalent_key = "ckey_4f1b1d6c4659448faf00c83e597";
 let graphqlEndpoint = "https://graphql.bitquery.io";
 let hestiaAbi = [
@@ -402,6 +398,11 @@ let hestiaAbi = [
 		  "internalType": "string",
 		  "name": "postData",
 		  "type": "string"
+		},
+		{
+		  "internalType": "uint256",
+		  "name": "likes",
+		  "type": "uint256"
 		},
 		{
 		  "internalType": "bool",
@@ -1137,9 +1138,9 @@ const supportedChains = {
 
 const contract_addresses = {
 	"80001":{
-		"HestiaSuperApp":"0x847E33E81c4A94bf3c8D9cE355CadB25817B3Ef7",
-		"HestiaCreator":"0xA92eEe5a804eDcB8A963066756e4fEc0FB07FAD7",
-		"Dai":"0xc951EDBFc31E77e6c808dC7E396A64430f484A46"
+		"HestiaSuperApp":"0x4Cd184936bE618611e4e0c97824A358a7491e6E6",
+		"HestiaCreator":"0x501c128E0dAe21813412FFE85B41d1774DAFF73A",
+		"Dai":"0x583B8bbAfcD1FE9200D4cf81dD7349D0A4367d89"
 	},
 	"97":{
 		"HestiaSuperApp":"0x2DA6a4A11133644257A87bC02b5b9edEB30e5E3F",
@@ -1150,8 +1151,8 @@ const contract_addresses = {
 
 const block_numbers = {
 	"80001":{
-		"HestiaSuperApp":"0x9E395B",
-		"HestiaCreator":"0x9E395D"
+		"HestiaSuperApp":"0x9EF6BD",
+		"HestiaCreator":"0x9EF6BE"
 	},
 	"97":{
 		"HestiaSuperApp":"0x5E31F4",

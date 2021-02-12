@@ -90,6 +90,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
         uint256 taxrate; // 5% = 0.05 * 10000 = 500
         uint256 lastTaxCollected;
         string postData;
+        uint256 likes;
         bool exists;
     }
 
@@ -203,7 +204,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
         internal
     {
         _postIds++;
-        _posts[_postIds] = Post(creator, creator, price, taxrate, block.timestamp,  postData, true);
+        _posts[_postIds] = Post(creator, creator, price, taxrate, block.timestamp, postData, 0, true);
 
         _tokenIds++;
 
@@ -363,6 +364,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
 
     function _handleLikePost(uint256 postId, address liker) internal {
         _postLikedByAddress[postId][liker] = true;
+        _posts[postId].likes += 1;
         emit PostLiked(postId, liker);
     }
 }

@@ -6,7 +6,9 @@ async function init(){
     await requireLogin();
 
     let creatorData = await HestiaCreatorSigned.queryFilter(
-        HestiaCreator.filters.NewCreator(accounts[0]), parseInt(hestiaCreatorBlock), 99999999
+        HestiaCreator.filters.NewCreator(accounts[0]),
+        parseInt(block_numbers[customWeb3._network.chainId]['HestiaSuperApp']),
+        'latest'
     );
 
     if (creatorData.length >= 1){

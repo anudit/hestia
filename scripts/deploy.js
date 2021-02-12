@@ -66,7 +66,7 @@ async function main() {
             price,
             (taxRate).toString(),
             "QmYNpScxujZ6G4VLdXcwgYFo3qMm1kNkEpgSEWTrcXNhTn",
-            'QmSfLd5bfFBwKymuqyQQ3SGFi8CqqgYDtzrz6hXTJLqkX2'
+            'QmRDCKcXWnxERp6TSN9Tzbzkwb4VvH71iWAByQEtkA3dL9'
         );
 
         // Íkaros
@@ -84,10 +84,26 @@ async function main() {
             "QmdEtRcb1rUvmQsbFcByo3orf9pMxC2sp3ejUX9mTnVYws",
             'QmdT6tJk3CrXyQqoBnkMQBWMPom9YCQJru1FzYikcxB3GN'
         );
+
+        await hestia.likePost('1');
+        await hestia.likePost('2');
+        await hestia.likePost('3');
     }
     else if (hre.network.config.chainId == "97") {
-        await hestiaCreator.registerCreator('26th Dimension', 'QmTDKAGkgBsKscHwtPjFYsdnxw7ZrJgDhrCcRRXwVkRGFk');
+        await hestiaCreator.registerCreator('26th Dimension', 'QmS2vax4EE4H9ZmkQbMo1te3RJf76KbULhkbk8tcQDwWqY');
 
+        let price = ethers.utils.parseEther('1');
+        let taxRate = 500; //5%
+
+        // Genesis XXVI
+        await hestia.createPost(
+            price,
+            (taxRate).toString(),
+            "QmVPb3gcosr9nn3LvnzZPBCYC8Mt5iD7ex9XoH6M8ExvcX",
+            'QmZJ9cFkj2LmtTcuP3drekMwiJux9oNs12uLu6SLMJCNPm'
+        );
+
+        await hestia.likePost('1');
     }
 
     let net = hre.network.config.chainId.toString();
