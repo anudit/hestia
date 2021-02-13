@@ -1143,8 +1143,8 @@ const contract_addresses = {
 		"Dai":"0x583B8bbAfcD1FE9200D4cf81dD7349D0A4367d89"
 	},
 	"97":{
-		"HestiaSuperApp":"0x2DA6a4A11133644257A87bC02b5b9edEB30e5E3F",
-		"HestiaCreator":"0xCC150eCc4f50a9628A659dcEe3e3F4c0661cdfE7",
+		"HestiaSuperApp":"0x11bF559434F083B079a9f08B0Cd6c8909EdfC2f6",
+		"HestiaCreator":"0x4dbe238caec21d370ed83370357f5423340e44a0",
 		"Dai":"0x37c2BB4A23FF220eDAAeC316cBe4c52db6dfD960"
 	}
 }
@@ -1155,8 +1155,8 @@ const block_numbers = {
 		"HestiaCreator":"0x9EF6BE"
 	},
 	"97":{
-		"HestiaSuperApp":"0x5E31F4",
-		"HestiaCreator":"0x5E31F5",
+		"HestiaSuperApp":"0x5EEEB1",
+		"HestiaCreator":"0x5EDE26",
 	}
 }
 

@@ -67,7 +67,12 @@ async function requireLogin(){
         }
 
         accounts = await ethereum.request({ method: 'eth_requestAccounts' });
-        biconomy = new Biconomy(ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
+        biconomy = new Biconomy(window.ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
+        biconomy.onEvent(biconomy.READY, () => {
+            // Initialize your dapp here like getting user accounts etc
+        }).onEvent(biconomy.ERROR, (error, message) => {
+            console.log(error, message);
+        });
         modalWeb3 = new ethers.providers.Web3Provider(biconomy);
 
         window.netId = parseInt(ethereum.chainId);

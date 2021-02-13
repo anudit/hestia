@@ -18,8 +18,8 @@ async function setupUI(creatorAddress){
     console.log('Fectching Data for : ', creatorAddress);
 
     const filter = {
-        address: contract_addresses[netId.toString()]['HestiaSuperApp'],
-        fromBlock : parseInt(block_numbers[customWeb3._network.chainId]['HestiaSuperApp']),
+        address: contract_addresses['80001']['HestiaSuperApp'],
+        fromBlock : parseInt(block_numbers['80001']['HestiaSuperApp']),
         topics: [
             ethers.utils.id("NewPost(uint256,address,uint256,string,string)"),
             null,
@@ -27,8 +27,8 @@ async function setupUI(creatorAddress){
         ]
     }
     const filter2 = {
-        address: contract_addresses[netId.toString()]['HestiaCreator'],
-        fromBlock : parseInt(block_numbers[customWeb3._network.chainId]['HestiaCreator']),
+        address: contract_addresses['80001']['HestiaCreator'],
+        fromBlock : parseInt(block_numbers['80001']['HestiaCreator']),
         topics: [
             ethers.utils.id("NewCreator(address,string,string,string)"),
             "0x000000000000000000000000" + creatorAddress.slice(2)
@@ -37,7 +37,6 @@ async function setupUI(creatorAddress){
 
     let promiseArray= [customWeb3.getLogs(filter), customWeb3.getLogs(filter2)];
     const res = await Promise.all(promiseArray);
-
 
     let rs = []
     for (let index = 0; index < res[0].length; index++) {
@@ -53,7 +52,7 @@ async function setupUI(creatorAddress){
     let parsedCreator =  HestiaCreator.interface.decodeEventLog('NewCreator', res[1][0].data, res[1][0].topics );
     document.querySelector('#creatorName').innerText = parsedCreator.creatorNameString;
     document.querySelector('#creatorAddress').innerText = trimAdd(creatorAddress);
-    document.querySelector('#creatorAddress').setAttribute('href', `${chainExplorers[customWeb3._network.chainId]}/address/${creatorAddress}`);
+    document.querySelector('#creatorAddress').setAttribute('href', `${chainExplorers[customWeb3.network.chainId]}/address/${creatorAddress}`);
 
 
     let promiseArray2 = [];

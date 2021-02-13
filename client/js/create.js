@@ -46,7 +46,9 @@ async function init(){
   await requireLogin();
 
   creatorData = await HestiaCreatorSigned.queryFilter(
-    HestiaCreatorSigned.filters.NewCreator(accounts[0]), 10201096, 'latest'
+    HestiaCreatorSigned.filters.NewCreator(accounts[0]),
+    parseInt(block_numbers[customWeb3._network.chainId]['HestiaSuperApp']),
+    'latest'
   );
 
   if (creatorData.length < 1){
@@ -87,8 +89,6 @@ async function mintDatNft() {
     })
 
   }
-
-
 
 }
 

@@ -5,15 +5,29 @@ async function init(){
 async function setupUI() {
 
     getAllNFTs().then(async (nfts)=>{
+        let maticNfts = nfts[0];
 
         let nftMetaDatas = [];
-        for (let index = 0; index < nfts.length; index++) {
-            nftMetaDatas.push(fetchNFTMetaData(nfts[index]._metaData));
+        for (let index = 0; index < maticNfts.length; index++) {
+            nftMetaDatas.push(fetchNFTMetaData(maticNfts[index]._metaData));
         }
-        const nftMetaDataList = await Promise.all(nftMetaDatas);
+        let nftMetaDataList = await Promise.all(nftMetaDatas);
 
-        for (let index = 0; index < nfts.length; index++) {
-            addSlide(nfts[index], nftMetaDataList[index]);
+        for (let index = 0; index < maticNfts.length; index++) {
+            addSlide(maticNfts[index], nftMetaDataList[index], 'Matic Network');
+        }
+
+        let bscNfts = nfts[1];
+
+        nftMetaDatas = [];
+        for (let index = 0; index < bscNfts.length; index++) {
+            nftMetaDatas.push(fetchNFTMetaData(bscNfts[index]._metaData));
+        }
+
+        nftMetaDataList = await Promise.all(nftMetaDatas);
+        console.log(nftMetaDataList);
+        for (let index = 0; index < bscNfts.length; index++) {
+            addSlide(bscNfts[index], nftMetaDataList[index], 'Binance Smart Chain');
         }
 
         let eleC = document.querySelector('.content');
@@ -24,13 +38,14 @@ async function setupUI() {
             </svg>
         </button>
         `;
-        document.body.classList.remove('loading');
+
         setupBase();
+        document.body.classList.remove('loading');
 
     });
 }
 
-function addSlide(nftData, metaData) {
+function addSlide(nftData, metaData, network) {
 
     let ele = document.querySelector('.slideshow');
     ele.innerHTML+= `
@@ -42,7 +57,7 @@ function addSlide(nftData, metaData) {
             <div class="slide__title-wrap">
                 <span class="slide__number">#${nftData._postId}</span>
                 <h3 class="slide__title">${metaData.title}</h3>
-                <h4 class="slide__subtitle emp">${metaData.author}</h4>
+                <h4 class="slide__subtitle emp">${metaData.author} // ${network}</h4>
             </div>
         </div>
     `;
@@ -53,7 +68,7 @@ function addSlide(nftData, metaData) {
             <span class="content__number">#${nftData._postId}</span>
             <h3 class="content__title">${metaData.title}</h3>
             <div class="content__subtitle" style="cursor:pointer;" >
-                <h1 style="margin:2px" onclick="window.location.href = './gallery.html?creator=${nftData['_creator']}'" title="View Artist Gallery">
+                <h1 style="margin:2px" onclick="window.location.href = './gallery.html?creator=${nftData['_creator']}&chain=matic'" title="View Artist Gallery">
                     ${metaData.author}
                     <a style="vertical-align: baseline; display: inline-block">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="#fff" d="M21 13v10h-21v-19h12v2h-10v15h17v-8h2zm3-12h-10.988l4.035 4-6.977 7.07 2.828 2.828 6.977-7.07 4.125 4.172v-11z"/></svg>
@@ -119,22 +134,74 @@ async function getAllNFTsMatic(){
     return result;
 }
 
+async function getAllNFTsBsc(){
+
+    let promise = new Promise((res, rej) => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+
+        var raw = JSON.stringify({
+            "method": "eth_getLogs",
+            "params": [
+                {
+                    "topics": [
+                        [
+                            "0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963", // NewPost
+                        ]
+                    ],
+                    "fromBlock": block_numbers['97']['HestiaSuperApp'],
+                    "toBlock": "latest",
+                    "address": contract_addresses['97']['HestiaSuperApp']
+                }
+            ],
+            "id": 1,
+            "jsonrpc": "2.0"
+        });
+
+        var requestOptions = {
+            method: 'POST',
+            headers: myHeaders,
+            body: raw,
+            redirect: 'follow'
+        };
+
+        fetch("https://data-seed-prebsc-1-s1.binance.org:8545/", requestOptions)
+        .then(response => response.json())
+        .then(result => {
+            let rs = []
+            for (let index = 0; index < result['result'].length; index++) {
+                const log = result['result'][index];
+                rs.push(
+                    Hestia.interface.decodeEventLog('NewPost', log.data, log.topics )
+                )
+            }
+            res(rs);
+        })
+        .catch((error) => {
+            rej(error);
+        });
+    });
+
+    let result = await promise;
+    return result;
+}
+
+async function getAllNFTs(){
+    let promiseArray= [getAllNFTsMatic(),getAllNFTsBsc()];
+    const res = await Promise.all(promiseArray);
+    return res;
+}
+
 async function setupLikes(_postId){
     let likes = await Hestia.queryFilter(
         Hestia.filters.PostLiked(parseInt(_postId)),
-        parseInt(block_numbers[customWeb3._network.chainId]['HestiaSuperApp']),
+        parseInt(block_numbers[customWeb3.network.chainId]['HestiaSuperApp']),
         'latest'
     );
     document.querySelector(`#like-${_postId}`).innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style=" position: relative; padding-top: 4px; "><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z"/></svg>
         ${likes.length} Likes
     `;
-}
-
-async function getAllNFTs(){
-    let promiseArray= [getAllNFTsMatic()];
-    const res = await Promise.all(promiseArray);
-    return res[0];
 }
 
 async function buy(_postId, _price){
@@ -189,8 +256,6 @@ async function like(_postId){
         message: message
     });
 
-    console.log(dataToSign);
-
     provider.sendAsync(
         {
            jsonrpc: "2.0",
@@ -212,7 +277,6 @@ async function like(_postId){
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style=" position: relative; padding-top: 4px; "><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z"/></svg>
                 ${parseInt(document.querySelector(`#like-${_postId}`).innerText.replace('Likes', ''))+1} Likes
             `;
-            console.log(data);
         }
     );
 }
