@@ -102,32 +102,53 @@ async function fetchNFTMetaData(ipfshash) {
 
 async function getAllNFTsMatic(){
 
-    let promise = new Promise((res, rej) => {
-        fetch("https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86", {
-        "headers": {
-            "content-type": "application/json",
-        },
-        "body": "{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":43,\"jsonrpc\":\"2.0\"}",
-        "method": "POST",
-        })
-        .then(response => response.json())
-        .then(blk => {
-            fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963/?starting-block=${parseInt(blk['result'])-1000000}&key=${covalent_key}&ending-block=${parseInt(blk['result'])}`)
-            .then(response => response.json())
-            .then(data => {
-                let rs = []
-                for (let index = 0; index < data.data.items.length; index++) {
-                    const element = data.data.items[index];
-                    rs.push(
-                        Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
-                    )
-                }
-                res(rs);
-            })
-            .catch((error) => {
-                rej(error);
-            });
-        });
+    let promise = new Promise(async (res, rej) => {
+        // fetch("https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86", {
+        // "headers": {
+        //     "content-type": "application/json",
+        // },
+        // "body": "{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":43,\"jsonrpc\":\"2.0\"}",
+        // "method": "POST",
+        // })
+        // .then(response => response.json())
+        // .then(blk => {
+        //     fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963/?starting-block=${parseInt(blk['result'])-1000000}&key=${covalent_key}&ending-block=${parseInt(blk['result'])}`)
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         let rs = []
+        //         for (let index = 0; index < data.data.items.length; index++) {
+        //             const element = data.data.items[index];
+        //             rs.push(
+        //                 Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
+        //             )
+        //         }
+        //         res(rs);
+        //     })
+        //     .catch((error) => {
+        //         rej(error);
+        //     });
+        // });
+
+        const filter = {
+            address: contract_addresses['80001']['HestiaSuperApp'],
+            fromBlock : parseInt(block_numbers['80001']['HestiaSuperApp']),
+            topics: [
+                ethers.utils.id("NewPost(uint256,address,uint256,string,string)"),
+                null,
+                "0x000000000000000000000000" + "0x707aC3937A9B31C225D8C240F5917Be97cab9F20".slice(2)
+            ]
+        }
+
+        let data = await customWeb3.getLogs(filter);
+        let rs = []
+        for (let index = 0; index < data.length; index++) {
+            const element = data[index];
+            rs.push(
+                Hestia.interface.decodeEventLog('NewPost', element.data, element.topics )
+            )
+        }
+        res(rs);
+
 
     });
     let result = await promise;
@@ -165,7 +186,7 @@ async function getAllNFTsBsc(){
             redirect: 'follow'
         };
 
-        fetch("https://data-seed-prebsc-1-s1.binance.org:8545/", requestOptions)
+        fetch("https://data-seed-prebsc-1-s3.binance.org:8545/", requestOptions)
         .then(response => response.json())
         .then(result => {
             let rs = []
