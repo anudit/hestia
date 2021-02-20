@@ -103,32 +103,38 @@ async function fetchNFTMetaData(ipfshash) {
 async function getAllNFTsMatic(){
 
     let promise = new Promise(async (res, rej) => {
-        // fetch("https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86", {
-        // "headers": {
-        //     "content-type": "application/json",
-        // },
-        // "body": "{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":43,\"jsonrpc\":\"2.0\"}",
-        // "method": "POST",
-        // })
-        // .then(response => response.json())
-        // .then(blk => {
-        //     fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963/?starting-block=${parseInt(blk['result'])-1000000}&key=${covalent_key}&ending-block=${parseInt(blk['result'])}`)
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         let rs = []
-        //         for (let index = 0; index < data.data.items.length; index++) {
-        //             const element = data.data.items[index];
-        //             rs.push(
-        //                 Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
-        //             )
-        //         }
-        //         res(rs);
-        //     })
-        //     .catch((error) => {
-        //         rej(error);
-        //     });
-        // });
+        /*
+        fetch("https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86", {
+        "headers": {
+            "content-type": "application/json",
+        },
+        "body": "{\"method\":\"eth_blockNumber\",\"params\":[],\"id\":43,\"jsonrpc\":\"2.0\"}",
+        "method": "POST",
+        })
+        .then(response => response.json())
+        .then(blk => {
 
+        });
+
+        */
+
+        fetch(`https://api.covalenthq.com/v1/80001/events/topics/0x00881029852f701094ba3300d669b657719c1820386ba9cb78d605800aeb4963/?starting-block=${parseInt(block_numbers['80001']['HestiaSuperApp'])}&key=${covalent_key}&ending-block=${parseInt(block_numbers['80001']['HestiaSuperApp'])+1000000}`)
+        .then(response => response.json())
+        .then(data => {
+            let rs = []
+            for (let index = 0; index < data.data.items.length; index++) {
+                const element = data.data.items[index];
+                rs.push(
+                    Hestia.interface.decodeEventLog('NewPost', element.raw_log_data, element.raw_log_topics )
+                )
+            }
+            res(rs);
+        })
+        .catch((error) => {
+            rej(error);
+        });
+
+        /*
         const filter = {
             address: contract_addresses['80001']['HestiaSuperApp'],
             fromBlock : parseInt(block_numbers['80001']['HestiaSuperApp']),
@@ -148,6 +154,7 @@ async function getAllNFTsMatic(){
             )
         }
         res(rs);
+        */
 
 
     });
@@ -277,6 +284,11 @@ async function like(_postId){
         message: message
     });
 
+    document.querySelector(`#like-${_postId}`).innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style=" position: relative; padding-top: 4px; "><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z"/></svg>
+                ${parseInt(document.querySelector(`#like-${_postId}`).innerText.replace('Likes', ''))+1} Likes
+            `;
+
     provider.sendAsync(
         {
            jsonrpc: "2.0",
@@ -294,10 +306,7 @@ async function like(_postId){
             const v = parseInt(signature.substring(128, 130), 16);
 
             let data = await HestiaSigned.likePostMeta(_postId, accounts[0], r, s, v);
-            document.querySelector(`#like-${_postId}`).innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" style=" position: relative; padding-top: 4px; "><path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z"/></svg>
-                ${parseInt(document.querySelector(`#like-${_postId}`).innerText.replace('Likes', ''))+1} Likes
-            `;
+
         }
     );
 }
