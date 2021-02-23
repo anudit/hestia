@@ -11,12 +11,26 @@ let selectedAccount;
 let HestiaSigned;
 let HestiaCreatorSigned;
 
+let ercForwarderClient;
+let permitClient;
+
 window.addEventListener('load', async () => {
 
     customWeb3 = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.matic.today');
     Hestia = new ethers.Contract(contract_addresses['80001']['HestiaSuperApp'], hestiaAbi, customWeb3.getSigner());
     HestiaCreator = new ethers.Contract(contract_addresses['80001']['HestiaCreator'], hestiaCreatorAbi, customWeb3.getSigner());
-    init();
+    await init();
+
+    console.clear();
+    console.log(`
+    ██╗  ██╗███████╗███████╗████████╗██╗ █████╗
+    ██║  ██║██╔════╝██╔════╝╚══██╔══╝██║██╔══██╗
+    ███████║█████╗  ███████╗   ██║   ██║███████║
+    ██╔══██║██╔══╝  ╚════██║   ██║   ██║██╔══██║
+    ██║  ██║███████╗███████║   ██║   ██║██║  ██║
+    ╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚═╝╚═╝  ╚═╝
+            Made with ❤ by Anudit Nagar
+    `);
 
 });
 
@@ -70,6 +84,8 @@ async function requireLogin(){
         biconomy = new Biconomy(window.ethereum,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
         biconomy.onEvent(biconomy.READY, () => {
             // Initialize your dapp here like getting user accounts etc
+            ercForwarderClient = biconomy.erc20ForwarderClient;
+            permitClient = biconomy.permitClient;
         }).onEvent(biconomy.ERROR, (error, message) => {
             console.log(error, message);
         });
@@ -93,8 +109,8 @@ async function requireLogin(){
     }
     else if (provider.isPortis === true){
         accounts = await provider.enable();
-        // const biconomy = new Biconomy(provider,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
-        modalWeb3 = new ethers.providers.Web3Provider(provider);
+        const biconomy = new Biconomy(provider,{apiKey: "zgMOuSoVm.ee90efe8-31d3-4416-88f0-cae22db150f5"});
+        modalWeb3 = new ethers.providers.Web3Provider(biconomy);
         setupContracts(accounts, '80001');
     }
     else {

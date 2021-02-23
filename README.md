@@ -11,24 +11,23 @@ NFT owners are incentivized to set a low price to minimize the amount taxes they
 
 Because of these opposing pressures, NFT owners can’t set impossibly high prices nor refuse reasonably priced offers. This creates a more efficient and equitable market. Additionally, it provides Creators on Hestia with a continuous revenue stream with the taxes payed by the owners.
 
-
 **In conjuction with the economical model Hestia offers,**
 
 ⚡ Lightning fast transactions powered Matic Network.
 
-⛽ Gasless creation and sale of NFTs powered by Biconomy.
+⛽ Gasless creation and sale of NFTs powered by Biconomy, pay gas in any token like DAI via Biconomy Forward.
 
 🌊 Seamless streaming of annual taxes powered by Superfluid SuperApp contracts and streams.
 
-🔗 Send and Receive payments in any token with external API calls powered by Chainlink Oracles and,
+🔗 Buy and Sell NFTs using any approved token with external API calls used to validate prices powered by Chainlink Oracles.
 
 💱 Realtime cryptocurrency spot exchange rates for our Smart Contracts and Frontend powered by 1Inch Exchange API.
 
-🌐 Seamless logins without any additional requirements powered by Portis.
+🌐 Seamless logins without any additional extensions powered by Portis.
 
-📊 Realtime data of contract state powered by Covalent.
+📊 Realtime data of contract events powered by Covalent.
 
-🔀 Intercompatible with Binance Smart Chain, fetching data from Bitquery.
+🔀 Intercompatible with Binance Smart Chain, fetching realtime data from Bitquery.
 
 ### Contract Releases
 
@@ -36,15 +35,15 @@ Because of these opposing pressures, NFT owners can’t set impossibly high pric
  - [Binance Smart Chain Testnet (97)](https://testnet.bscscan.com)
 ```json
 {
-  "80001":{
-    "HestiaSuperApp":"0x4Cd184936bE618611e4e0c97824A358a7491e6E6",
-    "HestiaCreator":"0x501c128E0dAe21813412FFE85B41d1774DAFF73A",
-    "Dai":"0x583B8bbAfcD1FE9200D4cf81dD7349D0A4367d89"
+  "80001": {
+    "HestiaSuperApp": "0xd7c84657b037B2239d198B09F213b750eeBedB54",
+    "HestiaCreator": "0x0F90019Bf0dc234D4f7e43E6C8dE46DBbb52F664",
+    "Dai": "0x1bFEfC304d79Ca135BFef9d483f9BceFA32416f7"
   },
   "97":{
-      "HestiaSuperApp":"0x11bF559434F083B079a9f08B0Cd6c8909EdfC2f6",
-      "HestiaCreator":"0xCC150eCc4f50a9628A659dcEe3e3F4c0661cdfE7",
-      "Dai":"0x37c2BB4A23FF220eDAAeC316cBe4c52db6dfD960"
+    "HestiaSuperApp":"0x62c9083f7f9c461eb1986ab20e6814b27d59092c",
+    "HestiaCreator":"0x363d2c0d90c7f18f69b5029ebb0ce038f8f877ea",
+    "Dai":"0x436817b0c7c7234bf94cd7fb57793fc6f5685a68"
   }
 }
 ```

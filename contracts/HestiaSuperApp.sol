@@ -14,6 +14,7 @@ pragma solidity >=0.7.6 <0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@chainlink/contracts/src/v0.7/ChainlinkClient.sol";
 import "./StringUtils.sol";
+import "./BaseRelayRecipient.sol";
 
 interface IERC20 {
     function balanceOf(address account) external view returns (uint256);
@@ -46,7 +47,7 @@ contract HestiaMeta {
     ));
 }
 
-contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, RedirectAll*/ {
+contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils, BaseRelayRecipient/*, RedirectAll*/ {
 
     address owner;
 
@@ -169,6 +170,15 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     {
         require(price > 0, "Hestia:Price cannot be 0");
         handleCreatePost(price, taxrate, postData, metaData, msg.sender);
+    }
+
+    function createPostForwarder(
+        uint256 price, uint256 taxrate, string memory postData, string memory metaData
+    )
+        public
+    {
+        require(price > 0, "Hestia:Price cannot be 0");
+        handleCreatePost(price, taxrate, postData, metaData, _msgSenderForwarder());
     }
 
     function createPostMeta(
@@ -351,6 +361,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
 
         require(liker != address(0), "Hestia:invalid-address-0");
         require(liker == ecrecover(digest, v, r, s), "Hestia:invalid-signatures");
+        require(_postLikedByAddress[postId][liker] == false, "Hestia:Post already liked by address.");
         _handleLikePost(postId, liker);
     }
 

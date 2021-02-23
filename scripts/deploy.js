@@ -29,15 +29,26 @@ async function main() {
     const HestiaSuperApp = await ethers.getContractFactory("HestiaSuperApp");
     const hestiaSuperApp = await HestiaSuperApp.deploy(sf.host.address, sf.agreements.cfa.address, daix.address);
     console.log(hestiaSuperApp.address)
-    */
+   */
 
     const HestiaSuperApp = await ethers.getContractFactory("HestiaSuperApp");
     const hestia = await HestiaSuperApp.deploy();
+
     const HestiaCreator = await ethers.getContractFactory("HestiaCreator");
     const hestiaCreator = await HestiaCreator.deploy();
     const Dai = await ethers.getContractFactory("Dai");
     const dai = await Dai.deploy(hre.network.config.chainId);
     await hestia.addNewToken(ethers.utils.formatBytes32String('DAI'), dai.address);
+
+    let net = hre.network.config.chainId.toString();
+
+    console.log(JSON.stringify({
+        [net]: {
+            "HestiaSuperApp": hestia.address,
+            "HestiaCreator": hestiaCreator.address,
+            "Dai": dai.address
+        }
+    }, null, 2));
 
     if (hre.network.config.chainId == "80001") {
         await hestiaCreator.registerCreator('Saito Kareshi', 'QmTDKAGkgBsKscHwtPjFYsdnxw7ZrJgDhrCcRRXwVkRGFk');
@@ -61,7 +72,7 @@ async function main() {
             'QmQfeEafnKB2A7i5mKUfE7oQ52VvjQeJtXN8NgtjjDsw6a'
         );
 
-        // Discover Your Hidden Talent
+        // Discover Your Hidden Talent !
         await hestia.createPost(
             price,
             (taxRate).toString(),
@@ -106,14 +117,6 @@ async function main() {
         await hestia.likePost('1');
     }
 
-    let net = hre.network.config.chainId.toString();
-    console.log("%j", {
-        [net]: {
-            "HestiaSuperApp": hestia.address,
-            "HestiaCreator": hestiaCreator.address,
-            "Dai": dai.address
-        }
-    });
 }
 
 main()

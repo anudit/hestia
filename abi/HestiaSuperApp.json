@@ -541,6 +541,34 @@
         "internalType": "string",
         "name": "metaData",
         "type": "string"
+      }
+    ],
+    "name": "createPostForwarder",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "price",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "taxrate",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "postData",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "metaData",
+        "type": "string"
       },
       {
         "internalType": "address",
@@ -619,6 +647,25 @@
       }
     ],
     "name": "isApprovedForAll",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "forwarder",
+        "type": "address"
+      }
+    ],
+    "name": "isTrustedForwarder",
     "outputs": [
       {
         "internalType": "bool",
@@ -973,6 +1020,19 @@
     "name": "transferFrom",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "trustedForwarder",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {

@@ -25,7 +25,7 @@ async function setupUI() {
         }
 
         nftMetaDataList = await Promise.all(nftMetaDatas);
-        console.log(nftMetaDataList);
+        // console.log(nftMetaDataList);
         for (let index = 0; index < bscNfts.length; index++) {
             addSlide(bscNfts[index], nftMetaDataList[index], 'Binance Smart Chain');
         }

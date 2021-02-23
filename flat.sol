@@ -1,7 +1,8 @@
 // Sources flattened with hardhat v2.0.10 https://hardhat.org
-// SPDX-License-Identifier: AGPL-3.0
 
-// File @openzeppelin/contracts/utils/Context.sol@v3.4.0
+// File @openzeppelin/contracts/utils/Context.sol@v3.4.0-solc-0.7
+
+// SPDX-License-Identifier: AGPL-3.0
 
 pragma solidity >=0.6.0 <0.8.0;
 
@@ -27,10 +28,10 @@ abstract contract Context {
 }
 
 
-// File @openzeppelin/contracts/introspection/IERC165.sol@v3.4.0
+// File @openzeppelin/contracts/introspection/IERC165.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Interface of the ERC165 standard, as defined in the
@@ -54,10 +55,10 @@ interface IERC165 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC721/IERC721.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.2 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Required interface of an ERC721 compliant contract.
@@ -184,10 +185,10 @@ interface IERC721 is IERC165 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC721/IERC721Metadata.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.2 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional metadata extension
@@ -212,10 +213,10 @@ interface IERC721Metadata is IERC721 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC721/IERC721Enumerable.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.2 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @title ERC-721 Non-Fungible Token Standard, optional enumeration extension
@@ -242,10 +243,10 @@ interface IERC721Enumerable is IERC721 {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC721/IERC721Receiver.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @title ERC721 token receiver interface
@@ -266,10 +267,10 @@ interface IERC721Receiver {
 }
 
 
-// File @openzeppelin/contracts/introspection/ERC165.sol@v3.4.0
+// File @openzeppelin/contracts/introspection/ERC165.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Implementation of the {IERC165} interface.
@@ -288,7 +289,7 @@ abstract contract ERC165 is IERC165 {
      */
     mapping(bytes4 => bool) private _supportedInterfaces;
 
-    constructor () internal {
+    constructor () {
         // Derived contracts need only register support for their own interfaces,
         // we register support for ERC165 itself here
         _registerInterface(_INTERFACE_ID_ERC165);
@@ -321,10 +322,10 @@ abstract contract ERC165 is IERC165 {
 }
 
 
-// File @openzeppelin/contracts/math/SafeMath.sol@v3.4.0
+// File @openzeppelin/contracts/math/SafeMath.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Wrappers over Solidity's arithmetic operations with added overflow
@@ -538,10 +539,10 @@ library SafeMath {
 }
 
 
-// File @openzeppelin/contracts/utils/Address.sol@v3.4.0
+// File @openzeppelin/contracts/utils/Address.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.2 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Collection of functions related to the address type
@@ -730,10 +731,10 @@ library Address {
 }
 
 
-// File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.4.0
+// File @openzeppelin/contracts/utils/EnumerableSet.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Library for managing
@@ -1030,10 +1031,10 @@ library EnumerableSet {
 }
 
 
-// File @openzeppelin/contracts/utils/EnumerableMap.sol@v3.4.0
+// File @openzeppelin/contracts/utils/EnumerableMap.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev Library for managing an enumerable variant of Solidity's
@@ -1299,10 +1300,10 @@ library EnumerableMap {
 }
 
 
-// File @openzeppelin/contracts/utils/Strings.sol@v3.4.0
+// File @openzeppelin/contracts/utils/Strings.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 /**
  * @dev String operations.
@@ -1336,10 +1337,10 @@ library Strings {
 }
 
 
-// File @openzeppelin/contracts/token/ERC721/ERC721.sol@v3.4.0
+// File @openzeppelin/contracts/token/ERC721/ERC721.sol@v3.4.0-solc-0.7
 
 
-pragma solidity >=0.6.0 <0.8.0;
+pragma solidity ^0.7.0;
 
 
 
@@ -1427,7 +1428,7 @@ contract ERC721 is Context, ERC165, IERC721, IERC721Metadata, IERC721Enumerable 
     /**
      * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
      */
-    constructor (string memory name_, string memory symbol_) public {
+    constructor (string memory name_, string memory symbol_) {
         _name = name_;
         _symbol = symbol_;
 
@@ -2734,6 +2735,84 @@ contract StringUtils {
 }
 
 
+// File contracts/interfaces/IRelayRecipient.sol
+
+pragma solidity >=0.7.6 <0.8.0;
+
+/**
+ * a contract must implement this interface in order to support relayed transaction.
+ * It is better to inherit the BaseRelayRecipient as its implementation.
+ */
+abstract contract IRelayRecipient {
+
+    /**
+     * return if the forwarder is trusted to forward relayed transactions to us.
+     * the forwarder is required to verify the sender's signature, and verify
+     * the call is not a replay.
+     */
+    function isTrustedForwarder(address forwarder) public virtual view returns(bool);
+
+    /**
+     * return the sender of this call.
+     * if the call came through our trusted forwarder, then the real sender is appended as the last 20 bytes
+     * of the msg.data.
+     * otherwise, return `msg.sender`
+     * should be used in the contract anywhere instead of msg.sender
+     */
+    function _msgSenderForwarder() internal virtual view returns (address payable);
+
+    // function versionRecipient() external virtual view returns (string memory);
+}
+
+
+// File contracts/BaseRelayRecipient.sol
+
+pragma solidity >=0.7.6 <0.8.0;
+/**
+ * A base contract to be inherited by any contract that want to receive relayed transactions
+ * A subclass must use "_msgSender()" instead of "msg.sender"
+ */
+abstract contract BaseRelayRecipient is IRelayRecipient {
+
+    /*
+     * Forwarder singleton we accept calls from
+     */
+    address public trustedForwarder;
+
+    /*
+     * require a function to be called through GSN only
+     */
+    modifier trustedForwarderOnly() {
+        require(msg.sender == address(trustedForwarder), "Function can only be called through the trusted Forwarder");
+        _;
+    }
+
+    function isTrustedForwarder(address forwarder) public override view returns(bool) {
+        return forwarder == trustedForwarder;
+    }
+
+    /**
+     * return the sender of this call.
+     * if the call came through our trusted forwarder, return the original sender.
+     * otherwise, return `msg.sender`.
+     * should be used in the contract anywhere instead of msg.sender
+     */
+    function _msgSenderForwarder() internal override virtual view returns (address payable ret) {
+        if (msg.data.length >= 24 && isTrustedForwarder(msg.sender)) {
+            // At this point we know that the sender is a trusted forwarder,
+            // so we trust that the last bytes of msg.data are the verified sender address.
+            // extract sender address from the end of msg.data
+            assembly {
+                ret := shr(96,calldataload(sub(calldatasize(),20)))
+            }
+        } else {
+            return payable(msg.sender);
+        }
+    }
+
+}
+
+
 // File contracts/HestiaSuperApp.sol
 
 /*===============================
@@ -2779,7 +2858,7 @@ contract HestiaMeta {
     ));
 }
 
-contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, RedirectAll*/ {
+contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils, BaseRelayRecipient/*, RedirectAll*/ {
 
     address owner;
 
@@ -2902,6 +2981,15 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
     {
         require(price > 0, "Hestia:Price cannot be 0");
         handleCreatePost(price, taxrate, postData, metaData, msg.sender);
+    }
+
+    function createPostForwarder(
+        uint256 price, uint256 taxrate, string memory postData, string memory metaData
+    )
+        public
+    {
+        require(price > 0, "Hestia:Price cannot be 0");
+        handleCreatePost(price, taxrate, postData, metaData, _msgSenderForwarder());
     }
 
     function createPostMeta(
@@ -3084,6 +3172,7 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils/*, R
 
         require(liker != address(0), "Hestia:invalid-address-0");
         require(liker == ecrecover(digest, v, r, s), "Hestia:invalid-signatures");
+        require(_postLikedByAddress[postId][liker] == false, "Hestia:Post already liked by address.");
         _handleLikePost(postId, liker);
     }
 

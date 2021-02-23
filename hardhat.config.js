@@ -23,7 +23,7 @@ module.exports = {
         version: "0.7.6",
         settings: {
           optimizer: {
-            runs: 999999,
+            runs: 99999,
             enabled: true
           }
         }
@@ -40,13 +40,14 @@ module.exports = {
     kovan: infuraNetwork("kovan", 42, 6283185),
     goerli: infuraNetwork("goerli", 5, 6283185),
     matic: {
-      url: "https://rpc-mumbai.maticvigil.com/v1/36aed576f085dcef42748c474a02b1c51db45c86",
+      url: "https://rpc-mumbai.matic.today/",
       chainId: 80001,
       accounts: mnemonic ? { mnemonic } : undefined
     },
     bsc: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
+      gasPrice: 20000000000,
       accounts: mnemonic ? { mnemonic } : undefined
     }
   },

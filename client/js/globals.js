@@ -543,6 +543,34 @@ let hestiaAbi = [
 		  "internalType": "string",
 		  "name": "metaData",
 		  "type": "string"
+		}
+	  ],
+	  "name": "createPostForwarder",
+	  "outputs": [],
+	  "stateMutability": "nonpayable",
+	  "type": "function"
+	},
+	{
+	  "inputs": [
+		{
+		  "internalType": "uint256",
+		  "name": "price",
+		  "type": "uint256"
+		},
+		{
+		  "internalType": "uint256",
+		  "name": "taxrate",
+		  "type": "uint256"
+		},
+		{
+		  "internalType": "string",
+		  "name": "postData",
+		  "type": "string"
+		},
+		{
+		  "internalType": "string",
+		  "name": "metaData",
+		  "type": "string"
 		},
 		{
 		  "internalType": "address",
@@ -621,6 +649,25 @@ let hestiaAbi = [
 		}
 	  ],
 	  "name": "isApprovedForAll",
+	  "outputs": [
+		{
+		  "internalType": "bool",
+		  "name": "",
+		  "type": "bool"
+		}
+	  ],
+	  "stateMutability": "view",
+	  "type": "function"
+	},
+	{
+	  "inputs": [
+		{
+		  "internalType": "address",
+		  "name": "forwarder",
+		  "type": "address"
+		}
+	  ],
+	  "name": "isTrustedForwarder",
 	  "outputs": [
 		{
 		  "internalType": "bool",
@@ -978,6 +1025,19 @@ let hestiaAbi = [
 	  "type": "function"
 	},
 	{
+	  "inputs": [],
+	  "name": "trustedForwarder",
+	  "outputs": [
+		{
+		  "internalType": "address",
+		  "name": "",
+		  "type": "address"
+		}
+	  ],
+	  "stateMutability": "view",
+	  "type": "function"
+	},
+	{
 	  "inputs": [
 		{
 		  "internalType": "uint256",
@@ -1002,7 +1062,8 @@ let hestiaAbi = [
 	  "stateMutability": "nonpayable",
 	  "type": "function"
 	}
-]
+  ]
+
 let hestiaCreatorAbi = [
 	{
 	  "inputs": [],
@@ -1137,26 +1198,26 @@ const supportedChains = {
 }
 
 const contract_addresses = {
-	"80001":{
-		"HestiaSuperApp":"0x4Cd184936bE618611e4e0c97824A358a7491e6E6",
-		"HestiaCreator":"0x501c128E0dAe21813412FFE85B41d1774DAFF73A",
-		"Dai":"0x583B8bbAfcD1FE9200D4cf81dD7349D0A4367d89"
+	"80001": {
+		"HestiaSuperApp": "0xd7c84657b037B2239d198B09F213b750eeBedB54",
+		"HestiaCreator": "0x0F90019Bf0dc234D4f7e43E6C8dE46DBbb52F664",
+		"Dai": "0x1bFEfC304d79Ca135BFef9d483f9BceFA32416f7"
 	},
 	"97":{
-		"HestiaSuperApp":"0x11bF559434F083B079a9f08B0Cd6c8909EdfC2f6",
-		"HestiaCreator":"0x4dbe238caec21d370ed83370357f5423340e44a0",
-		"Dai":"0x37c2BB4A23FF220eDAAeC316cBe4c52db6dfD960"
+		"HestiaSuperApp":"0x62c9083f7f9c461eb1986ab20e6814b27d59092c",
+		"HestiaCreator":"0x363d2c0d90c7f18f69b5029ebb0ce038f8f877ea",
+		"Dai":"0x436817b0c7c7234bf94cd7fb57793fc6f5685a68"
 	}
 }
 
 const block_numbers = {
 	"80001":{
-		"HestiaSuperApp":"0x9EF6BD",
-		"HestiaCreator":"0x9EF6BE"
+		"HestiaSuperApp":"0xA57075",
+		"HestiaCreator":"0xA57078"
 	},
 	"97":{
-		"HestiaSuperApp":"0x5EEEB1",
-		"HestiaCreator":"0x5EDE26",
+		"HestiaSuperApp":"0x63C709",
+		"HestiaCreator":"0x63C709",
 	}
 }
 
