@@ -10,7 +10,7 @@
 // SPDX-License-Identifier: AGPL-3.0
 pragma solidity >=0.7.6 <0.8.0;
 
-// import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
+import {RedirectAll, ISuperToken, IConstantFlowAgreementV1, ISuperfluid} from "./RedirectAll.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@chainlink/contracts/src/v0.7/ChainlinkClient.sol";
 import "./StringUtils.sol";
@@ -47,7 +47,7 @@ contract HestiaMeta {
     ));
 }
 
-contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils, BaseRelayRecipient/*, RedirectAll*/ {
+contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils, BaseRelayRecipient, RedirectAll {
 
     address owner;
 
@@ -129,9 +129,9 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils, Bas
         address indexed _user
     );
 
-    constructor(/*ISuperfluid host,IConstantFlowAgreementV1 cfa,ISuperToken acceptedToken*/)
+    constructor(ISuperfluid host,IConstantFlowAgreementV1 cfa,ISuperToken acceptedToken)
       ERC721("Hestia", "HESTIA")
-    //   RedirectAll(host,cfa,acceptedToken,msg.sender)
+      RedirectAll(host,cfa,acceptedToken,msg.sender)
     {
         owner = msg.sender;
         setChainlinkOracle(0xBf87377162512f8098f78f055DFD2aDAc34cbB47);
@@ -331,13 +331,13 @@ contract HestiaSuperApp is ERC721, HestiaMeta, ChainlinkClient, StringUtils, Bas
         emit TaxPayed(postId, msg.sender, taxAmount);
     }
 
-    // function _beforeTokenTransfer(
-    //   address /*from*/,
-    //   address to,
-    //   uint256 /*tokenId*/
-    // ) internal override {
-    //     _changeReceiver(to);
-    // }
+    function _beforeTokenTransfer(
+      address /*from*/,
+      address to,
+      uint256 /*tokenId*/
+    ) internal override {
+        _changeReceiver(to);
+    }
 
     function likePostMeta(
         uint256 postId, address liker,

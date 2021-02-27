@@ -29,6 +29,8 @@ Because of these opposing pressures, NFT owners can’t set impossibly high pric
 
 🔀 Intercompatible with Binance Smart Chain, fetching realtime data from Bitquery.
 
+📌 Distributed Storage powered by IPFS, Pinata, Arweave, Textile and Fleek.
+
 ### Contract Releases
 
  - [Matic Mumbai Testnet (80001)](https://explorer-mumbai.maticvigil.com)
@@ -53,3 +55,4 @@ Because of these opposing pressures, NFT owners can’t set impossibly high pric
 - [IPFS](https://hub.textile.io/ipfs/bafybeibtrp3c2ijk2kqsj4dmqvcu6dauqanzrdjwfmqulmaxea4t5kahem/index.html)
 - [IPNS](https://hub.textile.io/ipns/bafzbeibcmranvzip5uevcew756nrre77nllfzfollzuwfhgjryewxrmjdu/index.html)
 - [Fleek](https://hestia.on.fleek.co)
+- [Arweave](https://arweave.net/N0clNPebrwNRe3VhxYM8CcrK5hlGyLfP4iwtmqwIu8c)

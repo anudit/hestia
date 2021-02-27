@@ -32,9 +32,12 @@ module.exports = {
   },
   networks: {
     hardhat: {
-      chainId: 80001,
-      saveDeployments: true,
-      accounts: mnemonic ? { mnemonic } : undefined
+      allowUnlimitedContractSize: true,
+      accounts: mnemonic ? { mnemonic } : undefined,
+      forking: {
+        url: "https://rpc-mumbai.matic.today/",
+        chainId: 80001,
+      }
     },
     rinkeby: infuraNetwork("rinkeby", 4, 6283185),
     kovan: infuraNetwork("kovan", 42, 6283185),
